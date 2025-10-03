@@ -7,22 +7,13 @@ import es.eternalshadow.objects.Pocion;
 
 public class Guerrero extends Criatura {
 	private Noxterra nox;
-	private String nombre;
 	private String genero;
 	
 	public Guerrero(String tipo, int fuerza, int resistencia, int velocidad, int magia, String nombre, int nivel,
-			Escudos[] escudos, Armas[] armas, Pocion pocion, int puntosVida, String nombre2, String genero) {
+			Escudos[] escudos, Armas[] armas, Pocion pocion, int puntosVida, Noxterra nox, String genero) {
 		super(tipo, fuerza, resistencia, velocidad, magia, nombre, nivel, escudos, armas, pocion, puntosVida);
-		nombre = nombre2;
+		this.nox = nox;
 		this.genero = genero;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
 	}
 
 	public String getGenero() {
