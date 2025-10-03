@@ -15,7 +15,11 @@ public class Demonio extends Criatura {
 		this.nox = nox;
 		this.isCuernos = isCuernos;
 	}
-
+	
+	public Demonio(int fuerza, int resistencia, int velocidad, int magia) {
+		super();
+	}
+	
 	public boolean isCuernos() {
 		return isCuernos;
 	}

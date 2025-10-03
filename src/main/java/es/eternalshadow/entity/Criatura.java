@@ -12,6 +12,8 @@ public abstract class Criatura extends Raza {
 	private Pocion pocion;
 	private int puntosVida;
 	
+	public Criatura() {}
+	
 	public Criatura(String tipo, int fuerza, int resistencia, int velocidad, int magia, String nombre, int nivel,
 			Escudos[] escudos, Armas[] armas, Pocion pocion, int puntosVida) {
 		super(tipo, fuerza, resistencia, velocidad, magia);

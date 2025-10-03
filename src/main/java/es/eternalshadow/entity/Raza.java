@@ -9,6 +9,7 @@ public abstract class Raza extends Noxterra {
 	private int velocidad;
 	private int magia;
 	
+	public Raza() {}
 	
 	public Raza(String tipo, int fuerza, int resistencia, int velocidad, int magia) {
 		super();
