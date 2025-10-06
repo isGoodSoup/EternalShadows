@@ -15,6 +15,10 @@ public class Mago extends Criatura {
 		this.nox = nox;
 		this.tipoMago = tipoMago;
 	}
+	
+	public Mago(String nombre, int fuerza, int resistencia, int velocidad, int magia) {
+		super();
+	}
 
 	public String getTipoMago() {
 		return tipoMago;

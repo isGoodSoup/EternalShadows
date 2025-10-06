@@ -15,6 +15,10 @@ public class Guerrero extends Criatura {
 		this.nox = nox;
 		this.genero = genero;
 	}
+	
+	public Guerrero(String nombre, int fuerza, int resistencia, int velocidad, int magia) {
+		super();
+	}
 
 	public String getGenero() {
 		return genero;

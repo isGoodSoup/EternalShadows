@@ -16,7 +16,7 @@ public class Demonio extends Criatura {
 		this.isCuernos = isCuernos;
 	}
 	
-	public Demonio(int fuerza, int resistencia, int velocidad, int magia) {
+	public Demonio(String nombre, int fuerza, int resistencia, int velocidad, int magia) {
 		super();
 	}
 	
