@@ -1,10 +1,11 @@
 package es.eternalshadow.entity;
 
+import es.eternalshadow.interfaces.Accionable;
 import es.eternalshadow.objects.Armas;
 import es.eternalshadow.objects.Escudos;
 import es.eternalshadow.objects.Pocion;
 
-public abstract class Criatura extends Raza {
+public abstract class Criatura extends Raza implements Accionable {
 	private String nombre;
 	private int nivel;
 	private Escudos[] escudos;
@@ -23,6 +24,16 @@ public abstract class Criatura extends Raza {
 		this.armas = armas;
 		this.pocion = pocion;
 		this.puntosVida = puntosVida;
+	}
+	
+	@Override
+	public void atacar() {
+		
+	}
+	
+	@Override
+	public void defender() {
+		
 	}
 
 	public String getNombre() {

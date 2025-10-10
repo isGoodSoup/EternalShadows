@@ -17,12 +17,14 @@ public class Personaje extends Raza {
 	private static final Scanner scan = new Scanner(System.in);
 	private static final Logger log = LoggerFactory.getLogger(Personaje.class);	
 	
+	public Personaje() {}
+	
 	public Personaje(String tipo, int fuerza, int resistencia, int velocidad, int magia) {
 		super(tipo, fuerza, resistencia, velocidad, magia);
 		crearPersonaje(fuerza, resistencia, velocidad, magia);
 	}
 	
-	public Criatura[] crearPersonaje(int f, int r, int v, int m) {
+	private Criatura[] crearPersonaje(int f, int r, int v, int m) {
 		do {
 			q("la fuerza");
 			f = scan.nextInt();
@@ -46,11 +48,7 @@ public class Personaje extends Raza {
 		} while (puntos == 100);
 		
 		String[] menu = {"Mago", "Guerrero", "Demonio"};
-		crearMenu(menu);
-		log.info("Selecciona una clase");
-		int opcion = scan.nextInt();
-		
-		switch(opcion) {
+		switch(Input.crearMenu(menu, "Selecciona una clase")) {
 			case 1: Criatura c1 = new Mago("El Mago", f, r, v, m);
 					claseSeleccionada(c1);
 					criaturas[0] = c1;
@@ -69,18 +67,11 @@ public class Personaje extends Raza {
 		return criaturas;
 	}
 	
-	public void q(String s) {
+	private void q(String s) {
 		log.info("Introduce el valor de " + s);
 	}
 	
-	public void crearMenu(String[] menu) {
-		for (int i = 0; i < menu.length; i++) {
-			System.out.println(i + ") " + menu[i]);
-		}
-		System.out.println("Introduce una opción");
-	}
-	
-	public Criatura claseSeleccionada(Criatura criatura) {
+	private Criatura claseSeleccionada(Criatura criatura) {
 		log.info("Clase seleccionada: " + criatura.getNombre());
 		return criatura;
 	}

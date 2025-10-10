@@ -1,8 +1,6 @@
 package es.eternalshadow.entity;
 
-import es.eternalshadow.main.Noxterra;
-
-public abstract class Raza extends Noxterra {
+public abstract class Raza {
 	private String tipo;
 	private int fuerza;
 	private int resistencia;
