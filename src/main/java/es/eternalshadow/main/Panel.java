@@ -2,19 +2,17 @@ package es.eternalshadow.main;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 
-public class Panel extends JPanel {
+public class Panel extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private Keyboard tecla = new Keyboard(this);
-	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	
 	private boolean isJuegoActivo = true;
-	
-	private Graphics2D g2;
 	
 	public Panel() {
 		this.setPreferredSize(new Dimension(640, 640));
@@ -25,26 +23,26 @@ public class Panel extends JPanel {
 		this.setFocusable(true);
 	}
 	
+	@Override
 	public void run() {
-		while(isJuegoActivo) {
-			draw(g2);
-		}
-	}
+        while (isJuegoActivo) {
+            repaint();
+            try {
+                Thread.sleep(16);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 	
-	public void draw(Graphics2D g2) {
-		g2.setColor(Color.GREEN);
-		g2.drawString("", getX(), getY());
-	}
+	@Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
 
+    }
+	
 	public boolean isJuegoActivo() {
 		return isJuegoActivo;
-	}
-	
-	public int getX() {
-		return 
-	}
-	
-	public int getY() {
-		return 
 	}
 }
