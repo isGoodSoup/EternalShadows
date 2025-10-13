@@ -2,15 +2,20 @@ package es.eternalshadow.main;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import es.eternalshadow.enums.Modo;
+
 public class Panel extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private Keyboard tecla = new Keyboard(this);
 	private boolean isJuegoActivo = true;
+	
+	private Modo estado;
 	
 	public Panel() {
 		this.setPreferredSize(new Dimension(640, 640));
@@ -19,6 +24,8 @@ public class Panel extends JPanel implements Runnable {
 		this.setDoubleBuffered(true);
 		this.addKeyListener(tecla);
 		this.setFocusable(true);
+		
+		this.estado = Modo.MENU;
 	}
 	
 	@Override
@@ -37,7 +44,12 @@ public class Panel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-
+        
+        if(estado == Modo.MENU) {
+        	g2.setFont(new Font("Arial", Font.BOLD, 25));
+            g2.setColor(Color.white);
+            g2.drawString("EternalShadows", (int) (getWidth()/2.8f), getHeight()/2);
+        }
     }
 	
 	public boolean isJuegoActivo() {
