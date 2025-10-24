@@ -49,8 +49,16 @@ public class Panel extends JPanel implements Runnable {
         	g2.setFont(new Font("Arial", Font.BOLD, 25));
             g2.setColor(Color.white);
             g2.drawString("EternalShadows", (int) (getWidth()/2.8f), getHeight()/2);
+            
         }
     }
+	
+	
+	public void iniciarJuego() {
+		isJuegoActivo=true;
+		
+	}
+	
 	
 	public boolean isJuegoActivo() {
 		return isJuegoActivo;

@@ -1,5 +1,6 @@
 package es.eternalshadow.util;
 
+import java.util.Random;
 import java.util.Scanner;
 
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import es.eternalshadow.entity.Demonio;
 import es.eternalshadow.entity.Guerrero;
 import es.eternalshadow.entity.Mago;
 import es.eternalshadow.entity.Raza;
+import es.eternalshadow.main.Main;
 
 public class Personaje extends Raza {
 	private int puntos;
@@ -45,7 +47,7 @@ public class Personaje extends Raza {
 			m = scan.nextInt();
 			puntos += m;
 			scan.nextLine();
-		} while (puntos == 100);
+		} while (puntos != 100);
 		
 		String[] menu = {"Mago", "Guerrero", "Demonio"};
 		switch(Input.crearMenu(menu, "Selecciona una clase")) {
@@ -67,6 +69,60 @@ public class Personaje extends Raza {
 		return criaturas;
 	}
 	
+	
+	public static  Criatura crearCriaturaAleatoria() {
+		Random r = new Random();
+	    int[] atributos = new int[4];
+	    int puntosTotal = 100;
+	    
+	    
+	    for (int i = 0; i < 3; i++) {
+	        atributos[i] = r.nextInt(puntosTotal + 1); 
+	        puntosTotal -= atributos[i];                    
+	    }
+	    atributos[3] = puntosTotal; 
+	    
+	    
+	    
+	    int fuerza = atributos[0];
+	    int resistencia = atributos[1];
+	    int velocidad = atributos[2];
+	    int magia = atributos[3];
+
+	    String[] razas = {"Mago", "Guerrero", "Demonio"};
+	    Random ale = new Random();
+	    int numale = ale.nextInt(razas.length);
+	    String tipo = razas[numale];
+	    
+	    
+	    Criatura c=null;
+	    switch (tipo) {
+	   
+	        case "Mago":
+	        	c= new Mago("Mago enemigo", fuerza, resistencia, velocidad, magia);
+	            break;
+	        case "Guerrero":
+	        	c= new Guerrero("Guerrero enemigo", fuerza, resistencia, velocidad, magia);
+	            break;
+	        case "Demonio":
+	        	c = new Demonio("Demonio enemigo", fuerza, resistencia, velocidad, magia);
+	            break;
+	        
+	    }
+	    if (c != null) {
+
+	   System.out.println("Criatura enemiga creada: " + c.getNombre() + " con atributos: "
+	             + "Fuerza: " + fuerza + ", Resistencia: " + resistencia + ", Velocidad: " + velocidad + ", Magia: " + magia);
+
+	   
+	    }
+	    return c;
+	    
+	}
+
+
+	
+	
 	private void q(String s) {
 		log.info("Introduce el valor de " + s);
 	}
@@ -75,4 +131,6 @@ public class Personaje extends Raza {
 		log.info("Clase seleccionada: " + criatura.getNombre());
 		return criatura;
 	}
+	
+
 }
