@@ -1,18 +1,10 @@
 package es.eternalshadow.entity;
 
 public class Demonio extends Criatura {
-	private boolean isCuernos;
-
-	public Demonio(String nombre, int fuerza, int resistencia, int velocidad, int magia) {
-		super();
-	}
 	
-	public boolean isCuernos() {
-		return isCuernos;
-	}
-
-	public void setCuernos(boolean isCuernos) {
-		this.isCuernos = isCuernos;
+	public Demonio(String tipo, String nombre, int fuerza, int resistencia,
+			int velocidad, int magia) {
+		super(tipo, nombre, fuerza, resistencia, velocidad, magia);
 	}
 
 	@Override

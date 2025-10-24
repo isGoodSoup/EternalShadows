@@ -1,18 +1,10 @@
 package es.eternalshadow.entity;
 
 public class Guerrero extends Criatura {
-	private String genero;
 	
-	public Guerrero(String nombre, int fuerza, int resistencia, int velocidad, int magia) {
-		super();
-	}
-
-	public String getGenero() {
-		return genero;
-	}
-
-	public void setGenero(String genero) {
-		this.genero = genero;
+	public Guerrero(String tipo, String nombre, int fuerza, int resistencia,
+			int velocidad, int magia) {
+		super(tipo, nombre, fuerza, resistencia, velocidad, magia);
 	}
 
 	@Override

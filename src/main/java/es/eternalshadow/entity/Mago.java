@@ -1,18 +1,10 @@
 package es.eternalshadow.entity;
 
 public class Mago extends Criatura {
-	private String tipoMago;
 
-	public Mago(String nombre, int fuerza, int resistencia, int velocidad, int magia) {
-		super();
-	}
-
-	public String getTipoMago() {
-		return tipoMago;
-	}
-
-	public void setTipoMago(String tipoMago) {
-		this.tipoMago = tipoMago;
+	public Mago(String tipo, String nombre, int fuerza, int resistencia,
+			int velocidad, int magia) {
+		super(tipo, nombre, fuerza, resistencia, velocidad, magia);
 	}
 
 	@Override

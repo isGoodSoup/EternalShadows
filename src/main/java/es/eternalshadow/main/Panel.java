@@ -9,11 +9,14 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import es.eternalshadow.enums.Modo;
+import es.eternalshadow.util.Personaje;
 
 public class Panel extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
+	private Personaje p = new Personaje();
 	private Keyboard tecla = new Keyboard(this);
 	private boolean isJuegoActivo = true;
+	private Thread juego;
 	
 	private Modo estado;
 	
@@ -55,12 +58,26 @@ public class Panel extends JPanel implements Runnable {
 	
 	
 	public void iniciarJuego() {
-		isJuegoActivo=true;
-		
+		isJuegoActivo = true;
 	}
-	
 	
 	public boolean isJuegoActivo() {
 		return isJuegoActivo;
+	}
+
+	public Thread getJuego() {
+		return juego;
+	}
+
+	public void setJuego(Thread juego) {
+		this.juego = juego;
+	}
+
+	public Personaje getP() {
+		return p;
+	}
+
+	public void setP(Personaje p) {
+		this.p = p;
 	}
 }
