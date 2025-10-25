@@ -167,7 +167,7 @@ public class Utilidades {
 			"Las sombras del grabado se disuelven",
 			"y una de las figuras se desprende de la piedra",
 			"tomando forma ante ti. La elección está hecha.",
-			
+			null,
 		};
 	}
 }
