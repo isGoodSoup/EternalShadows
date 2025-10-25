@@ -24,5 +24,10 @@
 	    <version>1.5.17</version>
 	    <scope>compile</scope>
 	</dependency>
+	<dependency>
+	    <groupId>org.jline</groupId>
+	    <artifactId>jline</artifactId>
+	    <version>3.30.0</version>
+	</dependency>
   </dependencies>
 </project>

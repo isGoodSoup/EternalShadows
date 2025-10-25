@@ -39,10 +39,6 @@ public class Utilidades {
 		return num;
 	}
 	
-	public void print(String s) {
-		System.out.println(s);
-	}
-	
 	public String[] lineas() {
 		return new String[] {
 			"Cuando la última luz se extinga, los nombres de los vivos serán olvidados…",
@@ -55,7 +51,14 @@ public class Utilidades {
 			"Los pueblos han caído uno tras otro, devorados por el silencio.",
 			"Las ciudades ya no tienen nombres, solo ecos que murmuran en lenguas muertas.",
 			"Y entre esas ruinas… algo se mueve.",
-			"Tú."
+			"Tú.",
+			"Despiertas sobre tierra fría, húmeda, cubierta de ceniza.",
+			"No recuerdas tu nombre, ni cómo llegaste aquí.",
+			"Solo sientes el peso del aire, espeso como la culpa, y el murmullo de algo lejano que te llama,",
+			"como si tu alma misma estuviera siendo arrastrada hacia un destino inevitable.",
+			"Ante ti, un grabado antiguo tallado en piedra resplandece débilmente.",
+			"Sus símbolos arcanos giran, formando tres figuras envueltas en sombras.",
+			"Cada una extiende una mano, invitándote a elegir.",
 		};
 	}
 }
