@@ -2,8 +2,6 @@ package es.eternalshadow.main;
 
 import javax.swing.JFrame;
 
-import es.eternalshadow.util.Personaje;
-
 public class Main {
 	private String title = "EternalShadows";
 	private JFrame frame = new JFrame();
@@ -11,7 +9,6 @@ public class Main {
 	
 	public static void main(String[] args) {
 		Main main = new Main();
-		Personaje.crearCriaturaAleatoria();
 		main.run();
 	}
 	
@@ -19,12 +16,13 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(true);
 		frame.setTitle(this.title);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setUndecorated(true);
 		frame.add(panel);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		panel.requestFocusInWindow();
-		panel.run();
-		panel.iniciarJuego();
+		new Thread(panel).start();
 	}
 }
