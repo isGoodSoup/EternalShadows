@@ -18,6 +18,7 @@ public class Personaje extends Raza {
 	private int puntos;
 	private List<Criatura> criaturas = new ArrayList<>();
 	private Clases clases;
+	private Utilidades util = new Utilidades();
 	private static Random r = new Random();
 	private static final Logger log = LoggerFactory.getLogger(Personaje.class);	
 	
@@ -30,21 +31,21 @@ public class Personaje extends Raza {
 	
 	private List<Criatura> crearPersonaje(int f, int r, int v, int m) {
 		do {
-			f = Input.toScanInteger(q("la fuerza"));
+			f = util.toScanInteger(q("la fuerza"));
 			puntos += f;
 			
-			r = Input.toScanInteger(q("la resistencia"));
+			r = util.toScanInteger(q("la resistencia"));
 			puntos += r;
 			
-			v = Input.toScanInteger(q("la velocidad"));
+			v = util.toScanInteger(q("la velocidad"));
 			puntos += v;
 			
-			m = Input.toScanInteger(q("la magia"));
+			m = util.toScanInteger(q("la magia"));
 			puntos += m;
 		} while (puntos != 100);
 		
 		String[] menu = {"Mago", "Guerrero", "Demonio"};
-		switch(Input.crearMenu(menu, "Selecciona una clase")) {
+		switch(util.crearMenu(menu, "Selecciona una clase")) {
 			case 1: Criatura c1 = new Mago("Mago", "El Mago", f, r, v, m);
 					clases = Clases.MAGO;
 					claseSeleccionada(c1);
