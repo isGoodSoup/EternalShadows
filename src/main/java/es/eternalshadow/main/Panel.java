@@ -6,7 +6,10 @@ import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import es.eternalshadow.entity.Criatura;
 import es.eternalshadow.util.Utilidades;
 
 public class Panel {
@@ -16,6 +19,7 @@ public class Panel {
 	private String[] lineas = util.lineas();
 	private int nextLine;
 	private int opcion;
+	private static final Logger log = LoggerFactory.getLogger(Panel.class);
 	
 	public Panel() {
         try {
@@ -30,6 +34,7 @@ public class Panel {
     }
 	
 	public void intro() {
+		log.info("Inicio");
 		System.out.println(nextLine());
 		System.out.println(nextLine());
 	}
@@ -37,21 +42,57 @@ public class Panel {
 	public void comenzar() {
 		intro();
 		String[] menu = {"Comenzar Aventura", "Salir"};
-		util.toGetString("⌛ Eternal Shadows ⚔️");
+		util.toGetString("ETERNAL SHADOWS ⚔️");
 		opcion = util.crearMenu(menu, "Introduce tu opción");
 		util.toScan();
 		do {
 			switch(opcion) {
 				case 1 -> {
-					String linea;
-			        while((linea = nextLine()) != null) {
-			        	System.out.print(linea);
-			        	reader.readLine();
-			        }
+					Criatura criatura = capitulo1();
+					capitulo2(criatura);
+					capitulo3(criatura);
 				}
-				case 2 -> System.exit(0);
+				case 2 -> { log.info("Salida"); System.exit(0); }
 			}
 		} while(opcion > 2);
+	}
+	
+	private Criatura capitulo1() {
+		String linea;
+        while((linea = nextLine()) != null) {
+        	System.out.print(linea);
+        	reader.readLine();
+        }
+        log.info("Creando personaje...");
+        Criatura criatura = util.crearPersonaje();
+        System.out.println("Puntos de " + criatura.getNombre());
+        System.out.println(criatura.getFuerza() + ", " + 
+        criatura.getResistencia() + ", " + criatura.getVelocidad() + ", " + criatura.getMagia());
+        
+        log.info("Prosiguiendo con la historia");
+        while((linea = nextLine()) != null) {
+        	System.out.print(linea);
+        	reader.readLine();
+        }
+        return criatura;
+	}
+	
+	private Criatura capitulo2(Criatura criatura) {
+		String linea;
+        while((linea = nextLine()) != null) {
+        	System.out.print(linea);
+        	reader.readLine();
+        }
+		return criatura;
+	}
+	
+	private Criatura capitulo3(Criatura criatura) {
+		String linea;
+        while((linea = nextLine()) != null) {
+        	System.out.print(linea);
+        	reader.readLine();
+        }
+		return criatura;
 	}
 	
 	private String nextLine() {
