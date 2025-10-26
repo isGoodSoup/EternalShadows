@@ -9,15 +9,15 @@ import org.jline.terminal.TerminalBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import es.eternalshadow.entity.Criatura;
+import es.eternalshadow.story.Historia;
+import es.eternalshadow.story.HistoriaPrincipal;
 import es.eternalshadow.util.Utilidades;
 
 public class Panel {
 	private Terminal terminal;
 	private LineReader reader;
+	private Historia historia = new HistoriaPrincipal("Eternal Shadows");
 	private Utilidades util = new Utilidades();
-	private String[] lineas = util.lineas();
-	private int nextLine;
 	private int opcion;
 	private static final Logger log = LoggerFactory.getLogger(Panel.class);
 	
@@ -33,13 +33,13 @@ public class Panel {
         }
     }
 	
-	public void intro() {
-		log.info("Inicio");
-		System.out.println(nextLine());
-		System.out.println(nextLine());
+	private void intro() {
+		System.out.println("Cuando la última luz se extinga, los nombres de los vivos serán olvidados… ");
+		System.out.println("Solo quedará la sombra eterna.");
 	}
 	
 	public void comenzar() {
+		log.info("Inicio");
 		intro();
 		String[] menu = {"Comenzar Aventura", "Salir"};
 		util.toGetString("ETERNAL SHADOWS ⚔️");
@@ -48,57 +48,12 @@ public class Panel {
 		do {
 			switch(opcion) {
 				case 1 -> {
-					Criatura criatura = capitulo1();
-					capitulo2(criatura);
-					capitulo3(criatura);
+					historia.iniciar(reader, util);
 				}
 				case 2 -> { log.info("Salida"); System.exit(0); }
 			}
 		} while(opcion > 2);
 	}
-	
-	private Criatura capitulo1() {
-		String linea;
-        while((linea = nextLine()) != null) {
-        	System.out.print(linea);
-        	reader.readLine();
-        }
-        log.info("Creando personaje...");
-        Criatura criatura = util.crearPersonaje();
-        System.out.println("Puntos de " + criatura.getNombre());
-        System.out.println(criatura.getFuerza() + ", " + 
-        criatura.getResistencia() + ", " + criatura.getVelocidad() + ", " + criatura.getMagia());
-        
-        log.info("Prosiguiendo con la historia");
-        while((linea = nextLine()) != null) {
-        	System.out.print(linea);
-        	reader.readLine();
-        }
-        return criatura;
-	}
-	
-	private Criatura capitulo2(Criatura criatura) {
-		String linea;
-        while((linea = nextLine()) != null) {
-        	System.out.print(linea);
-        	reader.readLine();
-        }
-		return criatura;
-	}
-	
-	private Criatura capitulo3(Criatura criatura) {
-		String linea;
-        while((linea = nextLine()) != null) {
-        	System.out.print(linea);
-        	reader.readLine();
-        }
-		return criatura;
-	}
-	
-	private String nextLine() {
-		if (nextLine >= lineas.length) return null;
-        return lineas[nextLine++];
-    }
 	
 	public Utilidades getUtil() {
 		return util;
@@ -106,5 +61,13 @@ public class Panel {
 
 	public void setUtil(Utilidades util) {
 		this.util = util;
+	}
+
+	public LineReader getReader() {
+		return reader;
+	}
+
+	public void setReader(LineReader reader) {
+		this.reader = reader;
 	}
 }
