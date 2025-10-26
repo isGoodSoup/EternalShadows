@@ -4,13 +4,13 @@ import org.jline.reader.LineReader;
 
 import es.eternalshadow.interfaces.Capitulable;
 
-public abstract class Capitulo extends Historia implements Capitulable {
+public abstract class Capitulo implements Capitulable {
 	private String nombre;
 	private int numero;
 	private String[] lineas;
 
 	public Capitulo(String titulo, String nombre, int numero) {
-		super(titulo);
+		super();
 		this.nombre = nombre;
 		this.numero = numero;
 	}

@@ -43,8 +43,8 @@ public class Panel {
 		intro();
 		String[] menu = {"Comenzar Aventura", "Salir"};
 		util.toGetString("ETERNAL SHADOWS ⚔️");
-		opcion = util.crearMenu(menu, "Introduce tu opción");
-		util.toScan();
+		opcion = util.crearMenu(reader, menu, "Introduce tu opción");
+		util.toScan(reader);
 		do {
 			switch(opcion) {
 				case 1 -> {
@@ -61,6 +61,14 @@ public class Panel {
 
 	public void setUtil(Utilidades util) {
 		this.util = util;
+	}
+	
+	public Terminal getTerminal() {
+		return terminal;
+	}
+
+	public void setTerminal(Terminal terminal) {
+		this.terminal = terminal;
 	}
 
 	public LineReader getReader() {

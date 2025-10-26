@@ -1,7 +1,10 @@
 package es.eternalshadow.util;
 
 import java.util.Random;
-import java.util.Scanner;
+
+import org.jline.reader.EndOfFileException;
+import org.jline.reader.LineReader;
+import org.jline.reader.UserInterruptException;
 
 import es.eternalshadow.entity.Criatura;
 import es.eternalshadow.entity.Demonio;
@@ -10,23 +13,28 @@ import es.eternalshadow.entity.Mago;
 import es.eternalshadow.enums.Clases;
 
 public class Utilidades {
-	private static Scanner scan = new Scanner(System.in);
-	private static Random r = new Random();
+	private static Random random = new Random();
 	
-	public int toScanInteger(String s) {
-		System.out.println(s);
-		int num = scan.nextInt();
-		scan.nextLine();
-		return num;
+	public String toScan(LineReader reader) {
+		return reader.readLine();
 	}
 	
-	public String toScan() {
-		return scan.nextLine();
+	public String toScan(LineReader reader, String prompt) {
+		System.out.println(prompt);
+		return reader.readLine();
 	}
 	
-	public String toScan(String s) {
-		System.out.println(s);
-		return scan.nextLine();
+	public int toScanInteger(LineReader reader, String prompt) {
+		while (true) {
+            try {
+                String line = reader.readLine(prompt + ": ");
+                return Integer.parseInt(line.trim());
+            } catch (NumberFormatException e) {
+                System.err.println("Por favor introduce un número válido.");
+            } catch (UserInterruptException | EndOfFileException e) {
+                System.exit(0);
+            }
+        }
 	}
 	
 	public void toGetString(String s) {
@@ -41,50 +49,47 @@ public class Utilidades {
 		System.out.println();
 	}
 	
-	public int crearMenu(String[] menu, String s) {
+	public int crearMenu(LineReader reader, String[] menu, String s) {
 		for (int i = 0; i < menu.length; i++) {
 			System.out.println(i + 1 + ") " + menu[i]);
 		}
-		int num = toScanInteger(s);
+		int num = toScanInteger(reader, s);
 		return num;
 	}
 	
-	public Criatura crearPersonaje() {
+	public Criatura crearPersonaje(LineReader reader) {
 		Clases clases = Clases.MAGO;
 		Criatura criatura = null;
-		int puntos = 0;
+		int puntos;
 		int f, r, v, m;
-		
 		do {
-			f = toScanInteger(q("la fuerza"));
-			puntos += f;
-			
-			r = toScanInteger(q("la resistencia"));
-			puntos += r;
-			
-			v = toScanInteger(q("la velocidad"));
-			puntos += v;
-			
-			m = toScanInteger(q("la magia"));
-			puntos += m;
-		} while (puntos > 100 || puntos < 100);
+		    puntos = 0;
+		    f = toScanInteger(reader, q("la fuerza"));
+		    puntos += f;
+		    r = toScanInteger(reader, q("la resistencia"));
+		    puntos += r;
+		    v = toScanInteger(reader, q("la velocidad"));
+		    puntos += v;
+		    m = toScanInteger(reader, q("la magia"));
+		    puntos += m;
+		} while (puntos != 100);
 		
 		String[] menu = {"Mago", "Guerrero", "Demonio"};
-		switch(crearMenu(menu, "Selecciona una clase")) {
+		switch(crearMenu(reader, menu, "Selecciona una clase")) {
 			case 1 -> { 
-				String nombre = toScan("Como quieres llamarte?");
+				String nombre = toScan(reader, "Como quieres llamarte?");
 				criatura = new Mago("Mago", nombre, f, r, v, m);
 				if(clases != null) clases = Clases.MAGO;
 			}
 					
 			case 2 -> {
-				String nombre = toScan("Como quieres llamarte?");
+				String nombre = toScan(reader, "Como quieres llamarte?");
 				criatura = new Guerrero("Guerrero", nombre, f, r, v, m);
 				if(clases != null) clases = Clases.GUERRERO;
 			}
 					
 			case 3 -> {
-				String nombre = toScan("Como quieres llamarte?");
+				String nombre = toScan(reader, "Como quieres llamarte?");
 				criatura = new Demonio("Demonio", nombre, f, r, v, m);
 				if(clases != null) clases = Clases.DEMONIO;
 			}
@@ -98,7 +103,7 @@ public class Utilidades {
 	    
 	    
 	    for (int i = 0; i < 3; i++) {
-	        atributos[i] = r.nextInt(puntosTotal + 1); 
+	        atributos[i] = random.nextInt(puntosTotal + 1); 
 	        puntosTotal -= atributos[i];                    
 	    }
 	    atributos[3] = puntosTotal; 
@@ -109,7 +114,7 @@ public class Utilidades {
 	    int magia = atributos[3];
 
 	    String[] razas = {"Mago", "Guerrero", "Demonio"};
-	    int numale = r.nextInt(razas.length);
+	    int numale = random.nextInt(razas.length);
 	    String tipo = razas[numale];
 	    
 	    Criatura c= null;

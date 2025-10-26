@@ -10,13 +10,14 @@ public class HistoriaPrincipal extends Historia {
 	public HistoriaPrincipal(String titulo) {
 	    super(titulo);
 	    getCapitulos().add(new Capitulo1());
+	    getCapitulos().add(new Capitulo2());
 	}
 
 	@Override
 	public Criatura iniciar(LineReader reader, Utilidades util) {
 	    Criatura criatura = null;
 	    for(Capitulo capitulo : getCapitulos()) {
-	        criatura = capitulo.iniciar(reader, util);
+	        criatura = capitulo.ejecutar(criatura, reader);
 	    }
 	    return criatura;
 	}

@@ -13,10 +13,10 @@ public class Capitulo1 extends Capitulo {
 	}
 
 	@Override
-	public Criatura iniciar(LineReader reader, Utilidades util) {
+	public Criatura ejecutar(Criatura criatura, LineReader reader) {
         mostrarLinea(reader);
-        Criatura criatura = util.crearPersonaje();
-        mostrarLinea(reader);
+        Utilidades util = new Utilidades();
+        criatura = util.crearPersonaje(reader);
         return criatura;
 	}
 
@@ -39,8 +39,7 @@ public class Capitulo1 extends Capitulo {
 				"como si tu alma misma estuviera siendo arrastrada hacia un destino inevitable.",
 				"Ante ti, un grabado antiguo tallado en piedra resplandece débilmente.",
 				"Sus símbolos arcanos giran, formando tres figuras envueltas en sombras.",
-				"Cada una extiende una mano, invitándote a elegir.",
-				null
+				"Cada una extiende una mano, invitándote a elegir."
 		};
 	}
 }
