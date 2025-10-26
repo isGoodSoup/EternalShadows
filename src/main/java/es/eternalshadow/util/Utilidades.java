@@ -1,5 +1,6 @@
 package es.eternalshadow.util;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import org.jline.reader.EndOfFileException;
@@ -54,6 +55,12 @@ public class Utilidades {
 			System.out.println(i + 1 + ") " + menu[i]);
 		}
 		int num = toScanInteger(reader, s);
+		return num;
+	}
+	
+	public int[] tirarDados() {
+		int[] num = {random.nextInt(21), random.nextInt(21)};
+		System.out.println(Arrays.toString(num));
 		return num;
 	}
 	
