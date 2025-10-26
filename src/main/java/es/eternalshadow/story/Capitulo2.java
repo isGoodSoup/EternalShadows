@@ -27,14 +27,13 @@ public class Capitulo2 extends Capitulo {
 				"El suelo cruje bajo tus pies mientras avanzas por un sendero estrecho,", 
 				"rodeado de árboles retorcidos que parecen susurrar tus secretos más íntimos.",
 				"El aire es pesado, cargado con el aroma de ceniza y recuerdos olvidados.",
-				"A lo lejos, un destello rojo ilumina la niebla: ¿una señal de vida… o una trampa mortal?",
+				"A lo lejos, un destello rojo ilumina la niebla: ¿una señal de vida... o una trampa mortal?",
 				"Tu instinto te empuja hacia adelante, pero cada paso que das parece multiplicar los susurros",
 				"convirtiéndose en lamentos que atraviesan tu mente.",
 				"No hay caminos seguros aquí. Cada bifurcación parece igual, cada sombra parece observarte.",
 				"Pero solo tú, puedes encontrar tu camino...",
 				"Y, sin embargo, algo dentro de ti —una chispa de memoria,",
 				"un vestigio de tu humanidad— te obliga a continuar.",
-				"De pronto, sientes un roce gélido en tu hombro.",
 		};
 	}
 }
