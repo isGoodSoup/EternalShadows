@@ -44,7 +44,7 @@ public class Capitulo2 extends Capitulo {
 		};
 	}
 	
-	public String[] lineas1() {
+	private String[] lineas1() {
 		return new String[] {
 			"Las ruinas del pueblo se alzan como un recuerdo podrido del pasado.",
 			"Las puertas cuelgan de sus bisagras, y el viento arrastra murmullos de quienes nunca se fueron.",
@@ -57,7 +57,7 @@ public class Capitulo2 extends Capitulo {
 		};
 	}
 	
-	public String[] lineas2() {
+	private String[] lineas2() {
 		return new String[] {
 			"La boca de la cueva respira frío.",
 			"Cada paso hacia dentro apaga el mundo exterior,",
@@ -70,7 +70,7 @@ public class Capitulo2 extends Capitulo {
 		};
 	}
 	
-	public String[] lineas3() {
+	private String[] lineas3() {
 		return new String[] {
 			"El templo emerge entre la niebla, inmóvil, ajeno al tiempo.",
 			"En su entrada, estatuas sin rostro se inclinan, como si reconocieran tu llegada.",
