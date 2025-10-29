@@ -34,7 +34,7 @@ public class Panel {
     }
 	
 	private void intro() {
-		System.out.println("Cuando la última luz se extinga, los nombres de los vivos serán olvidados… ");
+		System.out.println("Cuando la última luz se extinga, los nombres de los vivos serán olvidados...");
 		System.out.println("Solo quedará la sombra eterna.");
 	}
 	
@@ -44,12 +44,9 @@ public class Panel {
 		String[] menu = {"Comenzar Aventura", "Salir"};
 		util.toGetString("ETERNAL SHADOWS ⚔️");
 		opcion = util.crearMenu(reader, menu, "Introduce tu opción");
-		util.toScan(reader);
 		do {
 			switch(opcion) {
-				case 1 -> {
-					historia.iniciar(reader, util);
-				}
+				case 1 -> { historia.iniciar(reader, util); }
 				case 2 -> { log.info("Salida"); System.exit(0); }
 			}
 		} while(opcion > 2);

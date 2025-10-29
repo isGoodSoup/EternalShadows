@@ -2,12 +2,14 @@ package es.eternalshadow.story;
 
 import org.jline.reader.LineReader;
 
+import es.eternalshadow.enums.Ruta;
 import es.eternalshadow.interfaces.Capitulable;
 
 public abstract class Capitulo implements Capitulable {
 	private String nombre;
 	private int numero;
 	private String[] lineas;
+	private Ruta ruta;
 
 	public Capitulo(String titulo, String nombre, int numero) {
 		super();
@@ -21,6 +23,22 @@ public abstract class Capitulo implements Capitulable {
             System.out.print(linea);
             reader.readLine();
         }
+	}
+	
+	public void leerDestino(LineReader reader, String[] lineas) {
+		for (String linea : lineas) {
+            if (linea == null) break;
+            System.out.print(linea);
+            reader.readLine();
+        }
+	}
+	
+	public Ruta getRuta() {
+		return ruta;
+	}
+
+	public void setRuta(Ruta ruta) {
+		this.ruta = ruta;
 	}
 
 	public String getNombre() {

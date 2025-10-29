@@ -14,6 +14,7 @@ public class Capitulo1 extends Capitulo {
 
 	@Override
 	public Criatura ejecutar(Criatura criatura, LineReader reader) {
+		reader.readLine();
         mostrarLinea(reader);
         Utilidades util = new Utilidades();
         criatura = util.crearPersonaje(reader);
@@ -35,8 +36,6 @@ public class Capitulo1 extends Capitulo {
 				"Tú.",
 				"Despiertas sobre tierra fría, húmeda, cubierta de ceniza.",
 				"No recuerdas tu nombre, ni cómo llegaste aquí.",
-				"Solo sientes el peso del aire, espeso como la culpa, y el murmullo de algo lejano que te llama,",
-				"como si tu alma misma estuviera siendo arrastrada hacia un destino inevitable.",
 				"Ante ti, un grabado antiguo tallado en piedra resplandece débilmente.",
 				"Sus símbolos arcanos giran, formando tres figuras envueltas en sombras.",
 				"Cada una extiende una mano, invitándote a elegir."
