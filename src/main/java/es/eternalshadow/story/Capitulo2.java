@@ -6,6 +6,11 @@ import es.eternalshadow.entidades.Criatura;
 import es.eternalshadow.enums.Ruta;
 import es.eternalshadow.util.Codex;
 
+/**
+ * Capítulo II: continuación de la historia y elección
+ * del camino.
+ */
+
 public class Capitulo2 extends Capitulo {
 
 	public Capitulo2() {

@@ -13,6 +13,12 @@ import es.eternalshadow.story.Historia;
 import es.eternalshadow.story.HistoriaPrincipal;
 import es.eternalshadow.util.Codex;
 
+/**
+ * Clase principal que representa el panel de control de la aplicación.
+ * Se encarga de inicializar el terminal, manejar la entrada del usuario
+ * y comenzar la historia.
+ */
+
 public class Panel {
 	private Terminal terminal;
 	private LineReader reader;
@@ -39,6 +45,11 @@ public class Panel {
 	}
 	
 	public void comenzar() {
+		/**
+	     * Inicia la historia y muestra el menú principal.
+	     * Permite comenzar la aventura o salir de la aplicación.
+	     */
+		
 		log.info("Inicio");
 		intro();
 		String[] menu = {"Comenzar Aventura", "Salir"};

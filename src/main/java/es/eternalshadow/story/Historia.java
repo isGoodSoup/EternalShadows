@@ -8,6 +8,11 @@ import org.jline.reader.LineReader;
 import es.eternalshadow.entidades.Criatura;
 import es.eternalshadow.util.Codex;
 
+/**
+ * Clase abstracta que representa una historia interactiva.
+ * Contiene una lista de capítulos y define el método para iniciar la historia.
+ */
+
 public abstract class Historia {
 	private String titulo;
 	private List<Capitulo> capitulos;

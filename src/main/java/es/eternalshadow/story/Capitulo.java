@@ -5,6 +5,11 @@ import org.jline.reader.LineReader;
 import es.eternalshadow.enums.Ruta;
 import es.eternalshadow.interfaces.Capitulable;
 
+/**
+ * Clase abstracta que representa un capítulo de la historia.
+ * Define métodos para mostrar líneas de texto y leer destinos según decisiones.
+ */
+
 public abstract class Capitulo implements Capitulable {
 	private String nombre;
 	private int numero;

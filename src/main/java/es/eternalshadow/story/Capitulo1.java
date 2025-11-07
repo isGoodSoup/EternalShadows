@@ -5,6 +5,10 @@ import org.jline.reader.LineReader;
 import es.eternalshadow.entidades.Criatura;
 import es.eternalshadow.util.Codex;
 
+/**
+ * Capítulo I: introducción y creación del personaje.
+ */
+
 public class Capitulo1 extends Capitulo {
 
 	public Capitulo1() {

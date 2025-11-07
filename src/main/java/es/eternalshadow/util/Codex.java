@@ -11,183 +11,267 @@ import es.eternalshadow.entidades.Guerrero;
 import es.eternalshadow.entidades.Mago;
 import es.eternalshadow.enums.Clases;
 
+/**
+ * Clase de utilidades para el juego "Eternal Shadows".
+ * Proporciona métodos para:
+ * <ul>
+ *   <li>Crear menús y leer entradas del usuario.</li>
+ *   <li>Generar personajes y criaturas aleatorias.</li>
+ *   <li>Generar valores aleatorios (enteros, doubles, booleanos, cadenas).</li>
+ *   <li>Medir el tiempo de ejecución de tareas.</li>
+ * </ul>
+ */
+
 public class Codex {
-	private static Random random = new Random();
-	
-	public int crearMenu(LineReader reader, String[] menu, String s) {
-		for (int i = 0; i < menu.length; i++) {
-			System.out.println(i + 1 + ") " + menu[i]);
-		}
-		int num = Codex.toScanInteger(reader, s);
-		return num;
-	}
-	
-	public static void printException(Exception e) {
-		System.err.println(e.getClass().getSimpleName() + " at line " 
-						+ e.getStackTrace()[e.getStackTrace().length - 3]
-						.getLineNumber() + ": " + e.getMessage());
-	}
-	
-	public static String toScan(LineReader reader, String s) {
-		String line = "";
-		do {
-    		System.out.print(s + ": ");
-    		line = reader.readLine().trim();
-    	} while(line.isEmpty());
-		return line;
+    private static Random random = new Random();
+    
+    /**
+     * Muestra un menú y obtiene la opción seleccionada por el usuario.
+     *
+     * @param reader Lector de líneas para recibir la entrada del usuario.
+     * @param menu Opciones del menú como arreglo de strings.
+     * @param s Mensaje para solicitar la opción.
+     * @return La opción seleccionada como entero.
+     */
+    public int crearMenu(LineReader reader, String[] menu, String s) {
+        for (int i = 0; i < menu.length; i++) {
+            System.out.println(i + 1 + ") " + menu[i]);
+        }
+        int num = Codex.toScanInteger(reader, s);
+        return num;
     }
-	
-	public static int toScanInteger(LineReader reader, String s) {
-		String line = "";
-	    while (true) {
-	        try {
-	        	do {
-	        		System.out.print(s + ": ");
-	        		line = reader.readLine().trim();
-	        	} while(line.isEmpty());
-	        	
-	            int num = Integer.parseInt(line);
-	            return num;
-	        } catch (Exception e) {
-	            printException(e);
-	        }
-	    }
-	}
-	
-	public int[] tirarDados() {
-		int[] num = {random.nextInt(21), random.nextInt(21)};
-		System.out.println(Arrays.asList(num));
-		return num;
-	}
-	
-	public Criatura crearPersonaje(LineReader reader) {
-		Clases clases = Clases.MAGO;
-		Criatura criatura = null;
-		int puntos;
-		int f, r, v, m;
-		do {
-		    puntos = 0;
-		    f = Codex.toScanInteger(reader, q("la fuerza"));
-		    puntos += f;
-		    r = Codex.toScanInteger(reader, q("la resistencia"));
-		    puntos += r;
-		    v = Codex.toScanInteger(reader, q("la velocidad"));
-		    puntos += v;
-		    m = Codex.toScanInteger(reader, q("la magia"));
-		    puntos += m;
-		} while (puntos != 100);
-		
-		String[] menu = {"Mago", "Guerrero", "Demonio"};
-		switch(crearMenu(reader, menu, "Selecciona una clase")) {
-			case 1 -> { 
-				String nombre = Codex.toScan(reader, "Como quieres llamarte?");
-				criatura = new Mago("Mago", nombre, f, r, v, m);
-				if(clases != null) clases = Clases.MAGO;
-			}
-					
-			case 2 -> {
-				String nombre = Codex.toScan(reader, "Como quieres llamarte?");
-				criatura = new Guerrero("Guerrero", nombre, f, r, v, m);
-				if(clases != null) clases = Clases.GUERRERO;
-			}
-					
-			case 3 -> {
-				String nombre = Codex.toScan(reader, "Como quieres llamarte?");
-				criatura = new Demonio("Demonio", nombre, f, r, v, m);
-				if(clases != null) clases = Clases.DEMONIO;
-			}
-		}
-		return criatura;
-	}
-	
-	public static Criatura crearCriaturaAleatoria() {
-	    int[] atributos = new int[4];
-	    int puntosTotal = 100;
-	    
-	    
-	    for (int i = 0; i < 3; i++) {
-	        atributos[i] = random.nextInt(puntosTotal + 1); 
-	        puntosTotal -= atributos[i];                    
-	    }
-	    atributos[3] = puntosTotal; 
-	    
-	    int fuerza = atributos[0];
-	    int resistencia = atributos[1];
-	    int velocidad = atributos[2];
-	    int magia = atributos[3];
+    
+    /**
+     * Imprime información detallada de una excepción.
+     *
+     * @param e Excepción a imprimir.
+     */
+    public static void printException(Exception e) {
+        System.err.println(e.getClass().getSimpleName() + " at line " 
+                        + e.getStackTrace()[e.getStackTrace().length - 3]
+                        .getLineNumber() + ": " + e.getMessage());
+    }
+    
+    /**
+     * Solicita una entrada de texto al usuario hasta que sea no vacía.
+     *
+     * @param reader Lector de líneas.
+     * @param s Mensaje de solicitud.
+     * @return Cadena ingresada por el usuario.
+     */
+    public static String toScan(LineReader reader, String s) {
+        String line = "";
+        do {
+            System.out.print(s + ": ");
+            line = reader.readLine().trim();
+        } while(line.isEmpty());
+        return line;
+    }
+    
+    /**
+     * Solicita al usuario un número entero válido.
+     *
+     * @param reader Lector de líneas.
+     * @param s Mensaje de solicitud.
+     * @return Número entero ingresado por el usuario.
+     */
+    public static int toScanInteger(LineReader reader, String s) {
+        String line = "";
+        while (true) {
+            try {
+                do {
+                    System.out.print(s + ": ");
+                    line = reader.readLine().trim();
+                } while(line.isEmpty());
+                int num = Integer.parseInt(line);
+                return num;
+            } catch (Exception e) {
+                printException(e);
+            }
+        }
+    }
+    
+    /**
+     * Simula el lanzamiento de dos dados de 20 caras.
+     * @return Arreglo con los resultados de los dos dados.
+     */
+    public int[] tirarDados() {
+        int[] num = {random.nextInt(21), random.nextInt(21)};
+        System.out.println(Arrays.asList(num));
+        return num;
+    }
+    
+    /**
+     * Permite al usuario crear un personaje personalizado eligiendo clase y atributos.
+     * @param reader Lector de líneas.
+     * @return Objeto {@link Criatura} creado.
+     */
+    public Criatura crearPersonaje(LineReader reader) {
+        Clases clases = Clases.MAGO;
+        Criatura criatura = null;
+        int puntos;
+        int f, r, v, m;
+        do {
+            puntos = 0;
+            f = Codex.toScanInteger(reader, q("la fuerza"));
+            puntos += f;
+            r = Codex.toScanInteger(reader, q("la resistencia"));
+            puntos += r;
+            v = Codex.toScanInteger(reader, q("la velocidad"));
+            puntos += v;
+            m = Codex.toScanInteger(reader, q("la magia"));
+            puntos += m;
+        } while (puntos != 100);
+        
+        String[] menu = {"Mago", "Guerrero", "Demonio"};
+        switch(crearMenu(reader, menu, "Selecciona una clase")) {
+            case 1 -> { 
+                String nombre = Codex.toScan(reader, "Como quieres llamarte?");
+                criatura = new Mago("Mago", nombre, f, r, v, m);
+                if(clases != null) clases = Clases.MAGO;
+            }
+            case 2 -> {
+                String nombre = Codex.toScan(reader, "Como quieres llamarte?");
+                criatura = new Guerrero("Guerrero", nombre, f, r, v, m);
+                if(clases != null) clases = Clases.GUERRERO;
+            }
+            case 3 -> {
+                String nombre = Codex.toScan(reader, "Como quieres llamarte?");
+                criatura = new Demonio("Demonio", nombre, f, r, v, m);
+                if(clases != null) clases = Clases.DEMONIO;
+            }
+        }
+        return criatura;
+    }
+    
+    /**
+     * Crea una criatura aleatoria con atributos que suman 100 y clase aleatoria.
+     * @return Criatura aleatoria creada.
+     */
+    public static Criatura crearCriaturaAleatoria() {
+        int[] atributos = new int[4];
+        int puntosTotal = 100;
+        for (int i = 0; i < 3; i++) {
+            atributos[i] = random.nextInt(puntosTotal + 1); 
+            puntosTotal -= atributos[i];                    
+        }
+        atributos[3] = puntosTotal; 
+        
+        int fuerza = atributos[0];
+        int resistencia = atributos[1];
+        int velocidad = atributos[2];
+        int magia = atributos[3];
 
-	    String[] razas = {"Mago", "Guerrero", "Demonio"};
-	    int numale = random.nextInt(razas.length);
-	    String tipo = razas[numale];
-	    
-	    Criatura c= null;
-	    System.out.println("Se va a crear la criatura del tipo " + tipo);
-	    switch (tipo) {
-	        case "Mago":
-	        	c= new Mago("Mago", "Mago", fuerza, resistencia, velocidad, magia);
-	            break;
-	        case "Guerrero":
-	        	c= new Guerrero("Guerrero", "Guerrero", fuerza, resistencia, velocidad, magia);
-	            break;
-	        case "Demonio":
-	        	c = new Demonio("Demonio", "Demonio", fuerza, resistencia, velocidad, magia);
-	            break;
-	        
-	    }
-	    
-	    if (c != null) {
-	    	System.out.println("Criatura enemiga creada: " + c.getNombre() + " con atributos: "
-	             + "Fuerza: " + fuerza + ", Resistencia: " + resistencia + ", Velocidad: " + velocidad + ", Magia: " + magia);
-	    }
-	    return c;
-	}
+        String[] razas = {"Mago", "Guerrero", "Demonio"};
+        int numale = random.nextInt(razas.length);
+        String tipo = razas[numale];
+        
+        Criatura c = null;
+        System.out.println("Se va a crear la criatura del tipo " + tipo);
+        switch (tipo) {
+            case "Mago" -> c = new Mago("Mago", "Mago", fuerza, resistencia, velocidad, magia);
+            case "Guerrero" -> c = new Guerrero("Guerrero", "Guerrero", fuerza, resistencia, velocidad, magia);
+            case "Demonio" -> c = new Demonio("Demonio", "Demonio", fuerza, resistencia, velocidad, magia);
+        }
+        
+        if (c != null) {
+            System.out.println("Criatura enemiga creada: " + c.getNombre() + " con atributos: "
+                 + "Fuerza: " + fuerza + ", Resistencia: " + resistencia + ", Velocidad: " + velocidad + ", Magia: " + magia);
+        }
+        return c;
+    }
 
-	private String q(String s) {
-		return "Introduce el valor de " + s;
-	}
-	
-	public static double toGetDouble(int min, int max) {
-		double d = random.nextInt(min, max)/100.0;
-		return d;
-	}
-	
-	public static boolean toGetBoolean() {
-		return random.nextBoolean();
-	}
-	
-	public static void toGetString(String s) {
-		for (int i = 0; i < s.length(); i++) {
-			System.out.print("=");
-		}
-		System.out.print(" " + s + " ");
-		
-		for (int i = 0; i < s.length(); i++) {
-			System.out.print("=");
-		}
-		System.out.println();
-	}
+    /**
+     * Formatea un mensaje para solicitar un atributo.
+     * @param s Nombre del atributo.
+     * @return Mensaje formateado.
+     */
+    private String q(String s) {
+        return "Introduce el valor de " + s;
+    }
+    
+    /**
+     * Genera un número decimal aleatorio entre min y max dividido por 100.
+     * @param min Valor mínimo.
+     * @param max Valor máximo.
+     * @return Número decimal aleatorio.
+     */
+    public static double toGetDouble(int min, int max) {
+        double d = random.nextInt(min, max)/100.0;
+        return d;
+    }
+    
+    /**
+     * Genera un valor booleano aleatorio.
+     * @return true o false de forma aleatoria.
+     */
+    public static boolean toGetBoolean() {
+        return random.nextBoolean();
+    }
+    
+    /**
+     * Imprime un título decorativo en consola.
+     * @param s Texto del título.
+     */
+    public static void toGetString(String s) {
+        for (int i = 0; i < s.length(); i++) System.out.print("=");
+        System.out.print(" " + s + " ");
+        for (int i = 0; i < s.length(); i++) System.out.print("=");
+        System.out.println();
+    }
 
-	public static String toGetString(String[] s) {
-		return s[random.nextInt(s.length)];
-	}
-	
-	public static int toGetInteger() {
-		return random.nextInt();
-	}
-	
-	public static int toGetInteger(int[] i) {
-		return i[random.nextInt(i.length)];
-	}
-	
-	public static int toGetInteger(int min, int max) {
-		return random.nextInt(min, max);
-	}
-	
-	public static long toGetLong(long min, long max) {
-		return random.nextLong(min, max);
-	}
-	
-	public long toTime(Runnable task) {
+    /**
+     * Devuelve un elemento aleatorio de un arreglo de cadenas.
+     * @param s Arreglo de cadenas.
+     * @return Cadena aleatoria del arreglo.
+     */
+    public static String toGetString(String[] s) {
+        return s[random.nextInt(s.length)];
+    }
+    
+    /**
+     * Devuelve un número entero aleatorio.
+     * @return Número aleatorio.
+     */
+    public static int toGetInteger() {
+        return random.nextInt();
+    }
+    
+    /**
+     * Devuelve un número aleatorio de un arreglo de enteros.
+     * @param i Arreglo de enteros.
+     * @return Entero aleatorio del arreglo.
+     */
+    public static int toGetInteger(int[] i) {
+        return i[random.nextInt(i.length)];
+    }
+    
+    /**
+     * Devuelve un número entero aleatorio dentro de un rango.
+     * @param min Valor mínimo.
+     * @param max Valor máximo.
+     * @return Número aleatorio entre min y max.
+     */
+    public static int toGetInteger(int min, int max) {
+        return random.nextInt(min, max);
+    }
+    
+    /**
+     * Devuelve un número largo aleatorio dentro de un rango.
+     * @param min Valor mínimo.
+     * @param max Valor máximo.
+     * @return Número largo aleatorio entre min y max.
+     */
+    public static long toGetLong(long min, long max) {
+        return random.nextLong(min, max);
+    }
+    
+    /**
+     * Mide el tiempo de ejecución de una tarea.
+     * @param task Tarea a ejecutar.
+     * @return Tiempo transcurrido en milisegundos.
+     */
+    public long toTime(Runnable task) {
         long start = System.currentTimeMillis();
         task.run();
         return System.currentTimeMillis() - start;
