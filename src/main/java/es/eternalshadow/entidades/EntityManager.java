@@ -1,4 +1,4 @@
-package es.eternalshadow.entity;
+package es.eternalshadow.entidades;
 
 public class EntityManager {
 	

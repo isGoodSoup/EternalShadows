@@ -1,8 +1,8 @@
-package es.eternalshadow.entity;
+package es.eternalshadow.entidades;
 
-public class Demonio extends Criatura {
+public class Guerrero extends Criatura {
 	
-	public Demonio(String tipo, String nombre, int fuerza, int resistencia,
+	public Guerrero(String tipo, String nombre, int fuerza, int resistencia,
 			int velocidad, int magia) {
 		super(tipo, nombre, fuerza, resistencia, velocidad, magia);
 	}

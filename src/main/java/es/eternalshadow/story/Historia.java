@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.jline.reader.LineReader;
 
-import es.eternalshadow.entity.Criatura;
+import es.eternalshadow.entidades.Criatura;
 import es.eternalshadow.util.Codex;
 
 public abstract class Historia {

@@ -2,7 +2,7 @@ package es.eternalshadow.story;
 
 import org.jline.reader.LineReader;
 
-import es.eternalshadow.entity.Criatura;
+import es.eternalshadow.entidades.Criatura;
 
 public class Capitulo3 extends Capitulo {
 

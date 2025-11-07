@@ -1,4 +1,4 @@
-package es.eternalshadow.objects;
+package es.eternalshadow.pojos;
 
 public abstract class Armas {
 	private String nombre;

@@ -1,9 +1,9 @@
-package es.eternalshadow.entity;
+package es.eternalshadow.entidades;
 
 import es.eternalshadow.interfaces.Accionable;
-import es.eternalshadow.objects.Armas;
-import es.eternalshadow.objects.Escudos;
-import es.eternalshadow.objects.Pocion;
+import es.eternalshadow.pojos.Armas;
+import es.eternalshadow.pojos.Escudos;
+import es.eternalshadow.pojos.Pocion;
 
 public abstract class Criatura extends Raza implements Accionable {
 	private String nombre;

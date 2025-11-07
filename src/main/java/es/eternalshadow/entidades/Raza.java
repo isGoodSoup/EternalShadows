@@ -1,4 +1,4 @@
-package es.eternalshadow.entity;
+package es.eternalshadow.entidades;
 
 public abstract class Raza {
 	private String tipo;

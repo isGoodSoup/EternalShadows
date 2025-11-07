@@ -2,7 +2,7 @@ package es.eternalshadow.story;
 
 import org.jline.reader.LineReader;
 
-import es.eternalshadow.entity.Criatura;
+import es.eternalshadow.entidades.Criatura;
 import es.eternalshadow.util.Codex;
 
 public class HistoriaPrincipal extends Historia {

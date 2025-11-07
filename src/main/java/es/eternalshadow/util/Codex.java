@@ -5,10 +5,10 @@ import java.util.Random;
 
 import org.jline.reader.LineReader;
 
-import es.eternalshadow.entity.Criatura;
-import es.eternalshadow.entity.Demonio;
-import es.eternalshadow.entity.Guerrero;
-import es.eternalshadow.entity.Mago;
+import es.eternalshadow.entidades.Criatura;
+import es.eternalshadow.entidades.Demonio;
+import es.eternalshadow.entidades.Guerrero;
+import es.eternalshadow.entidades.Mago;
 import es.eternalshadow.enums.Clases;
 
 public class Codex {
@@ -56,7 +56,7 @@ public class Codex {
 	
 	public int[] tirarDados() {
 		int[] num = {random.nextInt(21), random.nextInt(21)};
-		System.out.println(Arrays.toString(num));
+		System.out.println(Arrays.asList(num));
 		return num;
 	}
 	
