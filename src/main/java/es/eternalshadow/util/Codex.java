@@ -3,9 +3,7 @@ package es.eternalshadow.util;
 import java.util.Arrays;
 import java.util.Random;
 
-import org.jline.reader.EndOfFileException;
 import org.jline.reader.LineReader;
-import org.jline.reader.UserInterruptException;
 
 import es.eternalshadow.entity.Criatura;
 import es.eternalshadow.entity.Demonio;
@@ -13,49 +11,47 @@ import es.eternalshadow.entity.Guerrero;
 import es.eternalshadow.entity.Mago;
 import es.eternalshadow.enums.Clases;
 
-public class Utilidades {
+public class Codex {
 	private static Random random = new Random();
-	
-	public String toScan(LineReader reader) {
-		return reader.readLine();
-	}
-	
-	public String toScan(LineReader reader, String prompt) {
-		System.out.println(prompt);
-		return reader.readLine();
-	}
-	
-	public int toScanInteger(LineReader reader, String prompt) {
-		while (true) {
-            try {
-                String line = reader.readLine(prompt + ": ");
-                return Integer.parseInt(line.trim());
-            } catch (NumberFormatException e) {
-                System.err.println("Por favor introduce un número válido.");
-            } catch (UserInterruptException | EndOfFileException e) {
-                System.exit(0);
-            }
-        }
-	}
-	
-	public void toGetString(String s) {
-		for (int i = 0; i < s.length(); i++) {
-			System.out.print("=");
-		}
-		System.out.print(" " + s + " ");
-		
-		for (int i = 0; i < s.length(); i++) {
-			System.out.print("=");
-		}
-		System.out.println();
-	}
 	
 	public int crearMenu(LineReader reader, String[] menu, String s) {
 		for (int i = 0; i < menu.length; i++) {
 			System.out.println(i + 1 + ") " + menu[i]);
 		}
-		int num = toScanInteger(reader, s);
+		int num = Codex.toScanInteger(reader, s);
 		return num;
+	}
+	
+	public static void printException(Exception e) {
+		System.err.println(e.getClass().getSimpleName() + " at line " 
+						+ e.getStackTrace()[e.getStackTrace().length - 3]
+						.getLineNumber() + ": " + e.getMessage());
+	}
+	
+	public static String toScan(LineReader reader, String s) {
+		String line = "";
+		do {
+    		System.out.print(s + ": ");
+    		line = reader.readLine().trim();
+    	} while(line.isEmpty());
+		return line;
+    }
+	
+	public static int toScanInteger(LineReader reader, String s) {
+		String line = "";
+	    while (true) {
+	        try {
+	        	do {
+	        		System.out.print(s + ": ");
+	        		line = reader.readLine().trim();
+	        	} while(line.isEmpty());
+	        	
+	            int num = Integer.parseInt(line);
+	            return num;
+	        } catch (Exception e) {
+	            printException(e);
+	        }
+	    }
 	}
 	
 	public int[] tirarDados() {
@@ -71,32 +67,32 @@ public class Utilidades {
 		int f, r, v, m;
 		do {
 		    puntos = 0;
-		    f = toScanInteger(reader, q("la fuerza"));
+		    f = Codex.toScanInteger(reader, q("la fuerza"));
 		    puntos += f;
-		    r = toScanInteger(reader, q("la resistencia"));
+		    r = Codex.toScanInteger(reader, q("la resistencia"));
 		    puntos += r;
-		    v = toScanInteger(reader, q("la velocidad"));
+		    v = Codex.toScanInteger(reader, q("la velocidad"));
 		    puntos += v;
-		    m = toScanInteger(reader, q("la magia"));
+		    m = Codex.toScanInteger(reader, q("la magia"));
 		    puntos += m;
 		} while (puntos != 100);
 		
 		String[] menu = {"Mago", "Guerrero", "Demonio"};
 		switch(crearMenu(reader, menu, "Selecciona una clase")) {
 			case 1 -> { 
-				String nombre = toScan(reader, "Como quieres llamarte?");
+				String nombre = Codex.toScan(reader, "Como quieres llamarte?");
 				criatura = new Mago("Mago", nombre, f, r, v, m);
 				if(clases != null) clases = Clases.MAGO;
 			}
 					
 			case 2 -> {
-				String nombre = toScan(reader, "Como quieres llamarte?");
+				String nombre = Codex.toScan(reader, "Como quieres llamarte?");
 				criatura = new Guerrero("Guerrero", nombre, f, r, v, m);
 				if(clases != null) clases = Clases.GUERRERO;
 			}
 					
 			case 3 -> {
-				String nombre = toScan(reader, "Como quieres llamarte?");
+				String nombre = Codex.toScan(reader, "Como quieres llamarte?");
 				criatura = new Demonio("Demonio", nombre, f, r, v, m);
 				if(clases != null) clases = Clases.DEMONIO;
 			}
@@ -149,4 +145,51 @@ public class Utilidades {
 	private String q(String s) {
 		return "Introduce el valor de " + s;
 	}
+	
+	public static double toGetDouble(int min, int max) {
+		double d = random.nextInt(min, max)/100.0;
+		return d;
+	}
+	
+	public static boolean toGetBoolean() {
+		return random.nextBoolean();
+	}
+	
+	public static void toGetString(String s) {
+		for (int i = 0; i < s.length(); i++) {
+			System.out.print("=");
+		}
+		System.out.print(" " + s + " ");
+		
+		for (int i = 0; i < s.length(); i++) {
+			System.out.print("=");
+		}
+		System.out.println();
+	}
+
+	public static String toGetString(String[] s) {
+		return s[random.nextInt(s.length)];
+	}
+	
+	public static int toGetInteger() {
+		return random.nextInt();
+	}
+	
+	public static int toGetInteger(int[] i) {
+		return i[random.nextInt(i.length)];
+	}
+	
+	public static int toGetInteger(int min, int max) {
+		return random.nextInt(min, max);
+	}
+	
+	public static long toGetLong(long min, long max) {
+		return random.nextLong(min, max);
+	}
+	
+	public long toTime(Runnable task) {
+        long start = System.currentTimeMillis();
+        task.run();
+        return System.currentTimeMillis() - start;
+    }
 }

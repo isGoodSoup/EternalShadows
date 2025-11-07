@@ -4,7 +4,7 @@ import org.jline.reader.LineReader;
 
 import es.eternalshadow.entity.Criatura;
 import es.eternalshadow.enums.Ruta;
-import es.eternalshadow.util.Utilidades;
+import es.eternalshadow.util.Codex;
 
 public class Capitulo2 extends Capitulo {
 
@@ -18,7 +18,7 @@ public class Capitulo2 extends Capitulo {
 		reader.readLine();
 		mostrarLinea(reader);
 		String[] menu = {"El pueblo abandonado", "La cueva oscura", "El templo"};
-		Utilidades util = new Utilidades();
+		Codex util = new Codex();
 		int opcion = util.crearMenu(reader, menu, "Elige tu camino");
 		do {
 			switch(opcion) {

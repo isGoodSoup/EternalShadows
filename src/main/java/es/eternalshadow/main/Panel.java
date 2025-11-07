@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
 
 import es.eternalshadow.story.Historia;
 import es.eternalshadow.story.HistoriaPrincipal;
-import es.eternalshadow.util.Utilidades;
+import es.eternalshadow.util.Codex;
 
 public class Panel {
 	private Terminal terminal;
 	private LineReader reader;
 	private Historia historia = new HistoriaPrincipal("Eternal Shadows");
-	private Utilidades util = new Utilidades();
+	private Codex util = new Codex();
 	private int opcion;
 	private static final Logger log = LoggerFactory.getLogger(Panel.class);
 	
@@ -42,7 +42,7 @@ public class Panel {
 		log.info("Inicio");
 		intro();
 		String[] menu = {"Comenzar Aventura", "Salir"};
-		util.toGetString("ETERNAL SHADOWS ⚔️");
+		Codex.toGetString("ETERNAL SHADOWS ⚔️");
 		opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 		do {
 			switch(opcion) {
@@ -50,14 +50,6 @@ public class Panel {
 				case 2 -> { log.info("Salida"); System.exit(0); }
 			}
 		} while(opcion > 2);
-	}
-	
-	public Utilidades getUtil() {
-		return util;
-	}
-
-	public void setUtil(Utilidades util) {
-		this.util = util;
 	}
 	
 	public Terminal getTerminal() {

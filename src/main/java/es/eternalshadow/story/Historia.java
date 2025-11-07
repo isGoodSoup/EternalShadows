@@ -6,7 +6,7 @@ import java.util.List;
 import org.jline.reader.LineReader;
 
 import es.eternalshadow.entity.Criatura;
-import es.eternalshadow.util.Utilidades;
+import es.eternalshadow.util.Codex;
 
 public abstract class Historia {
 	private String titulo;
@@ -18,7 +18,7 @@ public abstract class Historia {
 		this.capitulos = new ArrayList<>();
 	}
 	
-	public abstract Criatura iniciar(LineReader reader, Utilidades util);
+	public abstract Criatura iniciar(LineReader reader, Codex util);
 	
 	public String getTitulo() {
 		return titulo;

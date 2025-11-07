@@ -3,7 +3,7 @@ package es.eternalshadow.story;
 import org.jline.reader.LineReader;
 
 import es.eternalshadow.entity.Criatura;
-import es.eternalshadow.util.Utilidades;
+import es.eternalshadow.util.Codex;
 
 public class Capitulo1 extends Capitulo {
 
@@ -16,7 +16,7 @@ public class Capitulo1 extends Capitulo {
 	public Criatura ejecutar(Criatura criatura, LineReader reader) {
 		reader.readLine();
         mostrarLinea(reader);
-        Utilidades util = new Utilidades();
+        Codex util = new Codex();
         criatura = util.crearPersonaje(reader);
         return criatura;
 	}
