@@ -1,5 +1,10 @@
 package es.eternalshadow.util;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -23,6 +28,11 @@ import es.eternalshadow.enums.Clases;
  */
 
 public class Codex {
+    private static final String URL_DB_ORACLE = "jdbc:oracle:thin:@//localhost:1521/XEPDB1";
+    private static final String USER_DB_ORACLE = "HR";
+    private static final String PASSWORD_DB_ORACLE="HR";
+    private static Connection conn = null;
+    private static final String CONSULTA="";
     private static Random random = new Random();
     
     /**
@@ -127,17 +137,17 @@ public class Codex {
         switch(crearMenu(reader, menu, "Selecciona una clase")) {
             case 1 -> { 
                 String nombre = Codex.toScan(reader, "Como quieres llamarte?");
-                criatura = new Mago("Mago", nombre, f, r, v, m);
+                criatura = new Mago(toGetInteger(1000, 9999), "Mago", nombre, f, r, v, m);
                 if(clases != null) clases = Clases.MAGO;
             }
             case 2 -> {
                 String nombre = Codex.toScan(reader, "Como quieres llamarte?");
-                criatura = new Guerrero("Guerrero", nombre, f, r, v, m);
+                criatura = new Guerrero(toGetInteger(1000, 9999), "Guerrero", nombre, f, r, v, m);
                 if(clases != null) clases = Clases.GUERRERO;
             }
             case 3 -> {
                 String nombre = Codex.toScan(reader, "Como quieres llamarte?");
-                criatura = new Demonio("Demonio", nombre, f, r, v, m);
+                criatura = new Demonio(toGetInteger(1000, 9999), "Demonio", nombre, f, r, v, m);
                 if(clases != null) clases = Clases.DEMONIO;
             }
         }
@@ -169,9 +179,9 @@ public class Codex {
         Criatura c = null;
         System.out.println("Se va a crear la criatura del tipo " + tipo);
         switch (tipo) {
-            case "Mago" -> c = new Mago("Mago", "Mago", fuerza, resistencia, velocidad, magia);
-            case "Guerrero" -> c = new Guerrero("Guerrero", "Guerrero", fuerza, resistencia, velocidad, magia);
-            case "Demonio" -> c = new Demonio("Demonio", "Demonio", fuerza, resistencia, velocidad, magia);
+            case "Mago" -> c = new Mago(toGetInteger(1000, 9999), "Mago", "Mago", fuerza, resistencia, velocidad, magia);
+            case "Guerrero" -> c = new Guerrero(toGetInteger(1000, 9999), "Guerrero", "Guerrero", fuerza, resistencia, velocidad, magia);
+            case "Demonio" -> c = new Demonio(toGetInteger(1000, 9999), "Demonio", "Demonio", fuerza, resistencia, velocidad, magia);
         }
         
         if (c != null) {
@@ -189,6 +199,84 @@ public class Codex {
     private String q(String s) {
         return "Introduce el valor de " + s;
     }
+    
+    /**
+     * Crea una conexión a la base de datos utilizando las constantes globales
+     * URL_DB_ORACLE, USER_DB_ORACLE y PASSWORD_DB_ORACLE.
+     *
+     * @return un objeto Connection activo si la conexión es exitosa; 
+     *         null en caso de error.
+     */
+    public static Connection crearConexion() {
+        conn = crearConexion(URL_DB_ORACLE, USER_DB_ORACLE, PASSWORD_DB_ORACLE);
+        return conn;
+    }
+
+    /**
+     * Crea una conexión a la base de datos usando los parámetros recibidos.
+     *
+     * @param url       URL de conexión de la base de datos.
+     * @param user      Nombre de usuario para la conexión.
+     * @param password  Contraseña del usuario.
+     * @return un objeto Connection si la conexión se establece correctamente; 
+     *         null si ocurre un error.
+     */
+    public static Connection crearConexion(String url, String user, String password){
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+            System.out.println("Conexión establecida");
+        } catch (SQLException e) {
+            System.err.println("Error al crear la conexión: " + e.getMessage());
+        }
+        return conn;
+    }
+
+    /**
+     * Cierra una conexión abierta a la base de datos.
+     * @param connection la conexión a cerrar. Si es null, no hace nada.
+     */
+    public static void cierraConexion(Connection connection){
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al cerrar la conexión: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Ejecuta una consulta definida en la constante CONSULTA y procesa
+     * los resultados obtenidos. Este método crea su propia conexión,
+     * ejecuta la consulta y cierra los recursos al finalizar.
+     */
+    public static void consulta() {
+        Connection conexion = crearConexion();
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conexion.createStatement();
+            rs = st.executeQuery(CONSULTA);
+            while (rs.next()) {
+            	
+            }
+
+        } catch (SQLException e) {
+            printException(e);
+
+        } finally {
+            cierraConexion(conexion);
+            try {
+                if (st != null) st.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                printException(e);
+            }
+        }
+        System.out.println("TERMINA");
+    }
+
     
     /**
      * Genera un número decimal aleatorio entre min y max dividido por 100.

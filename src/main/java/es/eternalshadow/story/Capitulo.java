@@ -22,22 +22,6 @@ public abstract class Capitulo implements Capitulable {
 		this.numero = numero;
 	}
 	
-	public void mostrarLinea(LineReader reader) {
-		for (String linea : getLineas()) {
-            if (linea == null) break;
-            System.out.print(linea);
-            reader.readLine();
-        }
-	}
-	
-	public void leerDestino(LineReader reader, String[] lineas) {
-		for (String linea : lineas) {
-            if (linea == null) break;
-            System.out.print(linea);
-            reader.readLine();
-        }
-	}
-	
 	public Ruta getRuta() {
 		return ruta;
 	}
@@ -68,5 +52,21 @@ public abstract class Capitulo implements Capitulable {
 
 	public void setLineas(String[] lineas) {
 		this.lineas = lineas;
+	}
+	
+	public void mostrarLinea(LineReader reader) {
+		for (String linea : getLineas()) {
+            if (linea == null) break;
+            System.out.print(linea);
+            reader.readLine();
+        }
+	}
+	
+	public void leerDestino(LineReader reader, String[] lineas) {
+		for (String linea : lineas) {
+            if (linea == null) break;
+            System.out.print(linea);
+            reader.readLine();
+        }
 	}
 }

@@ -1,9 +1,5 @@
 package es.eternalshadow.main;
 
-/*
- * Main para iniciar el programa.
- */
-
 public class Main {
 	private Panel panel = new Panel();
 	

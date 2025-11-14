@@ -13,14 +13,11 @@ public abstract class Criatura extends Raza implements Accionable {
 	private Pocion pocion;
 	private int puntosVida;
 	
-	public Criatura(String tipo, String nombre, int fuerza, int resistencia, int velocidad, int magia) {
-		super(tipo, fuerza, resistencia, velocidad, magia);
-		this.nombre = nombre;
-	}
+	public Criatura() {}
 	
-	public Criatura(String nombre, String tipo, int fuerza, int resistencia, int velocidad, int magia, int nivel,
-			Escudos[] escudos, Armas[] armas, Pocion pocion, int puntosVida) {
-		super(tipo, fuerza, resistencia, velocidad, magia);
+	public Criatura(String nombre, int nivel, Escudos[] escudos, Armas[] armas,
+			Pocion pocion, int puntosVida) {
+		super();
 		this.nombre = nombre;
 		this.nivel = nivel;
 		this.escudos = escudos;
@@ -29,14 +26,9 @@ public abstract class Criatura extends Raza implements Accionable {
 		this.puntosVida = puntosVida;
 	}
 	
-	@Override
-	public void atacar() {
-		
-	}
-	
-	@Override
-	public void defender() {
-		
+	public Criatura(int id, String tipo, int fuerza, int resistencia,
+			int velocidad, int magia) {
+		super(id, tipo, fuerza, resistencia, velocidad, magia);
 	}
 
 	public String getNombre() {
@@ -85,5 +77,15 @@ public abstract class Criatura extends Raza implements Accionable {
 
 	public void setPuntosVida(int puntosVida) {
 		this.puntosVida = puntosVida;
+	}
+
+	@Override
+	public void atacar() {
+		
+	}
+	
+	@Override
+	public void defender() {
+		
 	}
 }

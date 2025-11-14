@@ -39,30 +39,6 @@ public class Panel {
         }
     }
 	
-	private void intro() {
-		System.out.println("Cuando la última luz se extinga, los nombres de los vivos serán olvidados...");
-		System.out.println("Solo quedará la sombra eterna.");
-	}
-	
-	public void comenzar() {
-		/**
-	     * Inicia la historia y muestra el menú principal.
-	     * Permite comenzar la aventura o salir de la aplicación.
-	     */
-		
-		log.info("Inicio");
-		intro();
-		String[] menu = {"Comenzar Aventura", "Salir"};
-		Codex.toGetString("ETERNAL SHADOWS ⚔️");
-		opcion = util.crearMenu(reader, menu, "Introduce tu opción");
-		do {
-			switch(opcion) {
-				case 1 -> { historia.iniciar(reader, util); }
-				case 2 -> { log.info("Salida"); System.exit(0); }
-			}
-		} while(opcion > 2);
-	}
-	
 	public Terminal getTerminal() {
 		return terminal;
 	}
@@ -77,5 +53,28 @@ public class Panel {
 
 	public void setReader(LineReader reader) {
 		this.reader = reader;
+	}
+	
+	private void intro() {
+		System.out.println("Cuando la última luz se extinga, los nombres de los vivos serán olvidados...");
+		System.out.println("Solo quedará la sombra eterna.");
+	}
+	
+	/**
+     * Inicia la historia y muestra el menú principal.
+     * Permite comenzar la aventura o salir de la aplicación.
+     */
+	public void comenzar() {
+		log.info("Inicio");
+		intro();
+		String[] menu = {"Comenzar Aventura", "Salir"};
+		Codex.toGetString("ETERNAL SHADOWS ⚔️");
+		opcion = util.crearMenu(reader, menu, "Introduce tu opción");
+		do {
+			switch(opcion) {
+				case 1 -> { historia.iniciar(reader, util); }
+				case 2 -> { log.info("Salida"); System.exit(0); }
+			}
+		} while(opcion > 2);
 	}
 }
