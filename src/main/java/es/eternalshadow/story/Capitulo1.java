@@ -22,6 +22,7 @@ public class Capitulo1 extends Capitulo {
         mostrarLinea(reader);
         Codex util = new Codex();
         criatura = util.crearPersonaje(reader);
+     
         return criatura;
 	}
 

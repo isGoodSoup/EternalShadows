@@ -2,18 +2,25 @@ package es.eternalshadow.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import org.jline.reader.LineReader;
+
+
 
 import es.eternalshadow.entidades.Criatura;
 import es.eternalshadow.entidades.Demonio;
 import es.eternalshadow.entidades.Guerrero;
 import es.eternalshadow.entidades.Mago;
+import es.eternalshadow.entidades.Raza;
 import es.eternalshadow.enums.Clases;
 
 /**
@@ -28,12 +35,12 @@ import es.eternalshadow.enums.Clases;
  */
 
 public class Codex {
-    private static final String URL_DB_ORACLE = "jdbc:oracle:thin:@//localhost:1521/XEPDB1";
-    private static final String USER_DB_ORACLE = "HR";
-    private static final String PASSWORD_DB_ORACLE="HR";
-    private static final String CONSULTA="";
-    private static Connection conn = null;
     private static Random random = new Random();
+   
+   
+    
+      
+	
     
     /**
      * Muestra un menú y obtiene la opción seleccionada por el usuario.
@@ -138,6 +145,7 @@ public class Codex {
             case 1 -> { 
                 String nombre = Codex.toScan(reader, "Como quieres llamarte?");
                 criatura = new Mago(toGetInteger(1000, 9999), "Mago", nombre, f, r, v, m);
+                
                 if(clases != null) clases = Clases.MAGO;
             }
             case 2 -> {
@@ -180,6 +188,7 @@ public class Codex {
         System.out.println("Se va a crear la criatura del tipo " + tipo);
         switch (tipo) {
             case "Mago" -> c = new Mago(toGetInteger(1000, 9999), "Mago", "Mago", fuerza, resistencia, velocidad, magia);
+            
             case "Guerrero" -> c = new Guerrero(toGetInteger(1000, 9999), "Guerrero", "Guerrero", fuerza, resistencia, velocidad, magia);
             case "Demonio" -> c = new Demonio(toGetInteger(1000, 9999), "Demonio", "Demonio", fuerza, resistencia, velocidad, magia);
         }
@@ -188,6 +197,7 @@ public class Codex {
             System.out.println("Criatura enemiga creada: " + c.getNombre() + " con atributos: "
                  + "Fuerza: " + fuerza + ", Resistencia: " + resistencia + ", Velocidad: " + velocidad + ", Magia: " + magia);
         }
+        insertarRegistros(c);
         return c;
     }
 
@@ -200,82 +210,90 @@ public class Codex {
         return "Introduce el valor de " + s;
     }
     
-    /**
-     * Crea una conexión a la base de datos utilizando las constantes globales
-     * URL_DB_ORACLE, USER_DB_ORACLE y PASSWORD_DB_ORACLE.
-     *
-     * @return un objeto Connection activo si la conexión es exitosa; 
-     *         null en caso de error.
-     */
+  
+
+  
     public static Connection crearConexion() {
-        conn = crearConexion(URL_DB_ORACLE, USER_DB_ORACLE, PASSWORD_DB_ORACLE);
-        return conn;
-    }
-
-    /**
-     * Crea una conexión a la base de datos usando los parámetros recibidos.
-     *
-     * @param url       URL de conexión de la base de datos.
-     * @param user      Nombre de usuario para la conexión.
-     * @param password  Contraseña del usuario.
-     * @return un objeto Connection si la conexión se establece correctamente; 
-     *         null si ocurre un error.
-     */
-    public static Connection crearConexion(String url, String user, String password){
-        try {
-            conn = DriverManager.getConnection(url, user, password);
-            System.out.println("Conexión establecida");
+ 	
+		String url_oracle2 = "jdbc:oracle:thin:@//localhost:1521/XEPDB1";
+		String username = "getafe";
+		String password = "password";
+		Connection connection =null;
+		try {
+			connection = DriverManager.getConnection(url_oracle2, username, password);
         } catch (SQLException e) {
-            System.err.println("Error al crear la conexión: " + e.getMessage());
+            System.err.println("Error crear la sesión"+ e.getMessage());
         }
-        return conn;
-    }
 
-    /**
-     * Cierra una conexión abierta a la base de datos.
-     * @param connection la conexión a cerrar. Si es null, no hace nada.
-     */
-    public static void cierraConexion(Connection connection){
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al cerrar la conexión: " + e.getMessage());
-        }
+        return connection;
     }
+  
 
     /**
      * Ejecuta una consulta definida en la constante CONSULTA y procesa
      * los resultados obtenidos. Este método crea su propia conexión,
      * ejecuta la consulta y cierra los recursos al finalizar.
      */
-    public static void consulta() {
-        Connection conexion = crearConexion();
-        Statement st = null;
-        ResultSet rs = null;
+    
+    
+    public static void consultaRaza() {
+    	
+    	 String consultaRaza="SELECT ID, NOMBRE, TIPO, FUERZA, VELOCIDAD, MAGIA FROM TB_RAZA";
+    	 String separador=" | ";
+        try (Connection conexion = crearConexion();
+             Statement st = conexion.createStatement();
+             ResultSet rs = st.executeQuery(consultaRaza)) {
 
-        try {
-            st = conexion.createStatement();
-            rs = st.executeQuery(CONSULTA);
+        	StringBuilder sb=new StringBuilder();
+        	
             while (rs.next()) {
             	
+            	
+                int id = rs.getInt("ID");
+                String tipo = rs.getString("TIPO");
+                int fuerza = rs.getInt("FUERZA");
+                int velocidad = rs.getInt("VELOCIDAD");
+                int magia = rs.getInt("MAGIA");
+                System.out.println(sb.append("ID:"+id+separador+"TIPO:"+tipo+separador+"FUERZA:"+fuerza+separador+"VELOCIDAD:"+velocidad+separador+"MAGIA:"+magia));
             }
 
         } catch (SQLException e) {
-            printException(e);
-
-        } finally {
-            cierraConexion(conexion);
-            try {
-                if (st != null) st.close();
-                if (rs != null) rs.close();
-            } catch (SQLException e) {
-                printException(e);
-            }
+           System.out.println("Error "+ e.getMessage());
         }
+
         System.out.println("TERMINA");
     }
+    
+    public static void insertarRegistros(Criatura c) {
+    	
+    	int id=c.getId();
+    	String nombre=c.getNombre();
+    	String tipo=c.getTipo();
+    	int fuerza=c.getFuerza();
+    	int velocidad=c.getVelocidad();
+    	int magia=c.getMagia();
+
+        String sql = "INSERT INTO TB_RAZAS (ID,NOMBRE,TIPO, FUERZA, VELOCIDAD, MAGIA) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conexion = crearConexion();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            ps.setString(2,nombre);
+            ps.setString(3, tipo);
+            ps.setInt(4, fuerza);
+            ps.setInt(5, velocidad);
+            ps.setInt(6, magia);
+
+            int filas = ps.executeUpdate();
+            System.out.println("Registros insertados: " + filas);
+
+        } catch (SQLException e) {
+            printException(e);
+        }
+    }
+
+
 
     
     /**
