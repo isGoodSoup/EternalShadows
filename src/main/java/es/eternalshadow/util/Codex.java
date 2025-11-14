@@ -31,8 +31,8 @@ public class Codex {
     private static final String URL_DB_ORACLE = "jdbc:oracle:thin:@//localhost:1521/XEPDB1";
     private static final String USER_DB_ORACLE = "HR";
     private static final String PASSWORD_DB_ORACLE="HR";
-    private static Connection conn = null;
     private static final String CONSULTA="";
+    private static Connection conn = null;
     private static Random random = new Random();
     
     /**
