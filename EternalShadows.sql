@@ -1,3 +1,0 @@
-CREATE TABLE TB_RAZA (
-    
-);
