@@ -1,4 +1,4 @@
-Capítulo I — Los Ecos de Noxterra
+PRÓLOGO - Capítulo I — Los Ecos de Noxterra
 El viento gime sobre las ruinas.
 El cielo, teñido de un gris enfermizo, apenas deja pasar los últimos resplandores de un sol moribundo.
 Noxterra ha sido llamada muchas cosas a lo largo de los siglos:
@@ -49,4 +49,3 @@ Un altar se levanta en el centro, y sobre él, una máscara sin rasgos.
 La tocas, y el mundo se detiene.
 Una presencia antigua habla desde dentro de ti: ‘Toda fe nace del miedo. ¿Qué temes perder?'
 %
-Capítulo III — La Encrucijada

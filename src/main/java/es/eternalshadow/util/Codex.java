@@ -2,7 +2,6 @@ package es.eternalshadow.util;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,11 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import org.jline.reader.LineReader;
@@ -24,6 +20,9 @@ import es.eternalshadow.entidades.Demonio;
 import es.eternalshadow.entidades.Guerrero;
 import es.eternalshadow.entidades.Mago;
 import es.eternalshadow.enums.Clases;
+import es.eternalshadow.story.Capitulo;
+import es.eternalshadow.story.Historia;
+import es.eternalshadow.story.NuevoCapitulo;
 
 /**
  * Clase de utilidades para el juego "Eternal Shadows".
@@ -37,11 +36,6 @@ import es.eternalshadow.enums.Clases;
  */
 
 public class Codex {
-	private List<String> lineas = new ArrayList<>();
-	private List<List<String>> capitulos = new ArrayList<>();
-	private Map<Integer, String> mapa = new HashMap<>();
-	private int counter = 0;
-	private int characters = 0;
     private static Random random = new Random();
 
     /**
@@ -278,22 +272,21 @@ public class Codex {
         }
     }
     
-    public List<List<String>> toLeerArchivo(String archivo) throws IOException{
-		Path ruta = Paths.get(archivo);
-		lineas = Files.readAllLines(ruta);
-		for(String linea : lineas) {
-			List<String> partes = Arrays.asList(linea.split("%"));
-			capitulos.add(partes);
-			mapa.put(counter, linea);
-			counter++;
-		}
-		
-		for(Map.Entry<Integer, String> linea : mapa.entrySet()) {
-			String content = linea.getValue();
-			characters += content.length();
-		}
-		return capitulos;
-	}
+    public List<Capitulo> toLeerArchivo(Historia historia, String archivo) throws IOException {
+        String contenido = Files.readString(Paths.get(archivo));
+        List<String> partes = Arrays.asList(contenido.split("%"));
+        historia.getCapitulos().clear();
+        int numero = 1;
+        for (String parte : partes) {
+            List<String> lineasCapitulo = Arrays.asList(parte.trim().split("\n"));
+            Capitulo cap = new NuevoCapitulo("Capítulo " + numero, numero, lineasCapitulo);
+            historia.getCapitulos().add(cap);
+
+            numero++;
+        }
+        return historia.getCapitulos();
+    }
+
 
     /**
      * Genera un número decimal aleatorio entre min y max dividido por 100.

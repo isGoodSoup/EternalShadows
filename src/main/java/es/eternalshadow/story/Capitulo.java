@@ -7,6 +7,7 @@ import org.jline.reader.LineReader;
 
 import es.eternalshadow.enums.Ruta;
 import es.eternalshadow.interfaces.Capitulable;
+import es.eternalshadow.util.Codex;
 
 /*
  * Clase abstracta que representa un capítulo de la historia.
@@ -18,6 +19,7 @@ public abstract class Capitulo implements Capitulable {
 	private int numero;
 	private List<String> lineas = new ArrayList<>();
 	private Ruta ruta;
+	private Codex util = new Codex();
 
 	public Capitulo(String titulo, String nombre, int numero) {
 		super();
@@ -57,8 +59,19 @@ public abstract class Capitulo implements Capitulable {
 		this.lineas = lineas;
 	}
 	
-	public void mostrarLinea(LineReader reader) {
-		
+	public Codex getUtil() {
+		return util;
+	}
+
+	public void setUtil(Codex util) {
+		this.util = util;
+	}
+
+	public void mostrarLineas(LineReader reader) {
+		for (String linea : lineas) {
+	        System.out.println(linea);
+	        reader.readLine();
+	    }
 	}
 	
 	public void leerDestino(LineReader reader, String[] lineas) {
