@@ -4,7 +4,11 @@ import es.eternalshadow.interfaces.Accionable;
 import es.eternalshadow.pojos.Armas;
 import es.eternalshadow.pojos.Escudos;
 import es.eternalshadow.pojos.Pocion;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "TB_CRIATURA")
 public abstract class Criatura extends Raza implements Accionable {
 	private String nombre;
 	private int nivel;

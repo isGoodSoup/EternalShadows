@@ -1,5 +1,9 @@
 package es.eternalshadow.util;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,19 +12,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.jline.reader.LineReader;
-
-
 
 import es.eternalshadow.entidades.Criatura;
 import es.eternalshadow.entidades.Demonio;
 import es.eternalshadow.entidades.Guerrero;
 import es.eternalshadow.entidades.Mago;
-import es.eternalshadow.entidades.Raza;
 import es.eternalshadow.enums.Clases;
 
 /**
@@ -35,6 +37,11 @@ import es.eternalshadow.enums.Clases;
  */
 
 public class Codex {
+	private List<String> lineas = new ArrayList<>();
+	private List<List<String>> capitulos = new ArrayList<>();
+	private Map<Integer, String> mapa = new HashMap<>();
+	private int counter = 0;
+	private int characters = 0;
     private static Random random = new Random();
 
     /**
@@ -270,6 +277,23 @@ public class Codex {
             printException(e);
         }
     }
+    
+    public List<List<String>> toLeerArchivo(String archivo) throws IOException{
+		Path ruta = Paths.get(archivo);
+		lineas = Files.readAllLines(ruta);
+		for(String linea : lineas) {
+			List<String> partes = Arrays.asList(linea.split("%"));
+			capitulos.add(partes);
+			mapa.put(counter, linea);
+			counter++;
+		}
+		
+		for(Map.Entry<Integer, String> linea : mapa.entrySet()) {
+			String content = linea.getValue();
+			characters += content.length();
+		}
+		return capitulos;
+	}
 
     /**
      * Genera un número decimal aleatorio entre min y max dividido por 100.

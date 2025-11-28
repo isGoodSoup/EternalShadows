@@ -25,9 +25,6 @@ public class Capitulo3 extends Capitulo {
 		 * Logica de combate siempre después de mostrarLinea(reader),
 		 * y antes de el switch de getRuta().
 		 */
-		
-		
-		//
 		switch(getRuta()) {
 			case ALFA -> { leerDestino(reader, lineas1()); }
 			case BETA -> { leerDestino(reader, lineas2()); }
@@ -35,27 +32,5 @@ public class Capitulo3 extends Capitulo {
 			default -> {}
 		}
 		return criatura;
-	}
-	
-	@Override
-	public String[] lineas() {
-		return new String[] {
-				"Capítulo III — La Encrucijada",
-		};
-	}
-	
-	private String[] lineas1() {
-		return new String[] {
-		};
-	}
-	
-	private String[] lineas2() {
-		return new String[] {
-		};
-	}
-	
-	private String[] lineas3() {
-		return new String[] {
-		};
 	}
 }

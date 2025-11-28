@@ -1,5 +1,8 @@
 package es.eternalshadow.story;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jline.reader.LineReader;
 
 import es.eternalshadow.enums.Ruta;
@@ -13,7 +16,7 @@ import es.eternalshadow.interfaces.Capitulable;
 public abstract class Capitulo implements Capitulable {
 	private String nombre;
 	private int numero;
-	private String[] lineas;
+	private List<String> lineas = new ArrayList<>();
 	private Ruta ruta;
 
 	public Capitulo(String titulo, String nombre, int numero) {
@@ -46,27 +49,19 @@ public abstract class Capitulo implements Capitulable {
 		this.numero = numero;
 	}
 
-	public String[] getLineas() {
+	public List<String> getLineas() {
 		return lineas;
 	}
 
-	public void setLineas(String[] lineas) {
+	public void setLineas(List<String> lineas) {
 		this.lineas = lineas;
 	}
 	
 	public void mostrarLinea(LineReader reader) {
-		for (String linea : getLineas()) {
-            if (linea == null) break;
-            System.out.print(linea);
-            reader.readLine();
-        }
+		
 	}
 	
 	public void leerDestino(LineReader reader, String[] lineas) {
-		for (String linea : lineas) {
-            if (linea == null) break;
-            System.out.print(linea);
-            reader.readLine();
-        }
+		
 	}
 }
