@@ -36,12 +36,7 @@ import es.eternalshadow.enums.Clases;
 
 public class Codex {
     private static Random random = new Random();
-   
-   
-    
-      
-	
-    
+
     /**
      * Muestra un menú y obtiene la opción seleccionada por el usuario.
      *
@@ -209,12 +204,8 @@ public class Codex {
     private String q(String s) {
         return "Introduce el valor de " + s;
     }
-    
-  
-
   
     public static Connection crearConexion() {
- 	
 		String url_oracle2 = "jdbc:oracle:thin:@//localhost:1521/XEPDB1";
 		String username = "getafe";
 		String password = "password";
@@ -227,7 +218,6 @@ public class Codex {
 
         return connection;
     }
-  
 
     /**
      * Ejecuta una consulta definida en la constante CONSULTA y procesa
@@ -235,20 +225,14 @@ public class Codex {
      * ejecuta la consulta y cierra los recursos al finalizar.
      */
     
-    
     public static void consultaRaza() {
-    	
-    	 String consultaRaza="SELECT ID, NOMBRE, TIPO, FUERZA, VELOCIDAD, MAGIA FROM TB_RAZA";
-    	 String separador=" | ";
+    	String consultaRaza="SELECT ID, NOMBRE, TIPO, FUERZA, VELOCIDAD, MAGIA FROM TB_RAZA";
+    	String separador=" | ";
         try (Connection conexion = crearConexion();
-             Statement st = conexion.createStatement();
-             ResultSet rs = st.executeQuery(consultaRaza)) {
-
+            Statement st = conexion.createStatement();
+            ResultSet rs = st.executeQuery(consultaRaza)) {
         	StringBuilder sb=new StringBuilder();
-        	
             while (rs.next()) {
-            	
-            	
                 int id = rs.getInt("ID");
                 String tipo = rs.getString("TIPO");
                 int fuerza = rs.getInt("FUERZA");
@@ -260,12 +244,10 @@ public class Codex {
         } catch (SQLException e) {
            System.out.println("Error "+ e.getMessage());
         }
-
         System.out.println("TERMINA");
     }
     
     public static void insertarRegistros(Criatura c) {
-    	
     	int id=c.getId();
     	String nombre=c.getNombre();
     	String tipo=c.getTipo();
@@ -274,28 +256,21 @@ public class Codex {
     	int magia=c.getMagia();
 
         String sql = "INSERT INTO TB_RAZAS (ID,NOMBRE,TIPO, FUERZA, VELOCIDAD, MAGIA) VALUES (?, ?, ?, ?, ?)";
-
         try (Connection conexion = crearConexion();
-             PreparedStatement ps = conexion.prepareStatement(sql)) {
-
+            PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.setString(2,nombre);
             ps.setString(3, tipo);
             ps.setInt(4, fuerza);
             ps.setInt(5, velocidad);
             ps.setInt(6, magia);
-
             int filas = ps.executeUpdate();
             System.out.println("Registros insertados: " + filas);
-
         } catch (SQLException e) {
             printException(e);
         }
     }
 
-
-
-    
     /**
      * Genera un número decimal aleatorio entre min y max dividido por 100.
      * @param min Valor mínimo.

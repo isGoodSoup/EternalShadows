@@ -1,20 +1,17 @@
 package es.eternalshadow.main;
 
-import es.eternalshadow.util.Codex;
+import es.eternalshadow.interfaces.Iniciable;
 
-public class Main {
+public class Main implements Iniciable {
 	private Panel panel = new Panel();
 	
 	public static void main(String[] args) {
-		//Main main = new Main();
-		//main.run();
-		Codex.consultaRaza();
-		
+		Main main = new Main();
+		main.init();
 	}
 	
-	public void run() {
-		//panel.comenzar();
-		//Codex.crearConexion();
-		
+	@Override
+	public void init() {
+		panel.comenzar();
 	}
 }
