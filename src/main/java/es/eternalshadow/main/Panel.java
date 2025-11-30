@@ -67,6 +67,13 @@ public class Panel {
 	public void comenzar() {
 		log.info("Inicio");
 		intro();
+		try {
+	        historia.setCapitulos(util.toLeerArchivo("campaña.txt"));
+	    } catch (IOException e) {
+	        Codex.printException(e);
+	        System.exit(1);
+	    }
+		
 		String[] menu = {"Comenzar Aventura", "Salir"};
 		Codex.toGetString("ETERNAL SHADOWS ⚔️");
 		opcion = util.crearMenu(reader, menu, "Introduce tu opción");

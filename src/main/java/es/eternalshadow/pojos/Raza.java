@@ -1,4 +1,4 @@
-package es.eternalshadow.entidades;
+package es.eternalshadow.pojos;
 
 public abstract class Raza {
 	private int id;

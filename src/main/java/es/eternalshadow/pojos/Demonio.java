@@ -1,10 +1,10 @@
-package es.eternalshadow.entidades;
+package es.eternalshadow.pojos;
 
-public class Mago extends Criatura {
+public class Demonio extends Criatura {
+	
+	public Demonio() {}
 
-	public Mago() {}
-
-	public Mago(int id, String nombre, String tipo, int fuerza, int resistencia, int velocidad,
+	public Demonio (int id, String nombre, String tipo, int fuerza, int resistencia, int velocidad,
 			int magia) {
 		super(id, tipo, fuerza, resistencia, velocidad, magia);
 	}

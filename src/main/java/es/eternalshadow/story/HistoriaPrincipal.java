@@ -2,22 +2,24 @@ package es.eternalshadow.story;
 
 import org.jline.reader.LineReader;
 
-import es.eternalshadow.entidades.Criatura;
+import es.eternalshadow.pojos.Criatura;
 import es.eternalshadow.util.Codex;
 
 public class HistoriaPrincipal extends Historia {
 	
 	public HistoriaPrincipal(String titulo) {
 	    super(titulo);
-	    getCapitulos().add(new Capitulo1());
-	    getCapitulos().add(new Capitulo2());
 	}
 
 	@Override
 	public Criatura iniciar(LineReader reader, Codex util) {
-	    Criatura criatura = null;
-	    for(Capitulo capitulo : getCapitulos()) {
-	        criatura = capitulo.ejecutar(criatura, reader);
+		Criatura criatura = null;
+	    int actual = 1;
+	    while (actual <= getCapitulos().size()) {
+	        Capitulo cap = getCapitulos().get(actual - 1);
+	        util.setProximoCapitulo(actual + 1);
+	        criatura = cap.ejecutar(criatura, reader, util);
+	        actual = util.getProximoCapitulo();
 	    }
 	    return criatura;
 	}

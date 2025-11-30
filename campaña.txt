@@ -1,4 +1,4 @@
-PRÓLOGO - Capítulo I — Los Ecos de Noxterra
+[titulo] Capítulo I — Los Ecos de Noxterra
 El viento gime sobre las ruinas.
 El cielo, teñido de un gris enfermizo, apenas deja pasar los últimos resplandores de un sol moribundo.
 Noxterra ha sido llamada muchas cosas a lo largo de los siglos:
@@ -13,8 +13,9 @@ No recuerdas tu nombre, ni cómo llegaste aquí.
 Ante ti, un grabado antiguo tallado en piedra resplandece débilmente.
 Sus símbolos arcanos giran, formando tres figuras envueltas en sombras.
 Cada una extiende una mano, invitándote a elegir.
+[crearCriatura]
 %
-Capítulo II — El Sendero de los Condenados
+[titulo] Capítulo II — El Sendero de los Condenados
 Tu elección fue servida, tu destino será el que hayas formado.
 La sombra misteriosa se desplaza, dejándote paso a un mundo de horrores que no
 dejan descanso a las penurias de una sociedad ya caída.
@@ -22,6 +23,9 @@ El suelo cruje bajo tus pies mientras avanzas por un sendero estrecho,
 rodeado de árboles retorcidos que parecen susurrar tus secretos más íntimos.
 A tus pies el sendero se abre en tres caminos, cada uno a un destino diferente:
 un pueblo abandonado, una cueva oscura y un templo de un monje sin rostro.
+[opciones] Pueblo abandonado|1|ALFA
+[opciones] Cueva oscura|2|BETA
+[opciones] Templo|3|OMEGA
 %
 Las ruinas del pueblo se alzan como un recuerdo podrido del pasado.,
 Las puertas cuelgan de sus bisagras, y el viento arrastra murmullos de quienes nunca se fueron.

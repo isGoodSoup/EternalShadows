@@ -1,9 +1,6 @@
-package es.eternalshadow.entidades;
+package es.eternalshadow.pojos;
 
 import es.eternalshadow.interfaces.Accionable;
-import es.eternalshadow.pojos.Armas;
-import es.eternalshadow.pojos.Escudos;
-import es.eternalshadow.pojos.Pocion;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 

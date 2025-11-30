@@ -13,7 +13,6 @@ import es.eternalshadow.util.Codex;
  * Clase abstracta que representa un capítulo de la historia.
  * Define métodos para mostrar líneas de texto y leer destinos según decisiones.
  */
-
 public abstract class Capitulo implements Capitulable {
 	private String nombre;
 	private int numero;
@@ -72,9 +71,5 @@ public abstract class Capitulo implements Capitulable {
 	        System.out.println(linea);
 	        reader.readLine();
 	    }
-	}
-	
-	public void leerDestino(LineReader reader, String[] lineas) {
-		
 	}
 }

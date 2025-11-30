@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.jline.reader.LineReader;
 
-import es.eternalshadow.entidades.Criatura;
+import es.eternalshadow.pojos.Criatura;
 import es.eternalshadow.util.Codex;
 
 /**

@@ -9,19 +9,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import org.jline.reader.LineReader;
 
-import es.eternalshadow.entidades.Criatura;
-import es.eternalshadow.entidades.Demonio;
-import es.eternalshadow.entidades.Guerrero;
-import es.eternalshadow.entidades.Mago;
+import es.eternalshadow.acciones.Ataque;
+import es.eternalshadow.acciones.CrearCriatura;
+import es.eternalshadow.acciones.Curar;
+import es.eternalshadow.acciones.Opciones;
 import es.eternalshadow.enums.Clases;
+import es.eternalshadow.enums.Ruta;
+import es.eternalshadow.interfaces.Capitulable;
+import es.eternalshadow.pojos.Criatura;
+import es.eternalshadow.pojos.Demonio;
+import es.eternalshadow.pojos.Guerrero;
+import es.eternalshadow.pojos.Mago;
 import es.eternalshadow.story.Capitulo;
-import es.eternalshadow.story.Historia;
 import es.eternalshadow.story.NuevoCapitulo;
 
 /**
@@ -36,9 +42,27 @@ import es.eternalshadow.story.NuevoCapitulo;
  */
 
 public class Codex {
+	private int proximoCapitulo = 1;
+	private Ruta ruta;
     private static Random random = new Random();
+    
+    public int getProximoCapitulo() {
+		return proximoCapitulo;
+	}
 
-    /**
+	public void setProximoCapitulo(int proximoCapitulo) {
+		this.proximoCapitulo = proximoCapitulo;
+	}
+	
+	public Ruta getRuta() {
+		return ruta;
+	}
+
+	public void setRuta(Ruta ruta) {
+		this.ruta = ruta;
+	}
+
+	/**
      * Muestra un menú y obtiene la opción seleccionada por el usuario.
      *
      * @param reader Lector de líneas para recibir la entrada del usuario.
@@ -247,7 +271,7 @@ public class Codex {
         }
         System.out.println("TERMINA");
     }
-    
+
     public static void insertarRegistros(Criatura c) {
     	int id=c.getId();
     	String nombre=c.getNombre();
@@ -272,22 +296,51 @@ public class Codex {
         }
     }
     
-    public List<Capitulo> toLeerArchivo(Historia historia, String archivo) throws IOException {
+    public List<Capitulo> toLeerArchivo(String archivo) throws IOException {
         String contenido = Files.readString(Paths.get(archivo));
         List<String> partes = Arrays.asList(contenido.split("%"));
-        historia.getCapitulos().clear();
+        List<Capitulo> capitulos = new ArrayList<>();
         int numero = 1;
         for (String parte : partes) {
             List<String> lineasCapitulo = Arrays.asList(parte.trim().split("\n"));
-            Capitulo cap = new NuevoCapitulo("Capítulo " + numero, numero, lineasCapitulo);
-            historia.getCapitulos().add(cap);
-
+            String titulo = "Capítulo " + numero;
+            for (String linea : lineasCapitulo) {
+                if (linea.startsWith("[titulo]")) {
+                    titulo = linea.substring(7).trim();
+                    break;
+                }
+            }
+            NuevoCapitulo capitulo = new NuevoCapitulo("Capítulo " + numero, titulo, numero, new ArrayList<>());
+            for (String linea : lineasCapitulo) {
+            	if(linea.startsWith("[crearCriatura]")) {
+            		capitulo.getAcciones().add(new CrearCriatura());
+            	} else if(linea.startsWith("[curar]")) {
+                    capitulo.getAcciones().add(new Curar(10));
+                } else if(linea.startsWith("[ataque]")) {
+                    capitulo.getAcciones().add(new Ataque(5));
+                } else if(linea.startsWith("[opciones]")) {
+                    String[] opciones = linea.substring(9).split("\\|");
+                    String texto = opciones[0];
+                    int destino = Integer.parseInt(opciones[1]);
+                    String ruta = opciones[2];
+                    capitulo.getAcciones().add(new Opciones(texto, destino, ruta));
+                } else if(!linea.startsWith("[titulo]") && !linea.isEmpty()) {
+                    String texto = linea;
+                    capitulo.getAcciones().add(new Capitulable() {
+                        @Override
+                        public Criatura ejecutar(Criatura criatura, LineReader reader, Codex util) {
+                            System.out.println(texto);
+                            reader.readLine();
+                            return criatura;
+                        }
+                    });
+                }
+            }
+            capitulos.add(capitulo);
             numero++;
         }
-        return historia.getCapitulos();
+        return capitulos;
     }
-
-
     /**
      * Genera un número decimal aleatorio entre min y max dividido por 100.
      * @param min Valor mínimo.
@@ -298,7 +351,6 @@ public class Codex {
         double d = random.nextInt(min, max)/100.0;
         return d;
     }
-    
     /**
      * Genera un valor booleano aleatorio.
      * @return true o false de forma aleatoria.
@@ -306,7 +358,6 @@ public class Codex {
     public static boolean toGetBoolean() {
         return random.nextBoolean();
     }
-    
     /**
      * Imprime un título decorativo en consola.
      * @param s Texto del título.
@@ -317,7 +368,6 @@ public class Codex {
         for (int i = 0; i < s.length(); i++) System.out.print("=");
         System.out.println();
     }
-
     /**
      * Devuelve un elemento aleatorio de un arreglo de cadenas.
      * @param s Arreglo de cadenas.
@@ -326,7 +376,6 @@ public class Codex {
     public static String toGetString(String[] s) {
         return s[random.nextInt(s.length)];
     }
-    
     /**
      * Devuelve un número entero aleatorio.
      * @return Número aleatorio.
@@ -334,7 +383,6 @@ public class Codex {
     public static int toGetInteger() {
         return random.nextInt();
     }
-    
     /**
      * Devuelve un número aleatorio de un arreglo de enteros.
      * @param i Arreglo de enteros.
@@ -343,7 +391,6 @@ public class Codex {
     public static int toGetInteger(int[] i) {
         return i[random.nextInt(i.length)];
     }
-    
     /**
      * Devuelve un número entero aleatorio dentro de un rango.
      * @param min Valor mínimo.
@@ -353,7 +400,6 @@ public class Codex {
     public static int toGetInteger(int min, int max) {
         return random.nextInt(min, max);
     }
-    
     /**
      * Devuelve un número largo aleatorio dentro de un rango.
      * @param min Valor mínimo.
@@ -363,7 +409,6 @@ public class Codex {
     public static long toGetLong(long min, long max) {
         return random.nextLong(min, max);
     }
-    
     /**
      * Mide el tiempo de ejecución de una tarea.
      * @param task Tarea a ejecutar.
