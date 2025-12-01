@@ -9,26 +9,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import org.jline.reader.LineReader;
 
-import es.eternalshadow.acciones.Ataque;
-import es.eternalshadow.acciones.CrearCriatura;
-import es.eternalshadow.acciones.Curar;
-import es.eternalshadow.acciones.Opciones;
 import es.eternalshadow.enums.Clases;
 import es.eternalshadow.enums.Ruta;
-import es.eternalshadow.interfaces.Capitulable;
 import es.eternalshadow.pojos.Criatura;
 import es.eternalshadow.pojos.Demonio;
 import es.eternalshadow.pojos.Guerrero;
 import es.eternalshadow.pojos.Mago;
-import es.eternalshadow.story.Capitulo;
-import es.eternalshadow.story.NuevoCapitulo;
 
 /**
  * Clase de utilidades para el juego "Eternal Shadows".
@@ -181,7 +173,6 @@ public class Codex {
         }
         return criatura;
     }
-    
     /**
      * Crea una criatura aleatoria con atributos que suman 100 y clase aleatoria.
      * @return Criatura aleatoria creada.
@@ -220,7 +211,6 @@ public class Codex {
         insertarRegistros(c);
         return c;
     }
-
     /**
      * Formatea un mensaje para solicitar un atributo.
      * @param s Nombre del atributo.
@@ -229,7 +219,20 @@ public class Codex {
     private String q(String s) {
         return "Introduce el valor de " + s;
     }
-  
+    /**
+	 * Lee un archivo y devuelve su contenido como una lista de líneas.
+	 * @param archivo Ruta del archivo a leer.
+	 * @return Lista de líneas del archivo.
+	 * @throws IOException Si ocurre un error al leer el archivo.
+	 */
+    public List<String> toLeerArchivo(String archivo) throws IOException {
+        String contenido = Files.readString(Paths.get(archivo));
+        return contenido.lines().toList();
+    }
+	/**
+	 * Crea una conexión a la base de datos Oracle.
+	 * @return Objeto Connection o null si falla la conexión.
+	 */
     public static Connection crearConexion() {
 		String url_oracle2 = "jdbc:oracle:thin:@//localhost:1521/XEPDB1";
 		String username = "getafe";
@@ -243,13 +246,11 @@ public class Codex {
 
         return connection;
     }
-
     /**
      * Ejecuta una consulta definida en la constante CONSULTA y procesa
      * los resultados obtenidos. Este método crea su propia conexión,
      * ejecuta la consulta y cierra los recursos al finalizar.
      */
-    
     public static void consultaRaza() {
     	String consultaRaza="SELECT ID, NOMBRE, TIPO, FUERZA, VELOCIDAD, MAGIA FROM TB_RAZA";
     	String separador=" | ";
@@ -271,7 +272,10 @@ public class Codex {
         }
         System.out.println("TERMINA");
     }
-
+    /**
+	 * Inserta un registro de criatura en la tabla TB_RAZAS.
+	 * @param c Objeto Criatura a insertar.
+	 */
     public static void insertarRegistros(Criatura c) {
     	int id=c.getId();
     	String nombre=c.getNombre();
@@ -294,52 +298,6 @@ public class Codex {
         } catch (SQLException e) {
             printException(e);
         }
-    }
-    
-    public List<Capitulo> toLeerArchivo(String archivo) throws IOException {
-        String contenido = Files.readString(Paths.get(archivo));
-        List<String> partes = Arrays.asList(contenido.split("%"));
-        List<Capitulo> capitulos = new ArrayList<>();
-        int numero = 1;
-        for (String parte : partes) {
-            List<String> lineasCapitulo = Arrays.asList(parte.trim().split("\n"));
-            String titulo = "Capítulo " + numero;
-            for (String linea : lineasCapitulo) {
-                if (linea.startsWith("[titulo]")) {
-                    titulo = linea.substring(7).trim();
-                    break;
-                }
-            }
-            NuevoCapitulo capitulo = new NuevoCapitulo("Capítulo " + numero, titulo, numero, new ArrayList<>());
-            for (String linea : lineasCapitulo) {
-            	if(linea.startsWith("[crearCriatura]")) {
-            		capitulo.getAcciones().add(new CrearCriatura());
-            	} else if(linea.startsWith("[curar]")) {
-                    capitulo.getAcciones().add(new Curar(10));
-                } else if(linea.startsWith("[ataque]")) {
-                    capitulo.getAcciones().add(new Ataque(5));
-                } else if(linea.startsWith("[opciones]")) {
-                    String[] opciones = linea.substring(9).split("\\|");
-                    String texto = opciones[0];
-                    int destino = Integer.parseInt(opciones[1]);
-                    String ruta = opciones[2];
-                    capitulo.getAcciones().add(new Opciones(texto, destino, ruta));
-                } else if(!linea.startsWith("[titulo]") && !linea.isEmpty()) {
-                    String texto = linea;
-                    capitulo.getAcciones().add(new Capitulable() {
-                        @Override
-                        public Criatura ejecutar(Criatura criatura, LineReader reader, Codex util) {
-                            System.out.println(texto);
-                            reader.readLine();
-                            return criatura;
-                        }
-                    });
-                }
-            }
-            capitulos.add(capitulo);
-            numero++;
-        }
-        return capitulos;
     }
     /**
      * Genera un número decimal aleatorio entre min y max dividido por 100.

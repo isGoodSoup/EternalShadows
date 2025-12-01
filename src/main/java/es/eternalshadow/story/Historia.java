@@ -23,7 +23,7 @@ public abstract class Historia {
 		this.capitulos = new ArrayList<>();
 	}
 	
-	public abstract Criatura iniciar(LineReader reader, Codex util);
+	public abstract Criatura iniciar(Criatura criatura, LineReader reader, Codex util);
 	
 	public String getTitulo() {
 		return titulo;
@@ -35,9 +35,5 @@ public abstract class Historia {
 
 	public List<Capitulo> getCapitulos() {
 		return capitulos;
-	}
-
-	public void setCapitulos(List<Capitulo> capitulos) {
-		this.capitulos = capitulos;
 	}
 }

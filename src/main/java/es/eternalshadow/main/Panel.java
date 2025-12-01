@@ -65,10 +65,11 @@ public class Panel {
      * Permite comenzar la aventura o salir de la aplicación.
      */
 	public void comenzar() {
-		log.info("Inicio");
+		log.debug("Inicio");
 		intro();
 		try {
-	        historia.setCapitulos(util.toLeerArchivo("campaña.txt"));
+	        util.toLeerArchivo("./docs/mq/capitulo1.txt");
+	        util.toLeerArchivo("./docs/mq/capitulo2.txt");
 	    } catch (IOException e) {
 	        Codex.printException(e);
 	        System.exit(1);
@@ -79,8 +80,8 @@ public class Panel {
 		opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 		do {
 			switch(opcion) {
-				case 1 -> { historia.iniciar(reader, util); }
-				case 2 -> { log.info("Salida"); System.exit(0); }
+				case 1 -> { historia.iniciar(util.crearPersonaje(reader), reader, util); }
+				case 2 -> { log.debug("Salida"); System.exit(0); }
 			}
 		} while(opcion > 2);
 	}
