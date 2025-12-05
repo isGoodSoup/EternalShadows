@@ -23,8 +23,8 @@ public class Panel {
 	private String titulo = "Eternal Shadows";
 	private Terminal terminal;
 	private LineReader reader;
-	private Historia historia = new HistoriaPrincipal(titulo);
-	private Codex util = new Codex();
+	private Historia historia = new HistoriaPrincipal(titulo, this);
+	private Codex util = new Codex(this);
 	private int opcion;
 	private static final Logger log = LoggerFactory.getLogger(Panel.class);
 	
@@ -64,17 +64,12 @@ public class Panel {
 		this.reader = reader;
 	}
 	
-	private void intro() {
-		
-	}
-	
 	/**
      * Inicia la historia y muestra el menú principal.
      * Permite comenzar la aventura o salir de la aplicación.
      */
 	public void comenzar() {
 		log.debug("Inicio");
-		intro();
 		try {
 			int n = 1;
 	        while(n == util.getCapitulosTotales()) {

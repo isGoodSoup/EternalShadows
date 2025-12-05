@@ -6,13 +6,16 @@ import java.util.List;
 
 import org.jline.reader.LineReader;
 
+import es.eternalshadow.main.Panel;
 import es.eternalshadow.pojos.Criatura;
 import es.eternalshadow.util.Codex;
 
 public class HistoriaPrincipal extends Historia {
+	private Panel panel;
 	
-	public HistoriaPrincipal(String titulo) {
+	public HistoriaPrincipal(String titulo, Panel panel) {
 	    super(titulo);
+	    this.panel = panel;
 	    nuevoCapitulo("Los Ecos de Noxterra", 1);
 	    nuevoCapitulo("El Sendero de los Condenados", 2);
 	}
@@ -35,7 +38,7 @@ public class HistoriaPrincipal extends Historia {
 	}
 	
 	public Capitulo nuevoCapitulo(String titulo, int numero) {
-		Capitulo c = new Capitulo(titulo, numero);
+		Capitulo c = new Capitulo(titulo, numero, panel);
 		getCapitulos().add(c);
 		return c;
 	}

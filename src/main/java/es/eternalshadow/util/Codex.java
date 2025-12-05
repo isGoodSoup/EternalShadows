@@ -22,7 +22,6 @@ import es.eternalshadow.pojos.Criatura;
 import es.eternalshadow.pojos.Demonio;
 import es.eternalshadow.pojos.Guerrero;
 import es.eternalshadow.pojos.Mago;
-import es.eternalshadow.story.Capitulo;
 
 /**
  * Clase de utilidades para el juego "Eternal Shadows".
@@ -41,7 +40,12 @@ public class Codex {
 	private Ruta ruta;
     private static Random random = new Random();
     
-    public int getProximoCapitulo() {
+    public Codex(Panel panel) {
+		super();
+		this.panel = panel;
+	}
+
+	public int getProximoCapitulo() {
 		return proximoCapitulo;
 	}
 
@@ -176,6 +180,7 @@ public class Codex {
         }
         return criatura;
     }
+    
     /**
      * Crea una criatura aleatoria con atributos que suman 100 y clase aleatoria.
      * @return Criatura aleatoria creada.
@@ -214,6 +219,7 @@ public class Codex {
         insertarRegistros(c);
         return c;
     }
+    
     /**
      * Formatea un mensaje para solicitar un atributo.
      * @param s Nombre del atributo.
@@ -222,6 +228,7 @@ public class Codex {
     private String q(String s) {
         return "Introduce el valor de " + s;
     }
+    
     /**
 	 * Lee un archivo y devuelve su contenido como una lista de líneas.
 	 * @param archivo Ruta del archivo a leer.
@@ -232,6 +239,7 @@ public class Codex {
         String contenido = Files.readString(Paths.get(archivo));
         return contenido.lines().toList();
     }
+    
 	/**
 	 * Crea una conexión a la base de datos Oracle.
 	 * @return Objeto Connection o null si falla la conexión.
@@ -249,6 +257,7 @@ public class Codex {
 
         return connection;
     }
+    
     /**
      * Ejecuta una consulta definida en la constante CONSULTA y procesa
      * los resultados obtenidos. Este método crea su propia conexión,
@@ -275,6 +284,7 @@ public class Codex {
         }
         System.out.println("TERMINA");
     }
+    
     /**
 	 * Inserta un registro de criatura en la tabla TB_RAZAS.
 	 * @param c Objeto Criatura a insertar.
@@ -302,6 +312,7 @@ public class Codex {
             printException(e);
         }
     }
+    
     /**
      * Genera un número decimal aleatorio entre min y max dividido por 100.
      * @param min Valor mínimo.
@@ -312,6 +323,7 @@ public class Codex {
         double d = random.nextInt(min, max)/100.0;
         return d;
     }
+    
     /**
      * Genera un valor booleano aleatorio.
      * @return true o false de forma aleatoria.
@@ -319,6 +331,7 @@ public class Codex {
     public static boolean toGetBoolean() {
         return random.nextBoolean();
     }
+    
     /**
      * Imprime un título decorativo en consola.
      * @param s Texto del título.
@@ -329,6 +342,7 @@ public class Codex {
         for (int i = 0; i < s.length(); i++) System.out.print("=");
         System.out.println();
     }
+    
     /**
      * Devuelve un elemento aleatorio de un arreglo de cadenas.
      * @param s Arreglo de cadenas.
@@ -337,6 +351,7 @@ public class Codex {
     public static String toGetString(String[] s) {
         return s[random.nextInt(s.length)];
     }
+    
     /**
      * Devuelve un número entero aleatorio.
      * @return Número aleatorio.
@@ -344,6 +359,7 @@ public class Codex {
     public static int toGetInteger() {
         return random.nextInt();
     }
+    
     /**
      * Devuelve un número aleatorio de un arreglo de enteros.
      * @param i Arreglo de enteros.
@@ -352,6 +368,7 @@ public class Codex {
     public static int toGetInteger(int[] i) {
         return i[random.nextInt(i.length)];
     }
+    
     /**
      * Devuelve un número entero aleatorio dentro de un rango.
      * @param min Valor mínimo.
@@ -361,6 +378,7 @@ public class Codex {
     public static int toGetInteger(int min, int max) {
         return random.nextInt(min, max);
     }
+    
     /**
      * Devuelve un número largo aleatorio dentro de un rango.
      * @param min Valor mínimo.
@@ -370,6 +388,7 @@ public class Codex {
     public static long toGetLong(long min, long max) {
         return random.nextLong(min, max);
     }
+    
     /**
      * Mide el tiempo de ejecución de una tarea.
      * @param task Tarea a ejecutar.
@@ -380,6 +399,7 @@ public class Codex {
         task.run();
         return System.currentTimeMillis() - start;
     }
+    
     /* Devuelve el número total de capítulos en la historia.
 	 * @return Número total de capítulos.
 	 */
