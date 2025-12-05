@@ -79,6 +79,18 @@ public abstract class Criatura extends Raza implements Accionable {
 	public void setPuntosVida(int puntosVida) {
 		this.puntosVida = puntosVida;
 	}
+	
+	public void recibirDanio(int cantidad) {
+		int danioReal = cantidad - this.puntosVida;
+		if (danioReal < 1 && cantidad > 0) {
+			danioReal = 1;
+		}
+		this.puntosVida -= danioReal;
+		if (this.puntosVida < 0) {
+			this.puntosVida = 0;
+		}
+		System.out.println(this.nombre + " recibe " + danioReal + " de daño. Vida restante: " + this.puntosVida);
+	}
 
 	@Override
 	public void atacar() {

@@ -1,7 +1,8 @@
-package es.eternalshadow.entites;
+package es.eternalshadow.entities;
 
 import java.sql.Date;
 
+import es.eternalshadow.pojos.Pocion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -109,5 +110,4 @@ public class Usuario {
 		return "Usuario [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password + ", rol="
 				+ rol + ", fechaAlta=" + fechaAlta + ", activo=" + activo + "]";
 	}
-
 }

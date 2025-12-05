@@ -22,6 +22,7 @@ import es.eternalshadow.pojos.Dado21;
 import es.eternalshadow.pojos.Demonio;
 import es.eternalshadow.pojos.Guerrero;
 import es.eternalshadow.pojos.Mago;
+import es.eternalshadow.pojos.Pocion;
 
 /**
  * Clase de utilidades para el juego "Eternal Shadows". Proporciona métodos
@@ -440,5 +441,17 @@ public class Codex {
 			n++;
 		}
 		return n;
+	}
+
+	public void aumentarMoral(int i) {
+		// TODO Aumentar moral del personaje
+	}
+
+	public void addPocion(Pocion pocion) {
+		// TODO Añadir pocion al inventario
+	}
+	
+	public void addArtefacto(String string) {
+		// TODO Añadir artefacto al inventario
 	}
 }

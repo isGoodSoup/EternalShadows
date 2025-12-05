@@ -1,4 +1,4 @@
-package es.eternalshadow.entites;
+package es.eternalshadow.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

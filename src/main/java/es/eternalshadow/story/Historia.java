@@ -1,26 +1,58 @@
 package es.eternalshadow.story;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.jline.reader.LineReader;
 
-import es.eternalshadow.entities.Criatura;
-import es.eternalshadow.entities.Usuario;
-import es.eternalshadow.entities.Pocion;
-import es.eternalshadow.motor.Combate;
-import es.eternalshadow.motor.Escena;
-import es.eternalshadow.motor.MotorHistoria;
-import es.eternalshadow.motor.Opcion;
+import es.eternalshadow.pojos.Criatura;
+import es.eternalshadow.main.Panel;
 import es.eternalshadow.util.Codex;
 
 public abstract class Historia {
-	
-	public abstract Criatura iniciar(Criatura criatura, LineReader reader, Codex util); 
-	
-	private static Object comprarObjetoMercader(Usuario user, String string, int i) {
-		// TODO Auto-generated method stub
-		return null;
+	private String titulo;
+	private Panel panel;
+	private Codex util = new Codex(panel);
+	private List<Capitulo> capitulos;
+
+	public Historia(String titulo, Panel panel) {
+		super();
+		this.titulo = titulo;
+		this.panel = panel;
+		this.capitulos = new ArrayList<>();
 	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public Panel getPanel() {
+		return panel;
+	}
+
+	public void setPanel(Panel panel) {
+		this.panel = panel;
+	}
+
+	public Codex getUtil() {
+		return util;
+	}
+
+	public void setUtil(Codex util) {
+		this.util = util;
+	}
+
+	public List<Capitulo> getCapitulos() {
+		return capitulos;
+	}
+
+	public void setCapitulos(List<Capitulo> capitulos) {
+		this.capitulos = capitulos;
+	}
+
+	public abstract Criatura iniciar(Criatura crearPersonaje, LineReader reader, Codex util);
 }

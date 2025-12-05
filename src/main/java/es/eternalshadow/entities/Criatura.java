@@ -1,4 +1,4 @@
-package es.eternalshadow.entites;
+package es.eternalshadow.entities;
 
 import es.eternalshadow.pojos.Armas;
 import es.eternalshadow.pojos.Escudos;
@@ -98,5 +98,6 @@ public class Criatura extends Raza {
 		return "Criatura [nombre=" + nombre + ", nivel=" + nivel + ", escudos=" + escudos + ", armas=" + armas
 				+ ", pocion=" + pocion + ", puntosVida=" + puntosVida + "]";
 	}
-
+	
+	
 }

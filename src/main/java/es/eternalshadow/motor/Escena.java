@@ -1,16 +1,23 @@
 package es.eternalshadow.motor;
 import java.util.List;
 public class Escena {
-	    private String texto;
-	    private List<Opcion> opciones; // Opciones disponibles
+    private String descripcion;
+    private List<Opcion> opciones;
 
-	    public Escena(String texto, List<Opcion> opciones) {
-	        this.texto = texto;
-	        this.opciones = opciones;
-	    }
+    public Escena(String descripcion, List<Opcion> opciones) {
+        this.descripcion = descripcion;
+        this.opciones = opciones;
+    }
 
-	    public String getTexto() { return texto; }
-	    public List<Opcion> getOpciones() { return opciones; }
-	}
+    public String getDescripcion() {
+        return descripcion;
+    }
 
+    public List<Opcion> getOpciones() {
+        return opciones;
+    }
 
+    public void setOpciones(List<Opcion> opciones) {
+        this.opciones = opciones;
+    }
+}
