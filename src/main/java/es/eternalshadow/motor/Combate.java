@@ -47,7 +47,7 @@ public class Combate {
 		while (criatura.isVivo(jugador) && enemigo.isVivo()) {
 
 			System.out.println("\n--- Turno del jugador ---");
-			criatura.recibirDanio(jugador);
+			criatura.recibirDanio(5);
 			System.out.println("Golpeas al enemigo. Vida del enemigo: "
 					+ enemigo.getVida());
 
@@ -55,7 +55,7 @@ public class Combate {
 				break;
 
 			System.out.println("\n--- Turno del enemigo ---");
-			criatura.recibirDanio(enemigo);
+			criatura.recibirDanio(5);
 			System.out.println("El enemigo te golpea. Tu vida: "
 					+ jugador.getPuntosVida());
 		}

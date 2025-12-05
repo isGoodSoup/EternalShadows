@@ -54,8 +54,8 @@ public class Jugador extends Criatura {
 	}
 
 	@Override
-	public int recibirDanio(Criatura criatura) {
-		return super.recibirDanio(criatura);
+	public int recibirDanio(int i) {
+		return super.recibirDanio(i);
 	}
 
 	@Override

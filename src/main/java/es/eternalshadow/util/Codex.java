@@ -15,13 +15,9 @@ import java.util.Random;
 import org.jline.reader.LineReader;
 
 import es.eternalshadow.entities.Criatura;
-import es.eternalshadow.enums.Clases;
 import es.eternalshadow.enums.Ruta;
 import es.eternalshadow.main.Panel;
-import es.eternalshadow.pojos.Demonio;
-import es.eternalshadow.pojos.Guerrero;
 import es.eternalshadow.pojos.Jugador;
-import es.eternalshadow.pojos.Mago;
 import es.eternalshadow.pojos.Pocion;
 
 /**
@@ -38,6 +34,7 @@ import es.eternalshadow.pojos.Pocion;
 public class Codex {
 	private Panel panel;
 	private int proximoCapitulo = 1;
+	private int puntosVida = 25;
 	private Ruta ruta;
 	private static Random random = new Random();
 
@@ -152,8 +149,6 @@ public class Codex {
 	 * @return Objeto {@link Criatura} creado.
 	 */
 	public Criatura crearPersonaje(LineReader reader) {
-		Clases clases = Clases.MAGO;
-		Criatura criatura = null;
 		int puntos;
 		int f, r, v, m;
 		do {
@@ -166,39 +161,19 @@ public class Codex {
 			puntos += v;
 			m = Codex.toScanInteger(reader, q("la magia"));
 			puntos += m;
-		} while (puntos != 100);
-
-		String[] menu = { "Mago", "Guerrero", "Demonio" };
-		switch (crearMenu(reader, menu, "Selecciona una clase")) {
-		case 1 -> {
-			String nombre = Codex.toScan(reader, "Como quieres llamarte?");
-			criatura = new Mago(toGetInteger(1000, 9999), "Mago", nombre, f, r, v, m);
-
-			if (clases != null)
-				clases = Clases.MAGO;
-		}
-		case 2 -> {
-			String nombre = Codex.toScan(reader, "Como quieres llamarte?");
-			criatura = new Guerrero(toGetInteger(1000, 9999), "Guerrero", nombre, f, r, v, m);
-			if (clases != null)
-				clases = Clases.GUERRERO;
-		}
-		case 3 -> {
-			String nombre = Codex.toScan(reader, "Como quieres llamarte?");
-			criatura = new Demonio(toGetInteger(1000, 9999), "Demonio", nombre, f, r, v, m);
-			if (clases != null)
-				clases = Clases.DEMONIO;
-		}
-		}
+		} while (puntos != 80);
+		
+		String tipo = toScan(reader, "Elige tu raza");
+		String nombre = toScan(reader, "Introduce tu nombre");
+		Criatura criatura = new Criatura(tipo, nombre, f, r, v, m, puntosVida);
 		return criatura;
 	}
 
 	/**
 	 * Crea una criatura aleatoria con atributos que suman 100 y clase aleatoria.
-	 * 
 	 * @return Criatura aleatoria creada.
 	 */
-	public static Criatura crearCriaturaAleatoria() {
+	public Criatura crearCriaturaAleatoria() {
 		int[] atributos = new int[4];
 		int puntosTotal = 100;
 		for (int i = 0; i < 3; i++) {
@@ -212,21 +187,19 @@ public class Codex {
 		int velocidad = atributos[2];
 		int magia = atributos[3];
 
-		String[] razas = { "Mago", "Guerrero", "Demonio" };
+		String[] razas = { 
+			    "Mago", 
+			    "Guerrero", 
+			    "Demonio",
+			    "Elfo Oscuro",
+			    "Enano",
+			    "Elfo"
+			};
 		int numale = random.nextInt(razas.length);
 		String tipo = razas[numale];
-
-		Criatura c = null;
-		System.out.println("Se va a crear la criatura del tipo " + tipo);
-		switch (tipo) {
-		case "Mago" -> c = new Mago(toGetInteger(1000, 9999), "Mago", "Mago", fuerza, resistencia, velocidad, magia);
-
-		case "Guerrero" ->
-			c = new Guerrero(toGetInteger(1000, 9999), "Guerrero", "Guerrero", fuerza, resistencia, velocidad, magia);
-		case "Demonio" ->
-			c = new Demonio(toGetInteger(1000, 9999), "Demonio", "Demonio", fuerza, resistencia, velocidad, magia);
-		}
-
+		
+		// TODO Nombre
+		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad, magia, puntosVida);
 		if (c != null) {
 			System.out.println("Criatura enemiga creada: " + c.getNombre() + " con atributos: " + "Fuerza: " + fuerza
 					+ ", Resistencia: " + resistencia + ", Velocidad: " + velocidad + ", Magia: " + magia);

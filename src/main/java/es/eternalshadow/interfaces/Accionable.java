@@ -3,8 +3,8 @@ package es.eternalshadow.interfaces;
 import es.eternalshadow.entities.Criatura;
 
 public interface Accionable {
-    void atacar(Criatura objetivo);
+    void atacar(Criatura criatura);
     void defender();
-    boolean isVivo();
-    void recibirDanio(int danio);
+    boolean isVivo(Criatura criatura);
+    int recibirDanio(int danio);
 }
