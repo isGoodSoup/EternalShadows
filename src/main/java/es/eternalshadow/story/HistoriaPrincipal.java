@@ -9,9 +9,7 @@ import java.util.Map;
 import org.jline.reader.LineReader;
 
 import es.eternalshadow.entities.Criatura;
-import es.eternalshadow.entities.Usuario;
 import es.eternalshadow.main.Panel;
-import es.eternalshadow.motor.Combate;
 import es.eternalshadow.motor.Escena;
 import es.eternalshadow.motor.MotorHistoria;
 import es.eternalshadow.motor.Opcion;

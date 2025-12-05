@@ -44,10 +44,10 @@ public class Combate {
 		System.out.println("¡Comienza el combate contra "
 				+ enemigo.getClass().getSimpleName() + "!");
 
-		while (jugador.isVivo() && enemigo.isVivo()) {
+		while (criatura.isVivo(jugador) && enemigo.isVivo()) {
 
 			System.out.println("\n--- Turno del jugador ---");
-			enemigo.recibirDanio(jugador.getAtaque());
+			criatura.recibirDanio(jugador);
 			System.out.println("Golpeas al enemigo. Vida del enemigo: "
 					+ enemigo.getVida());
 
@@ -55,12 +55,12 @@ public class Combate {
 				break;
 
 			System.out.println("\n--- Turno del enemigo ---");
-			jugador.recibirDanio(enemigo.getAtaque());
+			criatura.recibirDanio(enemigo);
 			System.out.println("El enemigo te golpea. Tu vida: "
 					+ jugador.getPuntosVida());
 		}
 
-		if (jugador.isVivo()) {
+		if (criatura.isVivo(jugador)) {
 			System.out.println("\n🏆 ¡Has ganado el combate!");
 		} else {
 			System.out.println("\n💀 Has sido derrotado...");

@@ -38,14 +38,6 @@ public class Jugador extends Criatura {
 		this.ataque = ataque;
 	}
 
-	public boolean isVivo() {
-		return getPuntosVida() > 0;
-	}
-
-	public void recibirDanio(int cantidad) {
-		super.recibirDanio(cantidad);
-	}
-
 	public int getOro() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -59,6 +51,16 @@ public class Jugador extends Criatura {
 	public void addArtefacto(String objeto) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public int recibirDanio(Criatura criatura) {
+		return super.recibirDanio(criatura);
+	}
+
+	@Override
+	public boolean isVivo(Criatura criatura) {
+		return super.isVivo(criatura);
 	}
 
 }

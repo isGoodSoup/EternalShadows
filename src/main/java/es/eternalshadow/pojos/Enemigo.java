@@ -1,5 +1,7 @@
 package es.eternalshadow.pojos;
 
+import es.eternalshadow.entities.Criatura;
+
 public class Enemigo extends Criatura {
 	private String nombre;
 	private int vida;
@@ -38,8 +40,9 @@ public class Enemigo extends Criatura {
 	public boolean isVivo() {
 		return vida > 0;
 	}
-
-	public void recibirDanio(int cantidad) {
-		super.recibirDanio(cantidad);
+	
+	@Override
+	public int recibirDanio(Criatura criatura) {
+		return super.recibirDanio(criatura);
 	}
 }

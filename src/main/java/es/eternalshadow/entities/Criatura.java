@@ -111,4 +111,14 @@ public abstract class Criatura extends Raza {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public boolean isVivo(Criatura criatura) {
+		return puntosVida < 0;
+	}
+
+	@Override
+	public int recibirDanio(Criatura criatura) {
+		return this.puntosVida -= 1;
+	}
 }

@@ -20,4 +20,9 @@ public class Demonio extends Criatura {
 	public void defender() {
 		super.defender();
 	}
+
+	@Override
+	public boolean isVivo(Criatura criatura) {
+		return super.isVivo(criatura);
+	}
 }
