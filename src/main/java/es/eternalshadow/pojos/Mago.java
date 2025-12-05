@@ -6,9 +6,9 @@ public class Mago extends Criatura {
 
 	public Mago() {}
 
-	public Mago(int id, String nombre, String tipo, int fuerza, int resistencia, int velocidad,
-			int magia) {
-		super(id, tipo, fuerza, resistencia, velocidad, magia);
+	public Mago(String nombre, int nivel, java.util.ArrayList<es.eternalshadow.pojos.Escudos> escudos,
+			java.util.ArrayList<es.eternalshadow.pojos.Armas> armas, String pocion, int puntosVida) {
+		super(nombre, nivel, escudos, armas, pocion, puntosVida);
 	}
 
 	@Override

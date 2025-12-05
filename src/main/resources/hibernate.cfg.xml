@@ -34,9 +34,9 @@
 			(Hibernate 5.5+). -->
 		<!-- Entidad mapeada -->
 		<!-- <mapping class="es.cursojava.hibernate.Empresa" /> -->
-		<mapping class="es.eternalshadow.entites.Usuario" />
-		<mapping class="es.eternalshadow.entites.Raza" />
-		<mapping class="es.eternalshadow.entites.Criatura" />
+		<mapping class="es.eternalshadow.entities.Usuario" />
+		<mapping class="es.eternalshadow.entities.Raza" />
+		<mapping class="es.eternalshadow.entities.Criatura" />
 		
 		
 
