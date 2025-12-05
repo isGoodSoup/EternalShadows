@@ -118,7 +118,17 @@ public abstract class Criatura extends Raza {
 	}
 
 	@Override
-	public int recibirDanio(Criatura criatura) {
-		return this.puntosVida -= 1;
+	public void recibirDanio(int danio) {
+	    this.puntosVida -= danio;
+	    if (this.puntosVida < 0) {
+	        this.puntosVida = 0;
+	    }
+	}
+	@Override
+	public void recibirDanio(Criatura atacante) {
+	    int danio = calcularDanio(atacante);  // Método auxiliar
+	    this.puntosVida -= danio;
+	    if (this.puntosVida < 0) {
+	        this.puntosVida = 0;
 	}
 }
