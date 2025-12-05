@@ -1,23 +1,42 @@
-package es.eternalshadow.pojos;
+package es.eternalshadow.entities;
 
-import es.eternalshadow.interfaces.Accionable;
+import es.eternalshadow.pojos.Armas;
+import es.eternalshadow.pojos.Escudos;
+import es.eternalshadow.pojos.Pocion;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "TB_CRIATURA")
-public abstract class Criatura extends Raza implements Accionable {
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "tb_criatura")
+public class Criatura extends Raza {
+
+	@Column(name = "nombre", nullable = false, length = 100)
 	private String nombre;
+
+	@Column(name = "nivel", nullable = false)
 	private int nivel;
+
+	@Column(name = "escudos")
 	private Escudos[] escudos;
+
+	@Column(name = "armas")
 	private Armas[] armas;
+
+	@Column(name = "pocion")
 	private Pocion pocion;
+
+	@Column(name = "puntos_vida", nullable = false)
 	private int puntosVida;
-	
-	public Criatura() {}
-	
-	public Criatura(String nombre, int nivel, Escudos[] escudos, Armas[] armas,
-			Pocion pocion, int puntosVida) {
+
+	public Criatura() {
+
+	}
+
+	public Criatura(String nombre, int nivel, Escudos[] escudos, Armas[] armas, Pocion pocion, int puntosVida) {
 		super();
 		this.nombre = nombre;
 		this.nivel = nivel;
@@ -25,11 +44,6 @@ public abstract class Criatura extends Raza implements Accionable {
 		this.armas = armas;
 		this.pocion = pocion;
 		this.puntosVida = puntosVida;
-	}
-	
-	public Criatura(int id, String tipo, int fuerza, int resistencia,
-			int velocidad, int magia) {
-		super(id, tipo, fuerza, resistencia, velocidad, magia);
 	}
 
 	public String getNombre() {
@@ -79,26 +93,11 @@ public abstract class Criatura extends Raza implements Accionable {
 	public void setPuntosVida(int puntosVida) {
 		this.puntosVida = puntosVida;
 	}
-	
-	public void recibirDanio(int cantidad) {
-		int danioReal = cantidad - this.puntosVida;
-		if (danioReal < 1 && cantidad > 0) {
-			danioReal = 1;
-		}
-		this.puntosVida -= danioReal;
-		if (this.puntosVida < 0) {
-			this.puntosVida = 0;
-		}
-		System.out.println(this.nombre + " recibe " + danioReal + " de daño. Vida restante: " + this.puntosVida);
-	}
 
-	@Override
-	public void atacar() {
-		
+	public String toString() {
+		return "Criatura [nombre=" + nombre + ", nivel=" + nivel + ", escudos=" + escudos + ", armas=" + armas
+				+ ", pocion=" + pocion + ", puntosVida=" + puntosVida + "]";
 	}
 	
-	@Override
-	public void defender() {
-		
-	}
+	
 }
