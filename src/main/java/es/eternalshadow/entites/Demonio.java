@@ -1,8 +1,5 @@
 package es.eternalshadow.entites;
 
-import es.eternalshadow.pojos.Armas;
-import es.eternalshadow.pojos.Escudos;
-import es.eternalshadow.pojos.Pocion;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -14,9 +11,7 @@ public class Demonio extends Criatura {
 		super();
 	}
 	
-	public Demonio(String nombre, int nivel, Escudos[] escudos, Armas[] armas, Pocion pocion, int puntosVida) {
-		super(nombre, nivel, escudos, armas, pocion, puntosVida);
-	}
+	
 	
 
 }
