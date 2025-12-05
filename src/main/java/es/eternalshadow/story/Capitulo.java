@@ -7,6 +7,7 @@ import org.jline.reader.LineReader;
 
 import es.eternalshadow.enums.Ruta;
 import es.eternalshadow.interfaces.Capitulable;
+import es.eternalshadow.main.Panel;
 import es.eternalshadow.pojos.Criatura;
 import es.eternalshadow.util.Codex;
 
@@ -15,14 +16,16 @@ import es.eternalshadow.util.Codex;
  * Define métodos para mostrar líneas de texto y leer destinos según decisiones.
  */
 public class Capitulo implements Capitulable {
+	private Panel panel;
 	private String nombre;
 	private int numero;
 	private List<String> lineas = new ArrayList<>();
 	private Ruta ruta;
-	private Codex util = new Codex();
+	private Codex util = new Codex(panel);
 
-	public Capitulo(String nombre, int numero) {
+	public Capitulo(String nombre, int numero, Panel panel) {
 		super();
+		this.panel = panel;
 		this.nombre = nombre;
 		this.numero = numero;
 	}

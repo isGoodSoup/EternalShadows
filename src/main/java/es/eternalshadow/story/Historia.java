@@ -1,39 +1,26 @@
 package es.eternalshadow.story;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jline.reader.LineReader;
 
-import es.eternalshadow.pojos.Criatura;
+import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.entities.Usuario;
+import es.eternalshadow.entities.Pocion;
+import es.eternalshadow.motor.Combate;
+import es.eternalshadow.motor.Escena;
+import es.eternalshadow.motor.MotorHistoria;
+import es.eternalshadow.motor.Opcion;
 import es.eternalshadow.util.Codex;
 
-/**
- * Clase abstracta que representa una historia interactiva.
- * Contiene una lista de capítulos y define el método para iniciar la historia.
- */
-
 public abstract class Historia {
-	private String titulo;
-	private List<Capitulo> capitulos;
 	
-	public Historia(String titulo) {
-		super();
-		this.titulo = titulo;
-		this.capitulos = new ArrayList<>();
-	}
+	public abstract Criatura iniciar(Criatura criatura, LineReader reader, Codex util); 
 	
-	public abstract Criatura iniciar(Criatura criatura, LineReader reader, Codex util);
-	
-	public String getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
-	public List<Capitulo> getCapitulos() {
-		return capitulos;
+	private static Object comprarObjetoMercader(Usuario user, String string, int i) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
