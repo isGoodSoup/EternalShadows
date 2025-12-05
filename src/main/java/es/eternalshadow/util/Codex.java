@@ -17,10 +17,12 @@ import org.jline.reader.LineReader;
 
 import es.eternalshadow.enums.Clases;
 import es.eternalshadow.enums.Ruta;
+import es.eternalshadow.main.Panel;
 import es.eternalshadow.pojos.Criatura;
 import es.eternalshadow.pojos.Demonio;
 import es.eternalshadow.pojos.Guerrero;
 import es.eternalshadow.pojos.Mago;
+import es.eternalshadow.story.Capitulo;
 
 /**
  * Clase de utilidades para el juego "Eternal Shadows".
@@ -34,6 +36,7 @@ import es.eternalshadow.pojos.Mago;
  */
 
 public class Codex {
+	private Panel panel;
 	private int proximoCapitulo = 1;
 	private Ruta ruta;
     private static Random random = new Random();
@@ -377,4 +380,12 @@ public class Codex {
         task.run();
         return System.currentTimeMillis() - start;
     }
+    /* Devuelve el número total de capítulos en la historia.
+	 * @return Número total de capítulos.
+	 */
+    public int getCapitulosTotales() {
+    	int n = 0;
+    	for (int i = 0; i < panel.getHistoria().getCapitulos().size(); i++) { n++; }
+    	return n;
+	}
 }

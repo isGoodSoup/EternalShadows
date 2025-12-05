@@ -20,9 +20,10 @@ import es.eternalshadow.util.Codex;
  */
 
 public class Panel {
+	private String titulo = "Eternal Shadows";
 	private Terminal terminal;
 	private LineReader reader;
-	private Historia historia = new HistoriaPrincipal("Eternal Shadows");
+	private Historia historia = new HistoriaPrincipal(titulo);
 	private Codex util = new Codex();
 	private int opcion;
 	private static final Logger log = LoggerFactory.getLogger(Panel.class);
@@ -39,6 +40,14 @@ public class Panel {
         }
     }
 	
+	public Historia getHistoria() {
+		return historia;
+	}
+
+	public void setHistoria(Historia historia) {
+		this.historia = historia;
+	}
+
 	public Terminal getTerminal() {
 		return terminal;
 	}
@@ -56,8 +65,7 @@ public class Panel {
 	}
 	
 	private void intro() {
-		System.out.println("Cuando la última luz se extinga, los nombres de los vivos serán olvidados...");
-		System.out.println("Solo quedará la sombra eterna.");
+		
 	}
 	
 	/**
@@ -68,15 +76,18 @@ public class Panel {
 		log.debug("Inicio");
 		intro();
 		try {
-	        util.toLeerArchivo("./docs/mq/capitulo1.txt");
-	        util.toLeerArchivo("./docs/mq/capitulo2.txt");
+			int n = 1;
+	        while(n == util.getCapitulosTotales()) {
+	        	util.toLeerArchivo("./docs/mq/capitulo" + n + ".txt");
+	        	n++;
+	        }
 	    } catch (IOException e) {
 	        Codex.printException(e);
 	        System.exit(1);
 	    }
 		
 		String[] menu = {"Comenzar Aventura", "Salir"};
-		Codex.toGetString("ETERNAL SHADOWS ⚔️");
+		Codex.toGetString(titulo.toUpperCase() + " ⚔️");
 		opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 		do {
 			switch(opcion) {
