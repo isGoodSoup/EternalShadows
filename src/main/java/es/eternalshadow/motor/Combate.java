@@ -1,11 +1,11 @@
 package es.eternalshadow.motor;
 
-import entities.Criatura;
-import entities.Jugador;
+import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.entities.Usuario;
 
 public class Combate {
 
-	public static Object luchar(Jugador jugador, Criatura lobo) {
+	public static Object luchar(Usuario jugador, Criatura lobo) {
 		System.out.println("Estan luchando");
 		return null;
 	}
