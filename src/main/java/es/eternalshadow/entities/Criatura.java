@@ -1,8 +1,9 @@
 package es.eternalshadow.entities;
 
+import java.util.ArrayList;
+
 import es.eternalshadow.pojos.Armas;
 import es.eternalshadow.pojos.Escudos;
-import es.eternalshadow.pojos.Pocion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
@@ -18,11 +19,13 @@ public abstract class Criatura extends Raza {
 	@Column(name = "nivel", nullable = false)
 	private int nivel;
 	@Column(name = "escudos")
-	private Escudos[] escudos;
+	private ArrayList<Escudos> escudos;
+
 	@Column(name = "armas")
-	private Armas[] armas;
+	private ArrayList<Armas> armas;
 	@Column(name = "pocion")
-	private Pocion pocion;
+	private String pocion;
+
 	@Column(name = "puntos_vida", nullable = false)
 	private int puntosVida;
 
@@ -30,8 +33,8 @@ public abstract class Criatura extends Raza {
 
 	}
 
-	public Criatura(String nombre, int nivel, Escudos[] escudos, Armas[] armas,
-			Pocion pocion, int puntosVida) {
+	public Criatura(String nombre, int nivel, ArrayList<Escudos> escudos, ArrayList<Armas> armas, String pocion,
+			int puntosVida) {
 		super();
 		this.nombre = nombre;
 		this.nivel = nivel;
@@ -39,11 +42,6 @@ public abstract class Criatura extends Raza {
 		this.armas = armas;
 		this.pocion = pocion;
 		this.puntosVida = puntosVida;
-	}
-
-	public Criatura(int id, String tipo, int fuerza, int resistencia,
-			int velocidad, int magia) {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getNombre() {
@@ -62,27 +60,27 @@ public abstract class Criatura extends Raza {
 		this.nivel = nivel;
 	}
 
-	public Escudos[] getEscudos() {
+	public ArrayList<Escudos> getEscudos() {
 		return escudos;
 	}
 
-	public void setEscudos(Escudos[] escudos) {
+	public void setEscudos(ArrayList<Escudos> escudos) {
 		this.escudos = escudos;
 	}
 
-	public Armas[] getArmas() {
+	public ArrayList<Armas> getArmas() {
 		return armas;
 	}
 
-	public void setArmas(Armas[] armas) {
+	public void setArmas(ArrayList<Armas> armas) {
 		this.armas = armas;
 	}
 
-	public Pocion getPocion() {
+	public String getPocion() {
 		return pocion;
 	}
 
-	public void setPocion(Pocion pocion) {
+	public void setPocion(String pocion) {
 		this.pocion = pocion;
 	}
 
@@ -94,10 +92,11 @@ public abstract class Criatura extends Raza {
 		this.puntosVida = puntosVida;
 	}
 
+	@Override
+
 	public String toString() {
-		return "Criatura [nombre=" + nombre + ", nivel=" + nivel + ", escudos="
-				+ escudos + ", armas=" + armas + ", pocion=" + pocion
-				+ ", puntosVida=" + puntosVida + "]";
+		return "Criatura [nombre=" + nombre + ", nivel=" + nivel + ", escudos=" + escudos + ", armas=" + armas
+				+ ", pocion=" + pocion + ", puntosVida=" + puntosVida + "]";
 	}
 
 	@Override
