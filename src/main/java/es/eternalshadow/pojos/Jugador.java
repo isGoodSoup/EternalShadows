@@ -1,18 +1,15 @@
-package es.eternalshadow.entities;
+package es.eternalshadow.pojos;
 
-import es.eternalshadow.pojos.Criatura;
+import es.eternalshadow.entities.Criatura;
 
 public class Jugador extends Criatura {
-
 	private String nombre;
-	private int vida;
 	private int moral;
 	private int ataque;
 
 	public Jugador(String nombre, int vida, int moral, int ataque) {
 		super();
 		this.nombre = nombre;
-		this.vida = vida;
 		this.moral = moral;
 		this.ataque = ataque;
 	}
@@ -23,14 +20,6 @@ public class Jugador extends Criatura {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-	public int getVida() {
-		return vida;
-	}
-
-	public void setVida(int vida) {
-		this.vida = vida;
 	}
 
 	public int getMoral() {
@@ -49,8 +38,8 @@ public class Jugador extends Criatura {
 		this.ataque = ataque;
 	}
 
-	public boolean estaVivo() {
-		return vida > 0;
+	public boolean isVivo() {
+		return getPuntosVida() > 0;
 	}
 
 	public void recibirDanio(int cantidad) {

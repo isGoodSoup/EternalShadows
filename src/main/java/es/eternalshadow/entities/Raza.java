@@ -1,5 +1,6 @@
 package es.eternalshadow.entities;
 
+import es.eternalshadow.interfaces.Accionable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,24 +14,18 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_raza")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Raza {
-	
+public abstract class Raza implements Accionable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
 	@Column(name = "tipo", nullable = false, length = 50)
 	private String tipo;
-	
 	@Column(name = "fuerza", nullable = false)
 	private int fuerza;
-	
 	@Column(name = "resistencia", nullable = false)
 	private int resistencia;
-	
 	@Column(name = "velocidad", nullable = false)
 	private int velocidad;
-	
 	@Column(name = "magia", nullable = false)
 	private int magia;
 	
@@ -86,8 +81,4 @@ public class Raza {
 		return "Raza [id=" + id + ", tipo=" + tipo + ", fuerza=" + fuerza + ", resistencia=" + resistencia
 				+ ", velocidad=" + velocidad + ", magia=" + magia + "]";
 	}
-	
-
-
-
 }

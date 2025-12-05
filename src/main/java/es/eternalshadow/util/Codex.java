@@ -14,13 +14,14 @@ import java.util.Random;
 
 import org.jline.reader.LineReader;
 
+import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.entities.Usuario;
 import es.eternalshadow.enums.Clases;
 import es.eternalshadow.enums.Ruta;
 import es.eternalshadow.main.Panel;
-import es.eternalshadow.pojos.Criatura;
-import es.eternalshadow.pojos.Dado21;
 import es.eternalshadow.pojos.Demonio;
 import es.eternalshadow.pojos.Guerrero;
+import es.eternalshadow.pojos.Jugador;
 import es.eternalshadow.pojos.Mago;
 import es.eternalshadow.pojos.Pocion;
 
@@ -453,5 +454,9 @@ public class Codex {
 	
 	public void addArtefacto(String string) {
 		// TODO Añadir artefacto al inventario
+	}
+	
+	public void luchar(Jugador user, Criatura lobo) {
+		// TODO Luchar
 	}
 }

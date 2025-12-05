@@ -1,5 +1,7 @@
 package es.eternalshadow.pojos;
 
+import es.eternalshadow.entities.Criatura;
+
 public class Mago extends Criatura {
 
 	public Mago() {}

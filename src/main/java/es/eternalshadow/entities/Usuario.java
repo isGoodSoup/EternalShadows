@@ -2,7 +2,6 @@ package es.eternalshadow.entities;
 
 import java.sql.Date;
 
-import es.eternalshadow.pojos.Pocion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,29 +16,24 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
 	@Column(name = "username", nullable = false, unique = true, length = 50)
 	private String username;
-
 	@Column(name = "email", nullable = false, unique = true, length = 100)
 	private String email;
-
 	@Column(name = "password", nullable = false, length = 100)
 	private String password;
-
 	@Column(name = "rol", nullable = false, length = 20)
 	private String rol;
-
 	@Column(name = "fecha_alta", nullable = false)
 	private Date fechaAlta;
-
 	@Column(name = "activo", nullable = false)
 	private boolean activo;
 
 	public Usuario() {
 	}
 
-	public Usuario(int id, String username, String email, String password, String rol, Date fechaAlta, boolean activo) {
+	public Usuario(int id, String username, String email, String password,
+			String rol, Date fechaAlta, boolean activo) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -107,7 +101,8 @@ public class Usuario {
 	}
 
 	public String toString() {
-		return "Usuario [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password + ", rol="
-				+ rol + ", fechaAlta=" + fechaAlta + ", activo=" + activo + "]";
+		return "Usuario [id=" + id + ", username=" + username + ", email="
+				+ email + ", password=" + password + ", rol=" + rol
+				+ ", fechaAlta=" + fechaAlta + ", activo=" + activo + "]";
 	}
 }

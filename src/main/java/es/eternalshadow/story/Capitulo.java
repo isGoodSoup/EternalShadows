@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.jline.reader.LineReader;
 
+import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.enums.Ruta;
 import es.eternalshadow.interfaces.Capitulable;
 import es.eternalshadow.main.Panel;
-import es.eternalshadow.pojos.Criatura;
 import es.eternalshadow.util.Codex;
 
 /*
@@ -29,7 +29,7 @@ public class Capitulo implements Capitulable {
 		this.nombre = nombre;
 		this.numero = numero;
 	}
-	
+
 	public Ruta getRuta() {
 		return ruta;
 	}
@@ -61,7 +61,7 @@ public class Capitulo implements Capitulable {
 	public void setLineas(List<String> lineas) {
 		this.lineas = lineas;
 	}
-	
+
 	public Codex getUtil() {
 		return util;
 	}
@@ -72,9 +72,9 @@ public class Capitulo implements Capitulable {
 
 	public void mostrarLineas(LineReader reader) {
 		for (String linea : lineas) {
-	        System.out.println(linea);
-	        reader.readLine();
-	    }
+			System.out.println(linea);
+			reader.readLine();
+		}
 	}
 
 	@Override

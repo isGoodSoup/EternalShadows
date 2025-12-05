@@ -1,5 +1,7 @@
 package es.eternalshadow.pojos;
 
+import es.eternalshadow.entities.Criatura;
+
 public class Guerrero extends Criatura {
 	
 	public Guerrero() {}

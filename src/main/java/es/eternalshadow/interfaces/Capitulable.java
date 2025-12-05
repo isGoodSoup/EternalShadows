@@ -2,7 +2,7 @@ package es.eternalshadow.interfaces;
 
 import org.jline.reader.LineReader;
 
-import es.eternalshadow.pojos.Criatura;
+import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.util.Codex;
 
 public interface Capitulable {
