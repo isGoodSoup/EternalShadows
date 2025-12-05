@@ -1,0 +1,113 @@
+package es.eternalshadow.entites;
+
+import java.sql.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tb_usuario")
+
+public class Usuario {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+
+	@Column(name = "username", nullable = false, unique = true, length = 50)
+	private String username;
+
+	@Column(name = "email", nullable = false, unique = true, length = 100)
+	private String email;
+
+	@Column(name = "password", nullable = false, length = 100)
+	private String password;
+
+	@Column(name = "rol", nullable = false, length = 20)
+	private String rol;
+
+	@Column(name = "fecha_alta", nullable = false)
+	private Date fechaAlta;
+
+	@Column(name = "activo", nullable = false)
+	private boolean activo;
+
+	public Usuario() {
+	}
+
+	public Usuario(int id, String username, String email, String password, String rol, Date fechaAlta, boolean activo) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.rol = rol;
+		this.fechaAlta = fechaAlta;
+		this.activo = activo;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
+
+	public Date getFechaAlta() {
+		return fechaAlta;
+	}
+
+	public void setFechaAlta(Date fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
+
+	public String toString() {
+		return "Usuario [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password + ", rol="
+				+ rol + ", fechaAlta=" + fechaAlta + ", activo=" + activo + "]";
+	}
+
+}
