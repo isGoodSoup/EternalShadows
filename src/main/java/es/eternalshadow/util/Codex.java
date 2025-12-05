@@ -15,7 +15,6 @@ import java.util.Random;
 import org.jline.reader.LineReader;
 
 import es.eternalshadow.entities.Criatura;
-import es.eternalshadow.entities.Usuario;
 import es.eternalshadow.enums.Clases;
 import es.eternalshadow.enums.Ruta;
 import es.eternalshadow.main.Panel;
