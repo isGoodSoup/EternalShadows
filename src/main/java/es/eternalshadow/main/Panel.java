@@ -14,9 +14,9 @@ import es.eternalshadow.story.HistoriaPrincipal;
 import es.eternalshadow.util.Codex;
 
 /**
- * Clase principal que representa el panel de control de la aplicación.
- * Se encarga de inicializar el terminal, manejar la entrada del usuario
- * y comenzar la historia.
+ * Clase principal que representa el panel de control de la aplicación. Se
+ * encarga de inicializar el terminal, manejar la entrada del usuario y comenzar
+ * la historia.
  */
 
 public class Panel {
@@ -27,19 +27,17 @@ public class Panel {
 	private Codex util = new Codex(this);
 	private int opcion;
 	private static final Logger log = LoggerFactory.getLogger(Panel.class);
-	
+
 	public Panel() {
-        try {
-            terminal = TerminalBuilder.terminal();
-            reader = LineReaderBuilder.builder()
-                    .terminal(terminal)
-                    .build();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-    }
-	
+		try {
+			terminal = TerminalBuilder.terminal();
+			reader = LineReaderBuilder.builder().terminal(terminal).build();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
 	public Historia getHistoria() {
 		return historia;
 	}
@@ -63,32 +61,37 @@ public class Panel {
 	public void setReader(LineReader reader) {
 		this.reader = reader;
 	}
-	
+
 	/**
-     * Inicia la historia y muestra el menú principal.
-     * Permite comenzar la aventura o salir de la aplicación.
-     */
+	 * Inicia la historia y muestra el menú principal. Permite comenzar la aventura
+	 * o salir de la aplicación.
+	 */
 	public void comenzar() {
 		log.debug("Inicio");
 		try {
 			int n = 1;
-	        while(n == util.getCapitulosTotales()) {
-	        	util.toLeerArchivo("./docs/mq/capitulo" + n + ".txt");
-	        	n++;
-	        }
-	    } catch (IOException e) {
-	        Codex.printException(e);
-	        System.exit(1);
-	    }
-		
-		String[] menu = {"Comenzar Aventura", "Salir"};
+			while (n == util.getCapitulosTotales()) {
+				util.toLeerArchivo("./docs/mq/capitulo" + n + ".txt");
+				n++;
+			}
+		} catch (IOException e) {
+			Codex.printException(e);
+			System.exit(1);
+		}
+
+		String[] menu = { "Comenzar Aventura", "Salir" };
 		Codex.toGetString(titulo.toUpperCase() + " ⚔️");
 		opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 		do {
-			switch(opcion) {
-				case 1 -> { historia.iniciar(util.crearPersonaje(reader), reader, util); }
-				case 2 -> { log.debug("Salida"); System.exit(0); }
+			switch (opcion) {
+			case 1 -> {
+				historia.iniciar(util.crearPersonaje(reader), reader, util);
 			}
-		} while(opcion > 2);
+			case 2 -> {
+				log.debug("Salida");
+				System.exit(0);
+			}
+			}
+		} while (opcion > 2);
 	}
 }

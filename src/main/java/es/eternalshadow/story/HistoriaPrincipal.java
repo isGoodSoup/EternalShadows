@@ -12,12 +12,11 @@ import es.eternalshadow.util.Codex;
 
 public class HistoriaPrincipal extends Historia {
 	private Panel panel;
+	private Codex util = new Codex(panel);
 	
 	public HistoriaPrincipal(String titulo, Panel panel) {
 	    super(titulo);
 	    this.panel = panel;
-	    nuevoCapitulo("Los Ecos de Noxterra", 1);
-	    nuevoCapitulo("El Sendero de los Condenados", 2);
 	}
 
 	@Override
@@ -34,6 +33,7 @@ public class HistoriaPrincipal extends Historia {
 				reader.readLine();
 			}
 		}
+		util.tirarDados();
 		return criatura;
 	}
 	
