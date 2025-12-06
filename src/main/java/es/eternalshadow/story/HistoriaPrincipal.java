@@ -1,8 +1,6 @@
 package es.eternalshadow.story;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.jline.reader.LineReader;
 
@@ -13,7 +11,6 @@ import es.eternalshadow.util.Codex;
 
 public class HistoriaPrincipal extends Historia {
 	private Panel panel;
-	private Codex util = new Codex(panel);
 
 	public HistoriaPrincipal(String titulo, Panel panel) {
 		super(titulo, panel);
@@ -23,18 +20,13 @@ public class HistoriaPrincipal extends Historia {
 	@Override
 	public Criatura iniciar(Criatura criatura, LineReader reader, Codex util) {
 		for (Capitulo capitulo : getCapitulos()) {
-			List<String> lineas = new ArrayList<>();
 			try {
-				lineas = util.toLeerArchivo("./docs/mq/capitulo" + capitulo.getNumero() + ".txt");
+				capitulo = util.cargarCapitulo("./docs/mq/capitulo" + capitulo.getNumero() + ".txt", 
+						panel, panel.getJugador(), criatura);
 			} catch (IOException e) {
 				Codex.printException(e);
 			}
-			for (String linea : lineas) {
-				System.out.println(linea);
-				reader.readLine();
-			}
 		}
-		util.tirarDados();
 		return criatura;
 	}
 

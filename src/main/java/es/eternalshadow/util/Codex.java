@@ -131,23 +131,6 @@ public class Codex {
 	}
 
 	/**
-	 * Simula el lanzamiento de dos dados de 20 caras.
-	 * 
-	 * @return Arreglo con los resultados de los dos dados.
-	 */
-	public int lanzar() {
-		return random.nextInt(21) + 1;
-	}
-
-	public int tirarDados() {
-		for (int i = 0; i < 5; i++) {
-			int resultado = lanzar();
-			System.out.println("Lanzamiento " + (i + 1) + ": " + resultado);
-		}
-		return 0;
-	}
-
-	/**
 	 * Permite al usuario crear un personaje personalizado eligiendo clase y
 	 * atributos.
 	 * 

@@ -6,7 +6,9 @@ public class Jugador extends Criatura {
 	private String nombre;
 	private int moral;
 	private int ataque;
-
+	
+	public Jugador() {}
+	
 	public Jugador(String nombre, int vida, int moral, int ataque) {
 		super();
 		this.nombre = nombre;

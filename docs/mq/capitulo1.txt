@@ -1,3 +1,5 @@
+nombre: El Despertar del Elegido
+numero: 1
 #ESCENA inicio
 🛏️ **EL DESPERTAR DEL ELEGIDO**
 

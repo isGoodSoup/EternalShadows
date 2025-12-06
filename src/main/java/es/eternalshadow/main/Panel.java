@@ -9,9 +9,11 @@ import org.jline.terminal.TerminalBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.eternalshadow.pojos.Jugador;
 import es.eternalshadow.story.Historia;
 import es.eternalshadow.story.HistoriaPrincipal;
 import es.eternalshadow.util.Codex;
+import es.eternalshadow.util.Dados;
 
 /**
  * Clase principal que representa el panel de control de la aplicación. Se
@@ -24,6 +26,8 @@ public class Panel {
 	private Terminal terminal;
 	private LineReader reader;
 	private Historia historia = new HistoriaPrincipal(titulo, this);
+	private Jugador jugador = new Jugador();
+	private Dados dados = new Dados(this);
 	private Codex util = new Codex(this);
 	private int opcion;
 	private static final Logger log = LoggerFactory.getLogger(Panel.class);
@@ -36,6 +40,14 @@ public class Panel {
 			e.printStackTrace();
 			System.exit(1);
 		}
+	}
+
+	public Jugador getJugador() {
+		return jugador;
+	}
+
+	public void setJugador(Jugador jugador) {
+		this.jugador = jugador;
 	}
 
 	public Historia getHistoria() {
@@ -62,6 +74,14 @@ public class Panel {
 		this.reader = reader;
 	}
 
+	public Dados getDados() {
+		return dados;
+	}
+
+	public void setDados(Dados dados) {
+		this.dados = dados;
+	}
+
 	/**
 	 * Inicia la historia y muestra el menú principal. Permite comenzar la aventura
 	 * o salir de la aplicación.
@@ -84,13 +104,13 @@ public class Panel {
 		opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 		do {
 			switch (opcion) {
-			case 1 -> {
-				historia.iniciar(util.crearPersonaje(reader), reader, util);
-			}
-			case 2 -> {
-				log.debug("Salida");
-				System.exit(0);
-			}
+				case 1 -> {
+					historia.iniciar(util.crearPersonaje(reader), reader, util);
+				}
+				case 2 -> {
+					log.debug("Salida");
+					System.exit(0);
+				}
 			}
 		} while (opcion > 2);
 	}
