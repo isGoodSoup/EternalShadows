@@ -60,3 +60,11 @@ Un lobo salvaje emerge de entre las sombras. Sus ojos brillan con un fulgor anti
 
 -opcion ⚔️ Luchar -> postCombate(luchar)
 -opcion 🏃 Huir -> bosque(huir)
+
+#ESCENA postCombate
+🗡️ **HAS SOBREVIVIDO**
+
+El cuerpo del lobo yace inmóvil. Sientes cómo una fuerza invisible parece observarte desde lo profundo del bosque.
+
+-opcion 🏁 Fin del capítulo -> FIN
+
