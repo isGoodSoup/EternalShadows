@@ -9,7 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.jline.reader.LineReader;
@@ -17,8 +20,11 @@ import org.jline.reader.LineReader;
 import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.enums.Ruta;
 import es.eternalshadow.main.Panel;
+import es.eternalshadow.motor.Escena;
+import es.eternalshadow.motor.Opcion;
 import es.eternalshadow.pojos.Jugador;
 import es.eternalshadow.pojos.Pocion;
+import es.eternalshadow.story.Capitulo;
 
 /**
  * Clase de utilidades para el juego "Eternal Shadows". Proporciona métodos
@@ -162,7 +168,7 @@ public class Codex {
 			m = Codex.toScanInteger(reader, q("la magia"));
 			puntos += m;
 		} while (puntos != 80);
-		
+
 		String tipo = toScan(reader, "Elige tu raza");
 		String nombre = toScan(reader, "Introduce tu nombre");
 		Criatura criatura = new Criatura(tipo, nombre, f, r, v, m, puntosVida);
@@ -171,6 +177,7 @@ public class Codex {
 
 	/**
 	 * Crea una criatura aleatoria con atributos que suman 100 y clase aleatoria.
+	 * 
 	 * @return Criatura aleatoria creada.
 	 */
 	public Criatura crearCriaturaAleatoria() {
@@ -187,17 +194,10 @@ public class Codex {
 		int velocidad = atributos[2];
 		int magia = atributos[3];
 
-		String[] razas = { 
-			    "Mago", 
-			    "Guerrero", 
-			    "Demonio",
-			    "Elfo Oscuro",
-			    "Enano",
-			    "Elfo"
-			};
+		String[] razas = { "Mago", "Guerrero", "Demonio", "Elfo Oscuro", "Enano", "Elfo" };
 		int numale = random.nextInt(razas.length);
 		String tipo = razas[numale];
-		
+
 		// TODO Nombre
 		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad, magia, puntosVida);
 		if (c != null) {
@@ -228,6 +228,101 @@ public class Codex {
 	public List<String> toLeerArchivo(String archivo) throws IOException {
 		String contenido = Files.readString(Paths.get(archivo));
 		return contenido.lines().toList();
+	}
+
+	/*
+	 * Carga el capítulo y devuelve el capítulo procesado
+	 * 
+	 */
+	public Capitulo cargarCapitulo(String ruta, Panel panel, Jugador jugador, Criatura criatura) throws IOException {
+		List<String> lineas = toLeerArchivo(ruta);
+		String nombre = "";
+		int numero = 0;
+		List<String> textoInicial = new ArrayList<>();
+
+		Map<String, Escena> escenas = new LinkedHashMap<>();
+		String escenaActualId = null;
+		StringBuilder descripcionActual = null;
+		List<Opcion> opcionesActuales = null;
+
+		Map<String, Runnable> acciones = Map.of("addPocion", () -> this.addPocion(null), "aumentarMoral",
+				() -> this.aumentarMoral(3), "lucharConLobo", () -> this.luchar(jugador, criatura));
+
+		boolean leyendoTexto = false;
+
+		for (String line : lineas) {
+			String linea = line.trim();
+
+			if (linea.isEmpty())
+				continue;
+			if (linea.startsWith("nombre:")) {
+				nombre = linea.substring(7).trim();
+				continue;
+			}
+			if (linea.startsWith("numero:")) {
+				numero = Integer.parseInt(linea.substring(7).trim());
+				continue;
+			}
+			if (linea.equals("#TEXTO")) {
+				leyendoTexto = true;
+				continue;
+			}
+			if (leyendoTexto && !linea.startsWith("#ESCENA")) {
+				textoInicial.add(line);
+				continue;
+			}
+			if (linea.startsWith("#ESCENA")) {
+				leyendoTexto = false;
+
+				if (escenaActualId != null) {
+					escenas.put(escenaActualId, new Escena(descripcionActual.toString(), opcionesActuales));
+				}
+
+				escenaActualId = linea.substring(7).trim();
+				descripcionActual = new StringBuilder();
+				opcionesActuales = new ArrayList<>();
+				continue;
+			}
+			if (linea.startsWith("-opcion")) {
+				String sinPrefijo = linea.substring(7).trim();
+				String[] partes = sinPrefijo.split("->");
+				String texto = partes[0].trim();
+				String destinoParte = partes[1].trim();
+				String destino;
+				Runnable accion = null;
+
+				if (destinoParte.contains("(")) {
+					String dest = destinoParte.substring(0, destinoParte.indexOf("(")).trim();
+					String accionId = destinoParte.substring(destinoParte.indexOf("(") + 1, destinoParte.indexOf(")"));
+
+					destino = dest;
+					accion = acciones.get(accionId.trim());
+				} else {
+					destino = destinoParte;
+				}
+				Opcion op = new Opcion(texto, null, accion);
+				op.setSiguienteEscenaId(destino);
+				opcionesActuales.add(op);
+				continue;
+			}
+			descripcionActual.append(linea).append("\n");
+		}
+		if (escenaActualId != null) {
+			escenas.put(escenaActualId, new Escena(descripcionActual.toString(), opcionesActuales));
+		}
+		for (Escena esc : escenas.values()) {
+			for (Opcion op : esc.getOpciones()) {
+				String id = op.getSiguienteEscenaId();
+				if (id == null || id.equals("FIN")) {
+					op.setEscenaDestino(null);
+				} else {
+					op.setEscenaDestino(escenas.get(id));
+				}
+			}
+		}
+		Capitulo cap = new Capitulo(nombre, numero, escenas.get("inicio"), panel);
+		cap.setLineas(textoInicial);
+		return cap;
 	}
 
 	/**
@@ -423,11 +518,11 @@ public class Codex {
 	public void addPocion(Pocion pocion) {
 		// TODO Añadir pocion al inventario
 	}
-	
+
 	public void addArtefacto(String string) {
 		// TODO Añadir artefacto al inventario
 	}
-	
+
 	public void luchar(Jugador user, Criatura lobo) {
 		// TODO Luchar
 	}

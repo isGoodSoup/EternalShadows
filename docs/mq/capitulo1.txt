@@ -1,0 +1,62 @@
+#ESCENA inicio
+🛏️ **EL DESPERTAR DEL ELEGIDO**
+
+El alba desgarra la noche con sus dedos luminosos, filtrándose por la rendija 
+como un susurro dorado que te arranca del sueño con la urgencia de un presentimiento.
+
+Despiertas con el corazón encogido, sabiendo que este amanecer trae 
+un eco diferente grabado en su luz. Los primeros rayos del sol se filtran por la rendija de tu ventana mientras despiertas con un sobresalto.
+
+El aire de Varyon carga hoy con un peso desconocido. Los pájaros han enmudecido 
+y las flores, marchitas antes de tiempo, inclinan sus pétalos como en un lento y silencioso lamento.
+
+Recuerdas el sueño: una voz ancestral te llamaba desde las ruinas del Templo del Alba.
+
+En tu mesita de noche, encuentras una carta sellada con el emblema del Consejo del Alba.
+
+-opcion 🔍 Examinar la carta con detenimiento -> carta_detalle(addPocion)
+-opcion 🚪 Salir rápidamente hacia la aldea -> aldea
+-opcion 🏠 Buscar más pistas en la habitación -> busqueda_habitacion(aumentarMoral)
+-opcion ⏳ Esperar y observar desde la ventana -> observar_ventana(addArtefacto)
+-opcion 📖 Rezar a los antiguos dioses -> oracion(aumentarMoral)
+
+#ESCENA mercado
+🧵 **EL MERCADO DE LOS SUSURROS**
+
+El mercado bulle con una energía nerviosa. Comerciantes de rostros sombríos 
+venden artefactos que parecen contener ecos del pasado. Entre el gentío, 
+reconoces inmediatamente al Mercader Garantizado - un hombre anciano cuya 
+tienda emite un tenue resplandor azul.
+
+"Se que buscas respuestas," dice con una sonrisa que no llega a sus ojos. 
+"Tengo tres objetos que podrían interesarte. Pero el precio... el precio 
+siempre es una tirada del destino."
+
+Extiende tres objetos sobre su mostrador:
+
+-opcion 🔮 Comprar la Brújula de los Ecos (15+ oro) -> comprar_brujula
+-opcion ⚔️ Comprar la Daga de Luna Plateada (12+ oro) -> comprar_daga
+-opcion 🛡️ Comprar el Manto de Sombras (18+ oro) -> comprar_manto
+-opcion 💬 Regatear los precios primero -> regatear(aumentarMoral)
+-opcion 🚶‍♂️ Rechazar y explorar otros puestos -> otros_puestos
+
+#ESCENA regatear
+🤝 **EL ARTE DEL REGATEO**
+
+El Mercader Garantizado arquea una ceja: 'Intentas negociar con el destino? Interesante... 
+Te daré una oportunidad. Responde mi acertijo y tal vez considere ajustar mis precios.'
+
+'Camino sin piernas, hablo sin boca, doy la hora sin ser reloj. ¿Qué soy?'
+
+-opcion 💧 Un río -> acertijo_correcto(addPocion)
+-opcion 🌪️ El viento -> acertijo_incorrecto
+-opcion ⏳ El tiempo -> acertijo_incorrecto
+-opcion 🔙 Volver a los objetos -> mercado
+
+#ESCENA combateLobo
+🐺 **EL BOSQUE SOMBRÍO**
+
+Un lobo salvaje emerge de entre las sombras. Sus ojos brillan con un fulgor antinatural. No hay escapatoria.
+
+-opcion ⚔️ Luchar -> postCombate(luchar)
+-opcion 🏃 Huir -> bosque(huir)

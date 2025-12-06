@@ -7,19 +7,22 @@ import org.jline.reader.LineReader;
 
 import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.main.Panel;
+import es.eternalshadow.motor.Escena;
+import es.eternalshadow.motor.Opcion;
 import es.eternalshadow.util.Codex;
 
 public abstract class Historia {
 	private String titulo;
 	private Panel panel;
-	private Codex util = new Codex(panel);
+	private Codex util;
 	private List<Capitulo> capitulos;
+	private Escena escena;
 
 	public Historia(String titulo, Panel panel) {
-		super();
 		this.titulo = titulo;
 		this.panel = panel;
 		this.capitulos = new ArrayList<>();
+		this.util = new Codex(panel);
 	}
 
 	public String getTitulo() {
@@ -54,5 +57,38 @@ public abstract class Historia {
 		this.capitulos = capitulos;
 	}
 
-	public abstract Criatura iniciar(Criatura crearPersonaje, LineReader reader, Codex util);
+	public Escena getEscena() {
+		return escena;
+	}
+
+	public void setEscena(Escena escena) {
+		this.escena = escena;
+	}
+
+	public void iniciarCapitulo(Capitulo capitulo) {
+		this.escena = capitulo.getEscena();
+		mostrarEscena();
+	}
+
+	public void mostrarEscena() {
+		System.out.println("\n" + escena.getDescripcion());
+
+		List<Opcion> opciones = escena.getOpciones();
+		for (int i = 0; i < opciones.size(); i++) {
+			System.out.println((i + 1) + ". " + opciones.get(i).getTexto());
+		}
+	}
+
+	public void elegirOpcion(int indice) {
+		List<Opcion> opciones = escena.getOpciones();
+		if (indice < 1 || indice > opciones.size()) {
+			System.out.println("Opción no válida.");
+			return;
+		}
+
+		escena = opciones.get(indice - 1).getEscenaDestino();
+		mostrarEscena();
+	}
+
+	public abstract Criatura iniciar(Criatura personaje, LineReader reader, Codex util);
 }

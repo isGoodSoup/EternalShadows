@@ -3,6 +3,7 @@ package es.eternalshadow.motor;
 public class Opcion {
 	private String texto;
 	private String siguienteEscenaId;
+	private Escena escenaDestino;
 	private Runnable accion;
 
 	public Opcion(String texto, String siguienteEscenaId, Runnable accion) {
@@ -15,13 +16,16 @@ public class Opcion {
 		return texto;
 	}
 
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
+
 	public String getSiguienteEscenaId() {
 		return siguienteEscenaId;
 	}
 
-	public void ejecutarAccion() {
-		if (accion != null)
-			accion.run();
+	public void setSiguienteEscenaId(String id) {
+	    this.siguienteEscenaId = id;
 	}
 
 	public Runnable getAccion() {
@@ -32,16 +36,16 @@ public class Opcion {
 		this.accion = accion;
 	}
 
-	public void setTexto(String texto) {
-		this.texto = texto;
-	}
-
-	public void setSiguienteEscenaId(String siguienteEscenaId) {
-		this.siguienteEscenaId = siguienteEscenaId;
-	}
-
 	public Escena getEscenaDestino() {
-		// TODO Auto-generated method stub
-		return null;
+		return escenaDestino;
+	}
+
+	public void setEscenaDestino(Escena escenaDestino) {
+		this.escenaDestino = escenaDestino;
+	}
+	
+	public void ejecutarAccion() {
+	    if (accion != null)
+	        accion.run();
 	}
 }
