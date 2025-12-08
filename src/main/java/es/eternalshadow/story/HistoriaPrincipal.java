@@ -23,6 +23,7 @@ public class HistoriaPrincipal extends Historia {
 			try {
 				capitulo = util.cargarCapitulo("./docs/mq/capitulo" + capitulo.getNumero() + ".txt", 
 						panel, panel.getJugador(), criatura);
+				capitulo.ejecutar(criatura, reader, util);
 			} catch (IOException e) {
 				Codex.printException(e);
 			}

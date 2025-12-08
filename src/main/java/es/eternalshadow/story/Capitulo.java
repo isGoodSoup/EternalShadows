@@ -19,7 +19,7 @@ public class Capitulo implements Capitulable {
 	private int numero;
 	private Ruta ruta;
 	private List<String> lineas = new ArrayList<>();
-	private Codex util = new Codex(panel);
+	private Codex util;
 	private Escena escena;
 
 	public Capitulo(String nombre, int numero, Escena escena, Panel panel) {
@@ -27,6 +27,7 @@ public class Capitulo implements Capitulable {
 		this.nombre = nombre;
 		this.numero = numero;
 		this.escena = escena;
+		this.util = new Codex(panel);
 	}
 
 	public Panel getPanel() {

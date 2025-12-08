@@ -487,11 +487,7 @@ public class Codex {
 	 * @return Número total de capítulos.
 	 */
 	public int getCapitulosTotales() {
-		int n = 0;
-		for (int i = 0; i < panel.getHistoria().getCapitulos().size(); i++) {
-			n++;
-		}
-		return n;
+		return panel.getHistoria().getCapitulos().size();
 	}
 
 	public void aumentarMoral(int i) {

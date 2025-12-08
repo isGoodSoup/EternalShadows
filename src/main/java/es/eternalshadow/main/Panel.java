@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.eternalshadow.pojos.Jugador;
+import es.eternalshadow.story.Capitulo;
 import es.eternalshadow.story.Historia;
 import es.eternalshadow.story.HistoriaPrincipal;
 import es.eternalshadow.util.Codex;
@@ -90,10 +91,15 @@ public class Panel {
 		log.debug("Inicio");
 		try {
 			int n = 1;
-			while (n == util.getCapitulosTotales()) {
-				util.toLeerArchivo("./docs/mq/capitulo" + n + ".txt");
-				n++;
+			for(int i = 1; i <= util.getCapitulosTotales(); i++) {
+			    historia.getCapitulos().add(new Capitulo("Capítulo " + i, i, null, this));
 			}
+			
+			while(n <= util.getCapitulosTotales()) {
+			    util.toLeerArchivo("./docs/mq/capitulo" + n + ".txt");
+			    n++;
+			}
+
 		} catch (IOException e) {
 			Codex.printException(e);
 			System.exit(1);
@@ -101,8 +107,8 @@ public class Panel {
 
 		String[] menu = { "Comenzar Aventura", "Salir" };
 		Codex.toGetString(titulo.toUpperCase() + " ⚔️");
-		opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 		do {
+			opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 			switch (opcion) {
 				case 1 -> {
 					historia.iniciar(util.crearPersonaje(reader), reader, util);
@@ -112,6 +118,6 @@ public class Panel {
 					System.exit(0);
 				}
 			}
-		} while (opcion > 2);
+		} while(opcion > 2);
 	}
 }
