@@ -1,28 +1,29 @@
 package es.eternalshadow.pojos;
 
-public abstract class Armas {
-	private String nombre;
-	private String tipo;
-	
-	public Armas(String nombre, String tipo) {
-		super();
-		this.nombre = nombre;
-		this.tipo = tipo;
+public abstract class Armas extends Item {
+	private String nombreArma;
+	private String tipoArma;
+
+	public Armas(String nombre, String tipo, int cantidad, String nombreArma,
+			String tipoArma) {
+		super(nombre, tipo, cantidad);
+		this.nombreArma = nombreArma;
+		this.tipoArma = tipoArma;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getNombreArma() {
+		return nombreArma;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombreArma(String nombreArma) {
+		this.nombreArma = nombreArma;
 	}
 
-	public String getTipo() {
-		return tipo;
+	public String getTipoArma() {
+		return tipoArma;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public void setTipoArma(String tipoArma) {
+		this.tipoArma = tipoArma;
 	}
 }

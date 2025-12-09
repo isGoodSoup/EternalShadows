@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.jline.reader.LineReader;
@@ -72,7 +74,7 @@ public class Codex {
 	 * @return La opción seleccionada como entero.
 	 */
 	public int crearMenu(LineReader reader, String[] menu, String s) {
-		for(int i = 0; i < menu.length; i++) {
+		for (int i = 0; i < menu.length; i++) {
 			System.out.println(i + 1 + ") " + menu[i]);
 		}
 		int num = Codex.toScanInteger(reader, s);
@@ -103,7 +105,7 @@ public class Codex {
 		do {
 			System.out.print(s + ": ");
 			line = reader.readLine().trim();
-		} while(line.isEmpty());
+		} while (line.isEmpty());
 		return line;
 	}
 
@@ -116,15 +118,15 @@ public class Codex {
 	 */
 	public static int toScanInteger(LineReader reader, String s) {
 		String line = "";
-		while(true) {
+		while (true) {
 			try {
 				do {
 					System.out.print(s + ": ");
 					line = reader.readLine().trim();
-				} while(line.isEmpty());
+				} while (line.isEmpty());
 				int num = Integer.parseInt(line);
 				return num;
-			} catch(Exception e) {
+			} catch (Exception e) {
 				printException(e);
 			}
 		}
@@ -150,7 +152,7 @@ public class Codex {
 			puntos += v;
 			m = Codex.toScanInteger(reader, q("la magia"));
 			puntos += m;
-		} while(puntos != 80);
+		} while (puntos != 80);
 
 		String tipo = toScan(reader, "Elige tu raza");
 		String nombre = toScan(reader, "Introduce tu nombre");
@@ -167,7 +169,7 @@ public class Codex {
 	public Criatura crearCriaturaAleatoria() {
 		int[] atributos = new int[4];
 		int puntosTotal = 100;
-		for(int i = 0; i < 3; i++) {
+		for (int i = 0; i < 3; i++) {
 			atributos[i] = random.nextInt(puntosTotal + 1);
 			puntosTotal -= atributos[i];
 		}
@@ -186,7 +188,7 @@ public class Codex {
 		// TODO Nombre
 		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad,
 				magia, puntosVida);
-		if(c != null) {
+		if (c != null) {
 			System.out.println("Criatura enemiga creada: " + c.getNombre()
 					+ " con atributos: " + "Fuerza: " + fuerza
 					+ ", Resistencia: " + resistencia + ", Velocidad: "
@@ -226,35 +228,74 @@ public class Codex {
 			Criatura criatura) throws IOException {
 		List<String> lineas = toLeerArchivo(ruta);
 		List<Opcion> opciones = new ArrayList<>();
+		Map<String, Escena> escenas = new HashMap<>();
 		LineReader reader = panel.getReader();
-		
+
 		String nombre = "";
 		Escena escena = null;
 		int numero = 0;
-		
-		for(String linea : lineas) {
-			if(linea.startsWith("#FIN")) {
+
+		for (String linea : lineas) {
+			if (linea.startsWith("#FIN")) {
 				break;
 			}
-			if(linea.startsWith("#NOMBRE")) {
+			if (linea.startsWith("#NOMBRE")) {
 				linea = linea.replace("#NOMBRE ", "").trim();
 				nombre = linea;
 				continue;
 			}
-			if(linea.startsWith("#CAPITULO")) {
+			if (linea.startsWith("#CAPITULO")) {
 				linea = linea.replace("#CAPITULO ", "").trim();
 				numero = Integer.parseInt(linea);
 				continue;
 			}
-			if(linea.startsWith("#ESCENA")) {
+			if (linea.startsWith("#ESCENA ")) {
 				linea = linea.replace("#ESCENA ", "").trim();
-				escena = new Escena(linea, opciones);
+				escena = new Escena(linea, new ArrayList<>());
+				escenas.put(linea, escena);
+				opciones = escena.getOpciones();
 				continue;
 			}
-			if(linea.startsWith("#OPCION ")) {
-				linea = linea.replace("#OPCION ", "	");
-				// TODO Opciones parseo
-				opciones.add(null);
+
+			if (linea.startsWith("#OPCION ")) {
+				String opcionStr = linea.replace("#OPCION ", "").trim();
+				String[] partes = opcionStr.split("->");
+				if (partes.length == 2) {
+					String texto = partes[0].trim();
+					String destinoCompleto = partes[1].trim();
+					String siguienteEscenaId;
+					Runnable accion = null;
+
+					if (destinoCompleto.contains("(")
+							&& destinoCompleto.endsWith(")")) {
+						int idx = destinoCompleto.indexOf('(');
+						siguienteEscenaId = destinoCompleto.substring(0, idx)
+								.trim();
+						String nombreAccion = destinoCompleto.substring(idx + 1,
+								destinoCompleto.length() - 1).trim();
+						accion = () -> ejecutarAccion(nombreAccion, jugador,
+								criatura);
+					} else {
+						siguienteEscenaId = destinoCompleto;
+					}
+
+					Opcion opcion = new Opcion(texto, siguienteEscenaId,
+							accion);
+					if (escenas.containsKey(siguienteEscenaId)) {
+						opcion.setEscenaDestino(escenas.get(siguienteEscenaId));
+					}
+					for (Escena e : escenas.values()) {
+						for (Opcion op : e.getOpciones()) {
+							if (op.getEscenaDestino() == null) {
+								op.setEscenaDestino(
+										escenas.get(op.getSiguienteEscenaId()));
+							}
+						}
+					}
+					opciones.add(opcion);
+				} else {
+					System.err.println("Opción mal formada: " + linea);
+				}
 			}
 			System.out.print(linea);
 			reader.readLine();
@@ -276,7 +317,7 @@ public class Codex {
 		try {
 			connection = DriverManager.getConnection(url_oracle2, username,
 					password);
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			System.err.println("Error crear la sesión" + e.getMessage());
 		}
 
@@ -291,11 +332,11 @@ public class Codex {
 	public static void consultaRaza() {
 		String consultaRaza = "SELECT ID, NOMBRE, TIPO, FUERZA, VELOCIDAD, MAGIA FROM TB_RAZA";
 		String separador = " | ";
-		try(Connection conexion = crearConexion();
+		try (Connection conexion = crearConexion();
 				Statement st = conexion.createStatement();
 				ResultSet rs = st.executeQuery(consultaRaza)) {
 			StringBuilder sb = new StringBuilder();
-			while(rs.next()) {
+			while (rs.next()) {
 				int id = rs.getInt("ID");
 				String tipo = rs.getString("TIPO");
 				int fuerza = rs.getInt("FUERZA");
@@ -307,7 +348,7 @@ public class Codex {
 								+ velocidad + separador + "MAGIA:" + magia));
 			}
 
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			System.out.println("Error " + e.getMessage());
 		}
 		System.out.println("TERMINA");
@@ -327,7 +368,7 @@ public class Codex {
 		int magia = c.getMagia();
 
 		String sql = "INSERT INTO TB_RAZAS (ID,NOMBRE,TIPO, FUERZA, VELOCIDAD, MAGIA) VALUES (?, ?, ?, ?, ?)";
-		try(Connection conexion = crearConexion();
+		try (Connection conexion = crearConexion();
 				PreparedStatement ps = conexion.prepareStatement(sql)) {
 			ps.setInt(1, id);
 			ps.setString(2, nombre);
@@ -337,7 +378,7 @@ public class Codex {
 			ps.setInt(6, magia);
 			int filas = ps.executeUpdate();
 			System.out.println("Registros insertados: " + filas);
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			printException(e);
 		}
 	}
@@ -369,10 +410,10 @@ public class Codex {
 	 * @param s Texto del título.
 	 */
 	public static void toGetString(String s) {
-		for(int i = 0; i < s.length(); i++)
+		for (int i = 0; i < s.length(); i++)
 			System.out.print("=");
 		System.out.print(" " + s + " ");
-		for(int i = 0; i < s.length(); i++)
+		for (int i = 0; i < s.length(); i++)
 			System.out.print("=");
 		System.out.println();
 	}
@@ -450,36 +491,32 @@ public class Codex {
 			return Files.list(Paths.get("./docs/mq")).filter(
 					f -> f.getFileName().toString().startsWith("capitulo"))
 					.toArray().length;
-		} catch(IOException e) {
+		} catch (IOException e) {
 			printException(e);
 		}
 		return 0;
 	}
-
-	public void aumentarMoral(int i) {
-		// TODO Aumentar moral del personaje
-	}
-
-	public void addPocion(Pocion pocion) {
-		// TODO Añadir pocion al inventario
-	}
-
-	public void addArtefacto(String string) {
-		// TODO Añadir artefacto al inventario
-	}
-
-	public void luchar(Jugador user, Criatura lobo) {
-		// TODO Luchar
-	}
-
-	public static void comprarObjetoMercader(Jugador user, String objeto,
-			int precio) {
-		if(user.getOro() >= precio) {
-			user.reducirOro(precio);
-			user.addArtefacto(objeto);
-			System.out.println("\nHas obtenido: " + objeto);
-		} else {
-			System.out.println("\nNo tienes suficiente oro...");
+	
+	/**
+	 * Ejecuta las acciones que se parsean por #OPCION
+	 * @param el nombre de la accion String
+	 * @param el jugador parseado
+	 * @param la criatura pasada
+	 */
+	public void ejecutarAccion(String nombreAccion, Jugador jugador,
+			Criatura criatura) {
+		switch (nombreAccion) {
+			case "addPocion" -> { jugador.getInventario().put("Pocion de Sanación", new Pocion("Pocion de Curacion", 1)); }
+			case "aumentarMoral" -> { jugador.modMoral(1); }
+			case "addArtefacto" -> {}
+			case "luchar" -> { jugador.luchar(jugador, criatura); }
+			case "huir" -> { jugador.huir(jugador); }
+			default -> System.err.println("ERROR: " + "Acción desconocida: " + nombreAccion);
 		}
+	}
+
+	public static void comprarObjetoMercader(Jugador jugador, String objeto,
+			int precio) {
+		// TODO SistemaCompras
 	}
 }

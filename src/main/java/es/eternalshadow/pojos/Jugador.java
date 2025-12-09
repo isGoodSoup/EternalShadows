@@ -1,27 +1,25 @@
 package es.eternalshadow.pojos;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import es.eternalshadow.entities.Criatura;
 
 public class Jugador extends Criatura {
-	private String nombre;
 	private int moral;
 	private int ataque;
-	
+	private int oro;
+	private Map<String, Item> inventario;
+
 	public Jugador() {}
-	
-	public Jugador(String nombre, int vida, int moral, int ataque) {
-		super();
-		this.nombre = nombre;
+
+	public Jugador(String tipo, String nombre, int fuerza, int resistencia,
+			int velocidad, int magia, int puntosVida, int moral, int ataque) {
+		super(tipo, nombre, fuerza, resistencia, velocidad, magia, puntosVida);
 		this.moral = moral;
 		this.ataque = ataque;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+		this.oro = 0;
+		this.inventario = new HashMap<>();
 	}
 
 	public int getMoral() {
@@ -30,6 +28,10 @@ public class Jugador extends Criatura {
 
 	public void setMoral(int moral) {
 		this.moral = moral;
+	}
+
+	public void modMoral(int moral) {
+		this.moral += moral;
 	}
 
 	public int getAtaque() {
@@ -41,18 +43,31 @@ public class Jugador extends Criatura {
 	}
 
 	public int getOro() {
-		// TODO Auto-generated method stub
-		return 0;
+		return oro;
 	}
 
-	public void reducirOro(int precio) {
-		// TODO Auto-generated method stub
-
+	public void setOro(int oro) {
+		this.oro = oro;
 	}
 
-	public void addArtefacto(String objeto) {
-		// TODO Auto-generated method stub
+	public void modOro(int precio) {
+		this.oro += precio;
+	}
+	
+	public Map<String, Item> getInventario() {
+		return inventario;
+	}
 
+	public void setInventario(Map<String, Item> inventario) {
+		this.inventario = inventario;
+	}
+
+	public void luchar(Jugador user, Criatura lobo) {
+		// TODO Luchar
+	}
+
+	public void huir(Jugador user) {
+		System.out.println(user.getNombre() + " está huyendo!");
 	}
 
 	@Override

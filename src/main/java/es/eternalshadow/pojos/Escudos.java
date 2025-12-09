@@ -1,38 +1,29 @@
 package es.eternalshadow.pojos;
 
-public abstract class Escudos {
-	private String nombre;
-	private String tipo;
-	private String calidad;
-	
-	public Escudos(String nombre, String tipo, String calidad) {
-		super();
-		this.nombre = nombre;
-		this.tipo = tipo;
-		this.calidad = calidad;
+public abstract class Escudos extends Item {
+	private String nombreEscudo;
+	private String tipoEscudo;
+
+	public Escudos(String nombre, String tipo, int cantidad,
+			String nombreEscudo, String tipoEscudo) {
+		super(nombre, tipo, cantidad);
+		this.nombreEscudo = nombreEscudo;
+		this.tipoEscudo = tipoEscudo;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getNombreEscudo() {
+		return nombreEscudo;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombreEscudo(String nombreEscudo) {
+		this.nombreEscudo = nombreEscudo;
 	}
 
-	public String getTipo() {
-		return tipo;
+	public String getTipoEscudo() {
+		return tipoEscudo;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	public String getCalidad() {
-		return calidad;
-	}
-
-	public void setCalidad(String calidad) {
-		this.calidad = calidad;
+	public void setTipoEscudo(String tipoEscudo) {
+		this.tipoEscudo = tipoEscudo;
 	}
 }

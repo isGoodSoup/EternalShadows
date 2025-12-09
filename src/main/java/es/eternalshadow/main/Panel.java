@@ -9,7 +9,9 @@ import org.jline.terminal.TerminalBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.pojos.Jugador;
+import es.eternalshadow.pojos.Pocion;
 import es.eternalshadow.story.Capitulo;
 import es.eternalshadow.story.Historia;
 import es.eternalshadow.story.HistoriaPrincipal;
