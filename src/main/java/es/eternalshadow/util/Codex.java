@@ -10,9 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import org.jline.reader.LineReader;
@@ -74,7 +72,7 @@ public class Codex {
 	 * @return La opción seleccionada como entero.
 	 */
 	public int crearMenu(LineReader reader, String[] menu, String s) {
-		for (int i = 0; i < menu.length; i++) {
+		for(int i = 0; i < menu.length; i++) {
 			System.out.println(i + 1 + ") " + menu[i]);
 		}
 		int num = Codex.toScanInteger(reader, s);
@@ -88,7 +86,9 @@ public class Codex {
 	 */
 	public static void printException(Exception e) {
 		System.err.println(e.getClass().getSimpleName() + " at line "
-				+ e.getStackTrace()[e.getStackTrace().length - 3].getLineNumber() + ": " + e.getMessage());
+				+ e.getStackTrace()[e.getStackTrace().length - 3]
+						.getLineNumber()
+				+ ": " + e.getMessage());
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class Codex {
 		do {
 			System.out.print(s + ": ");
 			line = reader.readLine().trim();
-		} while (line.isEmpty());
+		} while(line.isEmpty());
 		return line;
 	}
 
@@ -116,15 +116,15 @@ public class Codex {
 	 */
 	public static int toScanInteger(LineReader reader, String s) {
 		String line = "";
-		while (true) {
+		while(true) {
 			try {
 				do {
 					System.out.print(s + ": ");
 					line = reader.readLine().trim();
-				} while (line.isEmpty());
+				} while(line.isEmpty());
 				int num = Integer.parseInt(line);
 				return num;
-			} catch (Exception e) {
+			} catch(Exception e) {
 				printException(e);
 			}
 		}
@@ -150,7 +150,7 @@ public class Codex {
 			puntos += v;
 			m = Codex.toScanInteger(reader, q("la magia"));
 			puntos += m;
-		} while (puntos != 80);
+		} while(puntos != 80);
 
 		String tipo = toScan(reader, "Elige tu raza");
 		String nombre = toScan(reader, "Introduce tu nombre");
@@ -159,14 +159,15 @@ public class Codex {
 	}
 
 	/**
-	 * Crea una criatura aleatoria con atributos que suman 100 y clase aleatoria.
+	 * Crea una criatura aleatoria con atributos que suman 100 y clase
+	 * aleatoria.
 	 * 
 	 * @return Criatura aleatoria creada.
 	 */
 	public Criatura crearCriaturaAleatoria() {
 		int[] atributos = new int[4];
 		int puntosTotal = 100;
-		for (int i = 0; i < 3; i++) {
+		for(int i = 0; i < 3; i++) {
 			atributos[i] = random.nextInt(puntosTotal + 1);
 			puntosTotal -= atributos[i];
 		}
@@ -177,15 +178,19 @@ public class Codex {
 		int velocidad = atributos[2];
 		int magia = atributos[3];
 
-		String[] razas = { "Mago", "Guerrero", "Demonio", "Elfo Oscuro", "Enano", "Elfo" };
+		String[] razas = { "Mago", "Guerrero", "Demonio", "Elfo Oscuro",
+				"Enano", "Elfo" };
 		int numale = random.nextInt(razas.length);
 		String tipo = razas[numale];
 
 		// TODO Nombre
-		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad, magia, puntosVida);
-		if (c != null) {
-			System.out.println("Criatura enemiga creada: " + c.getNombre() + " con atributos: " + "Fuerza: " + fuerza
-					+ ", Resistencia: " + resistencia + ", Velocidad: " + velocidad + ", Magia: " + magia);
+		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad,
+				magia, puntosVida);
+		if(c != null) {
+			System.out.println("Criatura enemiga creada: " + c.getNombre()
+					+ " con atributos: " + "Fuerza: " + fuerza
+					+ ", Resistencia: " + resistencia + ", Velocidad: "
+					+ velocidad + ", Magia: " + magia);
 		}
 		insertarRegistros(c);
 		return c;
@@ -217,95 +222,37 @@ public class Codex {
 	 * Carga el capítulo y devuelve el capítulo procesado
 	 * 
 	 */
-	public Capitulo cargarCapitulo(String ruta, Panel panel, Jugador jugador, Criatura criatura) throws IOException {
+	public Capitulo cargarCapitulo(String ruta, Jugador jugador,
+			Criatura criatura) throws IOException {
 		List<String> lineas = toLeerArchivo(ruta);
+		LineReader reader = panel.getReader();
+		
 		String nombre = "";
+		Escena escena = null;
 		int numero = 0;
-		List<String> textoInicial = new ArrayList<>();
-
-		Map<String, Escena> escenas = new LinkedHashMap<>();
-		String escenaActualId = null;
-		StringBuilder descripcionActual = null;
-		List<Opcion> opcionesActuales = null;
-
-		Map<String, Runnable> acciones = Map.of("addPocion", () -> this.addPocion(null), "aumentarMoral",
-				() -> this.aumentarMoral(3), "lucharConLobo", () -> this.luchar(jugador, criatura));
-
-		boolean leyendoTexto = false;
-
-		for (String line : lineas) {
-			String linea = line.trim();
-
-			if (linea.isEmpty())
-				continue;
-			if (linea.startsWith("nombre:")) {
-				nombre = linea.substring(7).trim();
-				continue;
+		
+		for(String linea : lineas) {
+			if(linea.startsWith("#FIN")) {
+				break;
 			}
-			if (linea.startsWith("numero:")) {
-				numero = Integer.parseInt(linea.substring(7).trim());
-				continue;
+			if(linea.startsWith("#NOMBRE")) {
+				linea = linea.replace("#NOMBRE ", "").trim();
+				nombre = linea;
 			}
-			if (linea.equals("#TEXTO")) {
-				leyendoTexto = true;
-				continue;
+			if(linea.startsWith("#CAPITULO")) {
+				linea = linea.replace("#CAPITULO", "").trim();
+				numero = Integer.parseInt(linea);
 			}
-			if (leyendoTexto && !linea.startsWith("#ESCENA")) {
-				textoInicial.add(line);
-				continue;
+			if(linea.startsWith("#ESCENA")) {
+				linea = linea.replace("#ESCENA ", "").trim();
+				List<Opcion> opciones = new ArrayList<>();
+				escena = new Escena(linea, opciones);
 			}
-			if (linea.startsWith("#ESCENA")) {
-				leyendoTexto = false;
-
-				if (escenaActualId != null) {
-					escenas.put(escenaActualId, new Escena(descripcionActual.toString(), opcionesActuales));
-				}
-
-				escenaActualId = linea.substring(7).trim();
-				descripcionActual = new StringBuilder();
-				opcionesActuales = new ArrayList<>();
-				continue;
-			}
-			if (linea.startsWith("-opcion")) {
-				String sinPrefijo = linea.substring(7).trim();
-				String[] partes = sinPrefijo.split("->");
-				String texto = partes[0].trim();
-				String destinoParte = partes[1].trim();
-				String destino;
-				Runnable accion = null;
-
-				if (destinoParte.contains("(")) {
-					String dest = destinoParte.substring(0, destinoParte.indexOf("(")).trim();
-					String accionId = destinoParte.substring(destinoParte.indexOf("(") + 1, destinoParte.indexOf(")"));
-
-					destino = dest;
-					accion = acciones.get(accionId.trim());
-				} else {
-					destino = destinoParte;
-				}
-				Opcion op = new Opcion(texto, null, accion);
-				op.setSiguienteEscenaId(destino);
-				opcionesActuales.add(op);
-				continue;
-			}
-			descripcionActual.append(linea).append("\n");
+			System.out.print(linea);
+			reader.readLine();
 		}
-		if (escenaActualId != null) {
-			escenas.put(escenaActualId, new Escena(descripcionActual.toString(), opcionesActuales));
-		}
-		for (Escena esc : escenas.values()) {
-			for (Opcion op : esc.getOpciones()) {
-				String id = op.getSiguienteEscenaId();
-				if (id == null || id.equals("FIN")) {
-					op.setEscenaDestino(null);
-				} else {
-					op.setEscenaDestino(escenas.get(id));
-				}
-			}
-		}
-		Capitulo cap = new Capitulo(nombre, numero, escenas.get("inicio"), panel);
-		cap.setLineas(textoInicial);
-		return cap;
+		Capitulo capitulo = new Capitulo(numero, panel, nombre, escena);
+		return capitulo;
 	}
 
 	/**
@@ -319,8 +266,9 @@ public class Codex {
 		String password = "password";
 		Connection connection = null;
 		try {
-			connection = DriverManager.getConnection(url_oracle2, username, password);
-		} catch (SQLException e) {
+			connection = DriverManager.getConnection(url_oracle2, username,
+					password);
+		} catch(SQLException e) {
 			System.err.println("Error crear la sesión" + e.getMessage());
 		}
 
@@ -335,21 +283,23 @@ public class Codex {
 	public static void consultaRaza() {
 		String consultaRaza = "SELECT ID, NOMBRE, TIPO, FUERZA, VELOCIDAD, MAGIA FROM TB_RAZA";
 		String separador = " | ";
-		try (Connection conexion = crearConexion();
+		try(Connection conexion = crearConexion();
 				Statement st = conexion.createStatement();
 				ResultSet rs = st.executeQuery(consultaRaza)) {
 			StringBuilder sb = new StringBuilder();
-			while (rs.next()) {
+			while(rs.next()) {
 				int id = rs.getInt("ID");
 				String tipo = rs.getString("TIPO");
 				int fuerza = rs.getInt("FUERZA");
 				int velocidad = rs.getInt("VELOCIDAD");
 				int magia = rs.getInt("MAGIA");
-				System.out.println(sb.append("ID:" + id + separador + "TIPO:" + tipo + separador + "FUERZA:" + fuerza
-						+ separador + "VELOCIDAD:" + velocidad + separador + "MAGIA:" + magia));
+				System.out.println(sb.append(
+						"ID:" + id + separador + "TIPO:" + tipo + separador
+								+ "FUERZA:" + fuerza + separador + "VELOCIDAD:"
+								+ velocidad + separador + "MAGIA:" + magia));
 			}
 
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			System.out.println("Error " + e.getMessage());
 		}
 		System.out.println("TERMINA");
@@ -369,7 +319,8 @@ public class Codex {
 		int magia = c.getMagia();
 
 		String sql = "INSERT INTO TB_RAZAS (ID,NOMBRE,TIPO, FUERZA, VELOCIDAD, MAGIA) VALUES (?, ?, ?, ?, ?)";
-		try (Connection conexion = crearConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
+		try(Connection conexion = crearConexion();
+				PreparedStatement ps = conexion.prepareStatement(sql)) {
 			ps.setInt(1, id);
 			ps.setString(2, nombre);
 			ps.setString(3, tipo);
@@ -378,7 +329,7 @@ public class Codex {
 			ps.setInt(6, magia);
 			int filas = ps.executeUpdate();
 			System.out.println("Registros insertados: " + filas);
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			printException(e);
 		}
 	}
@@ -410,10 +361,10 @@ public class Codex {
 	 * @param s Texto del título.
 	 */
 	public static void toGetString(String s) {
-		for (int i = 0; i < s.length(); i++)
+		for(int i = 0; i < s.length(); i++)
 			System.out.print("=");
 		System.out.print(" " + s + " ");
-		for (int i = 0; i < s.length(); i++)
+		for(int i = 0; i < s.length(); i++)
 			System.out.print("=");
 		System.out.println();
 	}
@@ -487,7 +438,14 @@ public class Codex {
 	 * @return Número total de capítulos.
 	 */
 	public int getCapitulosTotales() {
-		return panel.getHistoria().getCapitulos().size();
+		try {
+			return Files.list(Paths.get("./docs/mq")).filter(
+					f -> f.getFileName().toString().startsWith("capitulo"))
+					.toArray().length;
+		} catch(IOException e) {
+			printException(e);
+		}
+		return 0;
 	}
 
 	public void aumentarMoral(int i) {
@@ -504,5 +462,16 @@ public class Codex {
 
 	public void luchar(Jugador user, Criatura lobo) {
 		// TODO Luchar
+	}
+
+	public static void comprarObjetoMercader(Jugador user, String objeto,
+			int precio) {
+		if(user.getOro() >= precio) {
+			user.reducirOro(precio);
+			user.addArtefacto(objeto);
+			System.out.println("\nHas obtenido: " + objeto);
+		} else {
+			System.out.println("\nNo tienes suficiente oro...");
+		}
 	}
 }

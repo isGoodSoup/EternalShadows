@@ -84,40 +84,40 @@ public class Panel {
 	}
 
 	/**
-	 * Inicia la historia y muestra el menú principal. Permite comenzar la aventura
-	 * o salir de la aplicación.
+	 * Inicia la historia y muestra el menú principal. Permite comenzar la
+	 * aventura o salir de la aplicación.
 	 */
 	public void comenzar() {
 		log.debug("Inicio");
 		try {
 			int n = 1;
-			for(int i = 1; i <= util.getCapitulosTotales(); i++) {
-			    historia.getCapitulos().add(new Capitulo("Capítulo " + i, i, null, this));
+			int total = util.getCapitulosTotales();
+			for (int i = 1; i <= total; i++) {
+				historia.getCapitulos().add(new Capitulo(i, this, "", null));
 			}
-			
-			while(n <= util.getCapitulosTotales()) {
-			    util.toLeerArchivo("./docs/mq/capitulo" + n + ".txt");
-			    n++;
+
+			while (n <= util.getCapitulosTotales()) {
+				util.toLeerArchivo("./docs/mq/capitulo" + n + ".txt");
+				n++;
 			}
 
 		} catch (IOException e) {
 			Codex.printException(e);
 			System.exit(1);
 		}
-
 		String[] menu = { "Comenzar Aventura", "Salir" };
 		Codex.toGetString(titulo.toUpperCase() + " ⚔️");
 		do {
 			opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 			switch (opcion) {
-				case 1 -> {
-					historia.iniciar(util.crearPersonaje(reader), reader, util);
-				}
-				case 2 -> {
-					log.debug("Salida");
-					System.exit(0);
-				}
+			case 1 -> {
+				historia.iniciar(util.crearPersonaje(reader), reader, util);
 			}
-		} while(opcion > 2);
+			case 2 -> {
+				log.debug("Salida");
+				System.exit(0);
+			}
+			}
+		} while (opcion > 2);
 	}
 }

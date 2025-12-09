@@ -1,7 +1,5 @@
 package es.eternalshadow.interfaces;
 
-import org.jline.reader.LineReader;
-
 import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.util.Codex;
 
@@ -13,5 +11,5 @@ public interface Capitulable {
      * @param util Utilidades de Codex.
 	 * @return 
      */
-	Criatura ejecutar(Criatura criatura, LineReader reader, Codex util);
+	Criatura ejecutar(Criatura criatura, Codex util);
 }
