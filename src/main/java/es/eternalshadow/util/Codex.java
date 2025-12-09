@@ -225,6 +225,7 @@ public class Codex {
 	public Capitulo cargarCapitulo(String ruta, Jugador jugador,
 			Criatura criatura) throws IOException {
 		List<String> lineas = toLeerArchivo(ruta);
+		List<Opcion> opciones = new ArrayList<>();
 		LineReader reader = panel.getReader();
 		
 		String nombre = "";
@@ -238,15 +239,22 @@ public class Codex {
 			if(linea.startsWith("#NOMBRE")) {
 				linea = linea.replace("#NOMBRE ", "").trim();
 				nombre = linea;
+				continue;
 			}
 			if(linea.startsWith("#CAPITULO")) {
-				linea = linea.replace("#CAPITULO", "").trim();
+				linea = linea.replace("#CAPITULO ", "").trim();
 				numero = Integer.parseInt(linea);
+				continue;
 			}
 			if(linea.startsWith("#ESCENA")) {
 				linea = linea.replace("#ESCENA ", "").trim();
-				List<Opcion> opciones = new ArrayList<>();
 				escena = new Escena(linea, opciones);
+				continue;
+			}
+			if(linea.startsWith("#OPCION ")) {
+				linea = linea.replace("#OPCION ", "	");
+				// TODO Opciones parseo
+				opciones.add(null);
 			}
 			System.out.print(linea);
 			reader.readLine();
