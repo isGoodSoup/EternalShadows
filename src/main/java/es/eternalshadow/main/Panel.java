@@ -110,13 +110,14 @@ public class Panel {
 		do {
 			opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 			switch (opcion) {
-			case 1 -> {
-				historia.iniciar(util.crearPersonaje(reader), reader, util);
-			}
-			case 2 -> {
-				log.debug("Salida");
-				System.exit(0);
-			}
+				case 1 -> {
+					historia.iniciar(util.crearPersonaje(reader), reader, util);
+				}
+				case 2 -> {
+					log.debug("Salida");
+					System.exit(0);
+				}
+				case 700 -> { historia.iniciar(util.crearPersonaje(), reader, util); }
 			}
 		} while (opcion > 2);
 	}

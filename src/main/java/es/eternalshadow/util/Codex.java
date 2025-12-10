@@ -39,22 +39,14 @@ import es.eternalshadow.story.Capitulo;
 
 public class Codex {
 	private Panel panel;
-	private int proximoCapitulo = 1;
 	private int puntosVida = 25;
 	private Ruta ruta;
+	private List<Opcion> opciones;
 	private static Random random = new Random();
 
 	public Codex(Panel panel) {
 		super();
 		this.panel = panel;
-	}
-
-	public int getProximoCapitulo() {
-		return proximoCapitulo;
-	}
-
-	public void setProximoCapitulo(int proximoCapitulo) {
-		this.proximoCapitulo = proximoCapitulo;
 	}
 
 	public Ruta getRuta() {
@@ -63,6 +55,14 @@ public class Codex {
 
 	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;
+	}
+	
+	public List<Opcion> getOpciones() {
+		return opciones;
+	}
+
+	public void setOpciones(List<Opcion> opciones) {
+		this.opciones = opciones;
 	}
 
 	/**
@@ -88,9 +88,7 @@ public class Codex {
 	 */
 	public static void printException(Exception e) {
 		System.err.println(e.getClass().getSimpleName() + " at line "
-				+ e.getStackTrace()[e.getStackTrace().length - 3]
-						.getLineNumber()
-				+ ": " + e.getMessage());
+				+ e.getStackTrace()[e.getStackTrace().length - 3].getLineNumber() + ": " + e.getMessage());
 	}
 
 	/**
@@ -133,82 +131,6 @@ public class Codex {
 	}
 
 	/**
-	 * Permite al usuario crear un personaje personalizado eligiendo clase y
-	 * atributos.
-	 * 
-	 * @param reader Lector de líneas.
-	 * @return Objeto {@link Criatura} creado.
-	 */
-	public Criatura crearPersonaje(LineReader reader) {
-		int puntos;
-		int f, r, v, m;
-		do {
-			puntos = 0;
-			f = Codex.toScanInteger(reader, q("la fuerza"));
-			puntos += f;
-			r = Codex.toScanInteger(reader, q("la resistencia"));
-			puntos += r;
-			v = Codex.toScanInteger(reader, q("la velocidad"));
-			puntos += v;
-			m = Codex.toScanInteger(reader, q("la magia"));
-			puntos += m;
-		} while (puntos != 80);
-
-		String tipo = toScan(reader, "Elige tu raza");
-		String nombre = toScan(reader, "Introduce tu nombre");
-		Criatura criatura = new Criatura(tipo, nombre, f, r, v, m, puntosVida);
-		return criatura;
-	}
-
-	/**
-	 * Crea una criatura aleatoria con atributos que suman 100 y clase
-	 * aleatoria.
-	 * 
-	 * @return Criatura aleatoria creada.
-	 */
-	public Criatura crearCriaturaAleatoria() {
-		int[] atributos = new int[4];
-		int puntosTotal = 100;
-		for (int i = 0; i < 3; i++) {
-			atributos[i] = random.nextInt(puntosTotal + 1);
-			puntosTotal -= atributos[i];
-		}
-		atributos[3] = puntosTotal;
-
-		int fuerza = atributos[0];
-		int resistencia = atributos[1];
-		int velocidad = atributos[2];
-		int magia = atributos[3];
-
-		String[] razas = { "Mago", "Guerrero", "Demonio", "Elfo Oscuro",
-				"Enano", "Elfo" };
-		int numale = random.nextInt(razas.length);
-		String tipo = razas[numale];
-
-		// TODO Nombre
-		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad,
-				magia, puntosVida);
-		if (c != null) {
-			System.out.println("Criatura enemiga creada: " + c.getNombre()
-					+ " con atributos: " + "Fuerza: " + fuerza
-					+ ", Resistencia: " + resistencia + ", Velocidad: "
-					+ velocidad + ", Magia: " + magia);
-		}
-		insertarRegistros(c);
-		return c;
-	}
-
-	/**
-	 * Formatea un mensaje para solicitar un atributo.
-	 * 
-	 * @param s Nombre del atributo.
-	 * @return Mensaje formateado.
-	 */
-	private String q(String s) {
-		return "Introduce el valor de " + s;
-	}
-
-	/**
 	 * Lee un archivo y devuelve su contenido como una lista de líneas.
 	 * 
 	 * @param archivo Ruta del archivo a leer.
@@ -221,13 +143,14 @@ public class Codex {
 	}
 
 	/*
-	 * Carga el capítulo y devuelve el capítulo procesado
+	 * Carga el capítulo, lo parsea dependiendo del formato de la línea
+	 * y devuelve el capítulo procesado
 	 * 
 	 */
 	public Capitulo cargarCapitulo(String ruta, Jugador jugador,
 			Criatura criatura) throws IOException {
 		List<String> lineas = toLeerArchivo(ruta);
-		List<Opcion> opciones = new ArrayList<>();
+		opciones = new ArrayList<>();
 		Map<String, Escena> escenas = new HashMap<>();
 		LineReader reader = panel.getReader();
 
@@ -258,50 +181,118 @@ public class Codex {
 			}
 
 			if (linea.startsWith("#OPCION ")) {
-				linea = linea.replace("#OPCION ", "").trim();
-				String[] partes = linea.split("->");
-				if (partes.length == 2) {
-					String texto = partes[0].trim();
-					String destinoCompleto = partes[1].trim();
-					String siguienteEscenaId;
-					Runnable accion = null;
-
-					if (destinoCompleto.contains("(")
-							&& destinoCompleto.endsWith(")")) {
-						int idx = destinoCompleto.indexOf('(');
-						siguienteEscenaId = destinoCompleto.substring(0, idx)
-								.trim();
-						String nombreAccion = destinoCompleto.substring(idx + 1,
-								destinoCompleto.length() - 1).trim();
-						accion = () -> ejecutarAccion(nombreAccion, jugador,
-								criatura);
-					} else {
-						siguienteEscenaId = destinoCompleto;
-					}
-
-					Opcion opcion = new Opcion(texto, siguienteEscenaId,
-							accion);
-					if (escenas.containsKey(siguienteEscenaId)) {
-						opcion.setEscenaDestino(escenas.get(siguienteEscenaId));
-					}
-					for (Escena e : escenas.values()) {
-						for (Opcion op : e.getOpciones()) {
-							if (op.getEscenaDestino() == null) {
-								op.setEscenaDestino(
-										escenas.get(op.getSiguienteEscenaId()));
-							}
-						}
-					}
-					opciones.add(opcion);
-				} else {
-					System.err.println("Opción mal formada: " + linea);
-				}
+				linea = linea.replace("#OPCION ", "-- ").trim();
+				opciones = new ArrayList<>();
+				// TODO Opciones
 			}
 			System.out.print(linea);
 			reader.readLine();
 		}
 		Capitulo capitulo = new Capitulo(numero, panel, nombre, escena);
 		return capitulo;
+	}
+	
+	/**
+	 * Ejecuta las acciones que se parsean por #OPCION
+	 * 
+	 * @param el nombre de la accion String
+	 * @param el jugador parseado
+	 * @param la criatura pasada
+	 */
+	public void ejecutarAccion(String nombreAccion, Jugador jugador, Criatura criatura) {
+		switch (nombreAccion) {
+			case "addPocion" -> { jugador.getInventario().put("Pocion de Sanación", new Pocion("Pocion de Curacion", 1)); }
+			case "aumentarMoral" -> { jugador.modMoral(1); }
+			case "addArtefacto" -> {}
+			case "luchar" -> { jugador.luchar(jugador, criatura); }
+			case "huir" -> { jugador.huir(jugador); }
+			default -> System.err.println("ERROR: " + "Acción desconocida: " + nombreAccion); 
+		}
+	}
+
+	/**
+	 * Permite al usuario crear un personaje personalizado eligiendo clase y
+	 * atributos.
+	 * 
+	 * @param reader Lector de líneas.
+	 * @return Objeto {@link Criatura} creado.
+	 */
+	public Criatura crearPersonaje(LineReader reader) {
+		int puntos;
+		int f, r, v, m;
+		do {
+			puntos = 0;
+			f = Codex.toScanInteger(reader, q("la fuerza"));
+			puntos += f;
+			r = Codex.toScanInteger(reader, q("la resistencia"));
+			puntos += r;
+			v = Codex.toScanInteger(reader, q("la velocidad"));
+			puntos += v;
+			m = Codex.toScanInteger(reader, q("la magia"));
+			puntos += m;
+		} while (puntos != 80);
+
+		String tipo = toScan(reader, "Elige tu raza");
+		String nombre = toScan(reader, "Introduce tu nombre");
+		Criatura criatura = new Criatura(tipo, nombre, f, r, v, m, puntosVida);
+		return criatura;
+	}
+	
+	/**
+	 * Crea una criatura default con valores default con el objetivo de 
+	 * testeo más eficiente.
+	 * 
+	 * @return Objeto {@link Criatura} creado.
+	 */
+	public Criatura crearPersonaje() {
+		int f = 20, r = 20, v = 20, m = 20;
+		String tipo = "Elfo";
+		String nombre = "Galandriel";
+		Criatura criatura = new Criatura(tipo, nombre, f, r, v, m, puntosVida);
+		return criatura;
+	}
+
+	/**
+	 * Crea una criatura aleatoria con atributos que suman 100 y clase aleatoria.
+	 * 
+	 * @return Criatura aleatoria creada.
+	 */
+	public Criatura crearCriaturaAleatoria() {
+		int[] atributos = new int[4];
+		int puntosTotal = 100;
+		for (int i = 0; i < 3; i++) {
+			atributos[i] = random.nextInt(puntosTotal + 1);
+			puntosTotal -= atributos[i];
+		}
+		atributos[3] = puntosTotal;
+
+		int fuerza = atributos[0];
+		int resistencia = atributos[1];
+		int velocidad = atributos[2];
+		int magia = atributos[3];
+
+		String[] razas = { "Mago", "Guerrero", "Demonio", "Elfo Oscuro", "Enano", "Elfo" };
+		int numale = random.nextInt(razas.length);
+		String tipo = razas[numale];
+
+		// TODO Nombre
+		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad, magia, puntosVida);
+		if (c != null) {
+			System.out.println("Criatura enemiga creada: " + c.getNombre() + " con atributos: " + "Fuerza: " + fuerza
+					+ ", Resistencia: " + resistencia + ", Velocidad: " + velocidad + ", Magia: " + magia);
+		}
+		insertarRegistros(c);
+		return c;
+	}
+
+	/**
+	 * Formatea un mensaje para solicitar un atributo.
+	 * 
+	 * @param s Nombre del atributo.
+	 * @return Mensaje formateado.
+	 */
+	private String q(String s) {
+		return "Introduce el valor de " + s;
 	}
 
 	/**
@@ -315,8 +306,7 @@ public class Codex {
 		String password = "password";
 		Connection connection = null;
 		try {
-			connection = DriverManager.getConnection(url_oracle2, username,
-					password);
+			connection = DriverManager.getConnection(url_oracle2, username, password);
 		} catch (SQLException e) {
 			System.err.println("Error crear la sesión" + e.getMessage());
 		}
@@ -342,10 +332,8 @@ public class Codex {
 				int fuerza = rs.getInt("FUERZA");
 				int velocidad = rs.getInt("VELOCIDAD");
 				int magia = rs.getInt("MAGIA");
-				System.out.println(sb.append(
-						"ID:" + id + separador + "TIPO:" + tipo + separador
-								+ "FUERZA:" + fuerza + separador + "VELOCIDAD:"
-								+ velocidad + separador + "MAGIA:" + magia));
+				System.out.println(sb.append("ID:" + id + separador + "TIPO:" + tipo + separador + "FUERZA:" + fuerza
+						+ separador + "VELOCIDAD:" + velocidad + separador + "MAGIA:" + magia));
 			}
 
 		} catch (SQLException e) {
@@ -368,8 +356,7 @@ public class Codex {
 		int magia = c.getMagia();
 
 		String sql = "INSERT INTO TB_RAZAS (ID,NOMBRE,TIPO, FUERZA, VELOCIDAD, MAGIA) VALUES (?, ?, ?, ?, ?)";
-		try (Connection conexion = crearConexion();
-				PreparedStatement ps = conexion.prepareStatement(sql)) {
+		try (Connection conexion = crearConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
 			ps.setInt(1, id);
 			ps.setString(2, nombre);
 			ps.setString(3, tipo);
@@ -488,35 +475,15 @@ public class Codex {
 	 */
 	public int getCapitulosTotales() {
 		try {
-			return Files.list(Paths.get("./docs/mq")).filter(
-					f -> f.getFileName().toString().startsWith("capitulo"))
+			return Files.list(Paths.get("./docs/mq")).filter(f -> f.getFileName().toString().startsWith("capitulo"))
 					.toArray().length;
 		} catch (IOException e) {
 			printException(e);
 		}
 		return 0;
 	}
-	
-	/**
-	 * Ejecuta las acciones que se parsean por #OPCION
-	 * @param el nombre de la accion String
-	 * @param el jugador parseado
-	 * @param la criatura pasada
-	 */
-	public void ejecutarAccion(String nombreAccion, Jugador jugador,
-			Criatura criatura) {
-		switch (nombreAccion) {
-			case "addPocion" -> { jugador.getInventario().put("Pocion de Sanación", new Pocion("Pocion de Curacion", 1)); }
-			case "aumentarMoral" -> { jugador.modMoral(1); }
-			case "addArtefacto" -> {}
-			case "luchar" -> { jugador.luchar(jugador, criatura); }
-			case "huir" -> { jugador.huir(jugador); }
-			default -> System.err.println("ERROR: " + "Acción desconocida: " + nombreAccion);
-		}
-	}
 
-	public static void comprarObjetoMercader(Jugador jugador, String objeto,
-			int precio) {
+	public static void comprarObjetoMercader(Jugador jugador, String objeto, int precio) {
 		// TODO SistemaCompras
 	}
 }
