@@ -18,7 +18,6 @@ import java.util.Random;
 import org.jline.reader.LineReader;
 
 import es.eternalshadow.entities.Criatura;
-import es.eternalshadow.enums.Ruta;
 import es.eternalshadow.main.Panel;
 import es.eternalshadow.motor.Escena;
 import es.eternalshadow.motor.Opcion;
@@ -40,7 +39,6 @@ import es.eternalshadow.story.Capitulo;
 public class Codex {
 	private Panel panel;
 	private int puntosVida = 25;
-	private Ruta ruta;
 	private List<Opcion> opciones;
 	private static Random random = new Random();
 
@@ -49,14 +47,6 @@ public class Codex {
 		this.panel = panel;
 	}
 
-	public Ruta getRuta() {
-		return ruta;
-	}
-
-	public void setRuta(Ruta ruta) {
-		this.ruta = ruta;
-	}
-	
 	public List<Opcion> getOpciones() {
 		return opciones;
 	}

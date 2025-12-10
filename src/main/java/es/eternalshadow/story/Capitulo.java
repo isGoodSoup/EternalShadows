@@ -3,7 +3,6 @@ package es.eternalshadow.story;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.eternalshadow.enums.Ruta;
 import es.eternalshadow.main.Panel;
 import es.eternalshadow.motor.Escena;
 import es.eternalshadow.util.Codex;
@@ -12,7 +11,6 @@ public class Capitulo {
 	private Panel panel;
 	private String nombre;
 	private int numero;
-	private Ruta ruta;
 	private List<String> lineas = new ArrayList<>();
 	private Codex util;
 	private Escena escena;
@@ -49,14 +47,6 @@ public class Capitulo {
 
 	public void setNumero(int numero) {
 		this.numero = numero;
-	}
-
-	public Ruta getRuta() {
-		return ruta;
-	}
-
-	public void setRuta(Ruta ruta) {
-		this.ruta = ruta;
 	}
 
 	public List<String> getLineas() {
