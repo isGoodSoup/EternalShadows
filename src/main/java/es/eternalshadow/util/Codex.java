@@ -258,8 +258,8 @@ public class Codex {
 			}
 
 			if (linea.startsWith("#OPCION ")) {
-				String opcionStr = linea.replace("#OPCION ", "").trim();
-				String[] partes = opcionStr.split("->");
+				linea = linea.replace("#OPCION ", "").trim();
+				String[] partes = linea.split("->");
 				if (partes.length == 2) {
 					String texto = partes[0].trim();
 					String destinoCompleto = partes[1].trim();
