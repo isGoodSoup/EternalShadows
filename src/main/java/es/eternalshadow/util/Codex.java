@@ -38,8 +38,6 @@ import es.eternalshadow.story.Capitulo;
 
 public class Codex {
 	private Panel panel;
-	private int puntosVida = 25;
-	private List<Opcion> opciones;
 	private static Random random = new Random();
 
 	public Codex(Panel panel) {
@@ -48,11 +46,11 @@ public class Codex {
 	}
 
 	public List<Opcion> getOpciones() {
-		return opciones;
+		return panel.getOpciones();
 	}
 
 	public void setOpciones(List<Opcion> opciones) {
-		this.opciones = opciones;
+		panel.setOpciones(opciones);
 	}
 
 	/**
@@ -140,7 +138,7 @@ public class Codex {
 	public Capitulo cargarCapitulo(String ruta, Jugador jugador,
 			Criatura criatura) throws IOException {
 		List<String> lineas = toLeerArchivo(ruta);
-		opciones = new ArrayList<>();
+		List<Opcion> opciones = panel.getOpciones();
 		Map<String, Escena> escenas = new HashMap<>();
 		LineReader reader = panel.getReader();
 
@@ -224,7 +222,7 @@ public class Codex {
 
 		String tipo = toScan(reader, "Elige tu raza");
 		String nombre = toScan(reader, "Introduce tu nombre");
-		Criatura criatura = new Criatura(tipo, nombre, f, r, v, m, puntosVida);
+		Criatura criatura = new Criatura(tipo, nombre, f, r, v, m, panel.getPuntosVida());
 		return criatura;
 	}
 	
@@ -238,7 +236,7 @@ public class Codex {
 		int f = 20, r = 20, v = 20, m = 20;
 		String tipo = "Elfo";
 		String nombre = "Galandriel";
-		Criatura criatura = new Criatura(tipo, nombre, f, r, v, m, puntosVida);
+		Criatura criatura = new Criatura(tipo, nombre, f, r, v, m, panel.getPuntosVida());
 		return criatura;
 	}
 
@@ -266,7 +264,7 @@ public class Codex {
 		String tipo = razas[numale];
 
 		// TODO Nombre
-		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad, magia, puntosVida);
+		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad, magia, panel.getPuntosVida());
 		if (c != null) {
 			System.out.println("Criatura enemiga creada: " + c.getNombre() + " con atributos: " + "Fuerza: " + fuerza
 					+ ", Resistencia: " + resistencia + ", Velocidad: " + velocidad + ", Magia: " + magia);

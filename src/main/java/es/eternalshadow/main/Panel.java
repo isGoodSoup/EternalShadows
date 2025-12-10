@@ -1,6 +1,7 @@
 package es.eternalshadow.main;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -9,6 +10,7 @@ import org.jline.terminal.TerminalBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.eternalshadow.motor.Opcion;
 import es.eternalshadow.pojos.Jugador;
 import es.eternalshadow.story.Capitulo;
 import es.eternalshadow.story.Historia;
@@ -30,6 +32,8 @@ public class Panel {
 	private Jugador jugador = new Jugador();
 	private Dados dados = new Dados(this);
 	private Codex util = new Codex(this);
+	private List<Opcion> opciones;
+	private int puntosVida = 25;
 	private int opcion;
 	private static final Logger log = LoggerFactory.getLogger(Panel.class);
 
@@ -81,6 +85,30 @@ public class Panel {
 
 	public void setDados(Dados dados) {
 		this.dados = dados;
+	}
+	
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public int getPuntosVida() {
+		return puntosVida;
+	}
+
+	public void setPuntosVida(int puntosVida) {
+		this.puntosVida = puntosVida;
+	}
+
+	public List<Opcion> getOpciones() {
+		return opciones;
+	}
+
+	public void setOpciones(List<Opcion> opciones) {
+		this.opciones = opciones;
 	}
 
 	/**
