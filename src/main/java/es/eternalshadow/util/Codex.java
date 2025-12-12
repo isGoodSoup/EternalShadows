@@ -149,7 +149,9 @@ public class Codex {
 
 	    for (int i = 0; i < lineas.size(); i++) {
 	        String linea = lineas.get(i).trim();
-	        if (linea.startsWith("#FIN")) break;
+	        
+	        if (linea.startsWith("#FIN")) { break; }
+	        
 	        ParsingKeys key = getParsingKey(linea);
 	        switch (key) {
 	            case NOMBRE:
