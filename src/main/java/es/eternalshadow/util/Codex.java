@@ -226,7 +226,7 @@ public class Codex {
 	 * @param reader Lector de líneas.
 	 * @return Objeto {@link Criatura} creado.
 	 */
-	public Criatura crearPersonaje(LineReader reader) {
+	public Jugador crearPersonaje(LineReader reader) {
 		int puntos;
 		int f, r, v, m;
 		do {
@@ -243,27 +243,27 @@ public class Codex {
 
 		String tipo = toScan(reader, "Elige tu raza");
 		String nombre = toScan(reader, "Introduce tu nombre");
-		Criatura criatura = new Criatura(tipo, nombre, f, r, v, m, panel.getPuntosVida());
-		return criatura;
+		Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 
+				panel.getJugador().getPuntosVida(), 50, 10, 10, panel);
+		return jugador;
 	}
 	
 	/**
 	 * Crea una criatura default con valores default con el objetivo de 
 	 * testeo más eficiente.
-	 * 
 	 * @return Objeto {@link Criatura} creado.
 	 */
-	public Criatura crearPersonaje() {
+	public Jugador crearPersonaje() {
 		int f = 20, r = 20, v = 20, m = 20;
 		String tipo = "Elfo";
 		String nombre = "Galandriel";
-		Criatura criatura = new Criatura(tipo, nombre, f, r, v, m, panel.getPuntosVida());
-		return criatura;
+		Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 
+				panel.getJugador().getPuntosVida(), 50, panel.getDados().tirarDados(), panel.getDados().tirarDados(), panel);
+		return jugador;
 	}
 
 	/**
 	 * Crea una criatura aleatoria con atributos que suman 100 y clase aleatoria.
-	 * 
 	 * @return Criatura aleatoria creada.
 	 */
 	public Criatura crearCriaturaAleatoria() {
@@ -285,7 +285,7 @@ public class Codex {
 		String tipo = razas[numale];
 
 		// TODO Nombre
-		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad, magia, panel.getPuntosVida());
+		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad, magia, panel.getJugador().getPuntosVida());
 		if (c != null) {
 			System.out.println("Criatura enemiga creada: " + c.getNombre() + " con atributos: " + "Fuerza: " + fuerza
 					+ ", Resistencia: " + resistencia + ", Velocidad: " + velocidad + ", Magia: " + magia);

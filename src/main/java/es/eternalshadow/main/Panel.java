@@ -29,11 +29,10 @@ public class Panel {
 	private Terminal terminal;
 	private LineReader reader;
 	private Historia historia = new HistoriaPrincipal(titulo, this);
-	private Jugador jugador = new Jugador();
+	private Jugador jugador;
 	private Dados dados = new Dados(this);
 	private Codex util = new Codex(this);
 	private List<Opcion> opciones;
-	private int puntosVida = 25;
 	private int opcion;
 	private static final Logger log = LoggerFactory.getLogger(Panel.class);
 
@@ -95,14 +94,6 @@ public class Panel {
 		this.titulo = titulo;
 	}
 
-	public int getPuntosVida() {
-		return puntosVida;
-	}
-
-	public void setPuntosVida(int puntosVida) {
-		this.puntosVida = puntosVida;
-	}
-
 	public List<Opcion> getOpciones() {
 		return opciones;
 	}
@@ -147,7 +138,8 @@ public class Panel {
 			opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 			switch (opcion) {
 				case 1 -> {
-					historia.iniciar(util.crearPersonaje(reader), reader, util);
+					this.jugador = util.crearPersonaje(reader);
+					historia.iniciar(jugador, reader, util);
 				}
 				case 2 -> {
 					log.debug("Salida");

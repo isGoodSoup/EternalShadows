@@ -16,11 +16,11 @@ public class Jugador extends Criatura {
 	private Arma arma;
 	private Escudo escudo;
 	private int oro;
+	private int puntosVida = 80;
 	private Map<String, Item> inventario;
 
-	public Jugador() {
-	}
-
+	public Jugador() {}
+	
 	public Jugador(String tipo, String nombre, int fuerza, int resistencia,
 			int velocidad, int magia, int puntosVida, int moral, int ataque,
 			int defensa, Panel panel) {
@@ -29,6 +29,7 @@ public class Jugador extends Criatura {
 		this.moral = moral;
 		this.ataque = ataque;
 		this.defensa = defensa;
+		this.puntosVida = puntosVida;
 		this.oro = 0;
 		this.inventario = new HashMap<>();
 		
@@ -92,6 +93,14 @@ public class Jugador extends Criatura {
 
 	public void setEscudo(Escudo escudo) {
 		this.escudo = escudo;
+	}
+	
+	public int getPuntosVida() {
+		return puntosVida;
+	}
+
+	public void setPuntosVida(int puntosVida) {
+		this.puntosVida = puntosVida;
 	}
 
 	public int getOro() {
