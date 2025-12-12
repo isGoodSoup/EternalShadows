@@ -158,6 +158,7 @@ public class Codex {
 	        if (key == null) {
 	            System.out.print(linea);
 	            reader.readLine();
+	            continue;
 	        }
 
 	        switch (key) {
