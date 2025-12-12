@@ -2,7 +2,7 @@ package es.eternalshadow.pojos;
 
 import es.eternalshadow.enums.Escuderia;
 
-public abstract class Escudo extends Item {
+public class Escudo extends Item {
 	private Escuderia escudo;
 
 	public Escudo(String nombre, int cantidad, Escuderia escudo) {

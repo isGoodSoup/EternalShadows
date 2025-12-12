@@ -4,29 +4,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.enums.Armamento;
+import es.eternalshadow.enums.Escuderia;
 import es.eternalshadow.main.Panel;
 
 public class Jugador extends Criatura {
 	private Panel panel;
 	private int moral;
 	private int ataque;
+	private int defensa;
+	private Arma arma;
+	private Escudo escudo;
 	private int oro;
 	private Map<String, Item> inventario;
 
-	public Jugador() {}
+	public Jugador() {
+	}
 
 	public Jugador(String tipo, String nombre, int fuerza, int resistencia,
-			int velocidad, int magia, int puntosVida, int moral, int ataque, Panel panel) {
+			int velocidad, int magia, int puntosVida, int moral, int ataque,
+			int defensa, Panel panel) {
 		super(tipo, nombre, fuerza, resistencia, velocidad, magia, puntosVida);
 		this.panel = panel;
 		this.moral = moral;
 		this.ataque = ataque;
+		this.defensa = defensa;
 		this.oro = 0;
 		this.inventario = new HashMap<>();
-		this.getArmas().get(0).setArma(panel.getUtil().toGenArma());
-		this.getEscudos().get(0).setEscudo(panel.getUtil().toGenEscudo());
+		
+		Armamento arma = panel.getUtil().toGenArma();
+		Escuderia escudo = panel.getUtil().toGenEscudo();
+		
+		this.arma = new Arma(arma.toString(), 1, arma);
+		this.escudo = new Escudo(escudo.toString(), 1, escudo);
+		
+		this.inventario.put(arma.toString(), this.arma);
+		this.inventario.put(escudo.toString(), this.escudo);
 	}
-	
+
 	public Panel getPanel() {
 		return panel;
 	}
@@ -54,6 +69,30 @@ public class Jugador extends Criatura {
 	public void setAtaque(int ataque) {
 		this.ataque = ataque;
 	}
+	
+	public int getDefensa() {
+		return defensa;
+	}
+
+	public void setDefensa(int defensa) {
+		this.defensa = defensa;
+	}
+	
+	public Arma getArma() {
+		return arma;
+	}
+
+	public void setArma(Arma arma) {
+		this.arma = arma;
+	}
+
+	public Escudo getEscudo() {
+		return escudo;
+	}
+
+	public void setEscudo(Escudo escudo) {
+		this.escudo = escudo;
+	}
 
 	public int getOro() {
 		return oro;
@@ -66,7 +105,7 @@ public class Jugador extends Criatura {
 	public void modOro(int precio) {
 		this.oro += precio;
 	}
-	
+
 	public Map<String, Item> getInventario() {
 		return inventario;
 	}
