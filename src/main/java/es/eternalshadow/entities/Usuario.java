@@ -31,11 +31,25 @@ public class Usuario {
 
 	public Usuario() {
 	}
-
+	
+	
+	// Constructor con id 
 	public Usuario(int id, String username, String email, String password,
 			String rol, Date fechaAlta, boolean activo) {
 		super();
 		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.rol = rol;
+		this.fechaAlta = fechaAlta;
+		this.activo = activo;
+	}
+	
+	// Constructor sin id
+	public Usuario(String username, String email, String password,
+			String rol, Date fechaAlta, boolean activo) {
+		super();
 		this.username = username;
 		this.email = email;
 		this.password = password;
