@@ -178,9 +178,9 @@ public class Codex {
 	                        break;
 	                    }
 	                    if (sub.startsWith("ACCION:"))
-	                        opcion.setAccion(() -> sub.substring(7).trim());
+	                    	opcion.setAccion(() -> ejecutarAccion(sub.substring(7).trim(), jugador, criatura));
 	                    else if (sub.startsWith("DESTINO:"))
-	                        opcion.setEscenaDestino(sub.substring(8).trim());
+	                        opcion.setSiguienteEscenaId(sub.substring(8).trim());
 	                }
 	                opcionesActuales.add(opcion);
 	                break;
