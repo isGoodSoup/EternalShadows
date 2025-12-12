@@ -160,8 +160,11 @@ public class Codex {
 	            reader.readLine();
 	            continue;
 	        }
-
 	        switch (key) {
+	        	case JUGADOR:
+	        		linea = linea.replace("#JUGADOR", panel.getJugador().getNombre()).trim();
+	        		break;
+	        		
 	            case NOMBRE:
 	                nombre = linea.replace("#NOMBRE", "").trim();
 	                break;
@@ -194,9 +197,11 @@ public class Codex {
 	                }
 	                opcionesActuales.add(opcion);
 	                break;
+	                
 	            case COMBATE:
 	            	
 	            	break;
+	            	
 	            default:
 	                System.out.println(linea);
 	                reader.readLine();
@@ -205,11 +210,9 @@ public class Codex {
 	    }
 	    return new Capitulo(numero, panel, nombre, escenaActual);
 	}
-
 	
 	/**
 	 * Ejecuta las acciones que se parsean por #OPCION
-	 * 
 	 * @param el nombre de la accion String
 	 * @param el jugador parseado
 	 * @param la criatura pasada

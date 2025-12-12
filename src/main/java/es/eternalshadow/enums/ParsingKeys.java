@@ -1,5 +1,5 @@
 package es.eternalshadow.enums;
 
 public enum ParsingKeys {
-	NOMBRE, CAPITULO, ESCENA, OPCION, COMBATE
+	JUGADOR, NOMBRE, CAPITULO, ESCENA, OPCION, COMBATE
 }
