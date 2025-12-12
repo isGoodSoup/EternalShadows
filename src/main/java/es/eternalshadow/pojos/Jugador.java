@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.main.Panel;
 
 public class Jugador extends Criatura {
+	private Panel panel;
 	private int moral;
 	private int ataque;
 	private int oro;
@@ -14,12 +16,23 @@ public class Jugador extends Criatura {
 	public Jugador() {}
 
 	public Jugador(String tipo, String nombre, int fuerza, int resistencia,
-			int velocidad, int magia, int puntosVida, int moral, int ataque) {
+			int velocidad, int magia, int puntosVida, int moral, int ataque, Panel panel) {
 		super(tipo, nombre, fuerza, resistencia, velocidad, magia, puntosVida);
+		this.panel = panel;
 		this.moral = moral;
 		this.ataque = ataque;
 		this.oro = 0;
 		this.inventario = new HashMap<>();
+		this.getArmas().get(0).setArma(panel.getUtil().toGenArma());
+		this.getEscudos().get(0).setEscudo(panel.getUtil().toGenEscudo());
+	}
+	
+	public Panel getPanel() {
+		return panel;
+	}
+
+	public void setPanel(Panel panel) {
+		this.panel = panel;
 	}
 
 	public int getMoral() {

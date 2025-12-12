@@ -110,6 +110,14 @@ public class Panel {
 	public void setOpciones(List<Opcion> opciones) {
 		this.opciones = opciones;
 	}
+	
+	public Codex getUtil() {
+		return util;
+	}
+
+	public void setUtil(Codex util) {
+		this.util = util;
+	}
 
 	/**
 	 * Inicia la historia y muestra el menú principal. Permite comenzar la

@@ -2,8 +2,8 @@ package es.eternalshadow.dto;
 
 import java.util.ArrayList;
 
-import es.eternalshadow.pojos.Armas;
-import es.eternalshadow.pojos.Escudos;
+import es.eternalshadow.pojos.Arma;
+import es.eternalshadow.pojos.Escudo;
 
 public class CriaturaDTO {
 	
@@ -11,8 +11,8 @@ public class CriaturaDTO {
 	
 	private String nombre;
 	private int nivel;
-	private ArrayList<Escudos> escudos;
-	private ArrayList<Armas> armas;
+	private ArrayList<Escudo> escudos;
+	private ArrayList<Arma> armas;
 	private String pocion;
 	private int puntosVida;
 	
@@ -23,8 +23,8 @@ public class CriaturaDTO {
 	}
 	
 	// Constructor con parámetros completo
-	public CriaturaDTO(String nombre, int nivel, ArrayList<Escudos> escudos,
-			ArrayList<Armas> armas, String pocion, int puntosVida) {
+	public CriaturaDTO(String nombre, int nivel, ArrayList<Escudo> escudos,
+			ArrayList<Arma> armas, String pocion, int puntosVida) {
 		this.nombre = nombre;
 		this.nivel = nivel;
 		this.escudos = escudos;
@@ -55,16 +55,16 @@ public class CriaturaDTO {
 	public void setNivel(int nivel) {
 		this.nivel = nivel;
 	}
-	public ArrayList<Escudos> getEscudos() {
+	public ArrayList<Escudo> getEscudos() {
 		return escudos;
 	}
-	public void setEscudos(ArrayList<Escudos> escudos) {
+	public void setEscudos(ArrayList<Escudo> escudos) {
 		this.escudos = escudos;
 	}
-	public ArrayList<Armas> getArmas() {
+	public ArrayList<Arma> getArmas() {
 		return armas;
 	}
-	public void setArmas(ArrayList<Armas> armas) {
+	public void setArmas(ArrayList<Arma> armas) {
 		this.armas = armas;
 	}
 	public String getPocion() {

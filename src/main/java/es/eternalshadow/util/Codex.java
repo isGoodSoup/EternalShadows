@@ -18,6 +18,8 @@ import java.util.Random;
 import org.jline.reader.LineReader;
 
 import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.enums.Armamento;
+import es.eternalshadow.enums.Escuderia;
 import es.eternalshadow.enums.ParsingKeys;
 import es.eternalshadow.main.Panel;
 import es.eternalshadow.motor.Escena;
@@ -414,7 +416,6 @@ public class Codex {
 
 	/**
 	 * Devuelve un elemento aleatorio de un arreglo de cadenas.
-	 * 
 	 * @param s Arreglo de cadenas.
 	 * @return Cadena aleatoria del arreglo.
 	 */
@@ -424,7 +425,6 @@ public class Codex {
 
 	/**
 	 * Devuelve un número entero aleatorio.
-	 * 
 	 * @return Número aleatorio.
 	 */
 	public static int toGetInteger() {
@@ -433,7 +433,6 @@ public class Codex {
 
 	/**
 	 * Devuelve un número aleatorio de un arreglo de enteros.
-	 * 
 	 * @param i Arreglo de enteros.
 	 * @return Entero aleatorio del arreglo.
 	 */
@@ -443,7 +442,6 @@ public class Codex {
 
 	/**
 	 * Devuelve un número entero aleatorio dentro de un rango.
-	 * 
 	 * @param min Valor mínimo.
 	 * @param max Valor máximo.
 	 * @return Número aleatorio entre min y max.
@@ -454,7 +452,6 @@ public class Codex {
 
 	/**
 	 * Devuelve un número largo aleatorio dentro de un rango.
-	 * 
 	 * @param min Valor mínimo.
 	 * @param max Valor máximo.
 	 * @return Número largo aleatorio entre min y max.
@@ -465,7 +462,6 @@ public class Codex {
 
 	/**
 	 * Mide el tiempo de ejecución de una tarea.
-	 * 
 	 * @param task Tarea a ejecutar.
 	 * @return Tiempo transcurrido en milisegundos.
 	 */
@@ -474,10 +470,23 @@ public class Codex {
 		task.run();
 		return System.currentTimeMillis() - start;
 	}
+	
+	/**
+	 * Escoge un arma aleatoria del enum Armamento y la devuelve
+	 * @return Armamento
+	 */
+	public Armamento toGenArma() {
+		Armamento[] armas = Armamento.values();
+		return armas[random.nextInt(armas.length)];
+	}
+	
+	public Escuderia toGenEscudo() {
+		Escuderia[] escudos = Escuderia.values();
+		return escudos[random.nextInt(0, 1)];
+	}
 
-	/*
+	/**
 	 * Devuelve el número total de capítulos en la historia.
-	 * 
 	 * @return Número total de capítulos.
 	 */
 	public int getCapitulosTotales() {
@@ -490,6 +499,11 @@ public class Codex {
 		return 0;
 	}
 	
+	/**
+	 * Genera un enum dependiendo del tipo de parsing de la línea
+	 * @param linea
+	 * @return
+	 */
 	private ParsingKeys getParsingKey(String linea) {
 	    if (linea.startsWith("#NOMBRE")) return ParsingKeys.NOMBRE;
 	    if (linea.startsWith("#CAPITULO")) return ParsingKeys.CAPITULO;

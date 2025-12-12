@@ -3,8 +3,8 @@ package es.eternalshadow.entities;
 import java.util.ArrayList;
 
 import es.eternalshadow.main.Panel;
-import es.eternalshadow.pojos.Armas;
-import es.eternalshadow.pojos.Escudos;
+import es.eternalshadow.pojos.Arma;
+import es.eternalshadow.pojos.Escudo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
@@ -21,9 +21,9 @@ public class Criatura extends Raza {
 	@Column(name = "nivel", nullable = false)
 	private int nivel;
 	@Column(name = "escudos")
-	private ArrayList<Escudos> escudos;
+	private ArrayList<Escudo> escudos;
 	@Column(name = "armas")
-	private ArrayList<Armas> armas;
+	private ArrayList<Arma> armas;
 	@Column(name = "pocion")
 	private String pocion;
 	@Column(name = "puntos_vida", nullable = false)
@@ -33,8 +33,8 @@ public class Criatura extends Raza {
 
 	}
 
-	public Criatura(String nombre, int nivel, ArrayList<Escudos> escudos,
-			ArrayList<Armas> armas, String pocion, int puntosVida) {
+	public Criatura(String nombre, int nivel, ArrayList<Escudo> escudos,
+			ArrayList<Arma> armas, String pocion, int puntosVida) {
 		super();
 		this.nombre = nombre;
 		this.nivel = nivel;
@@ -67,19 +67,19 @@ public class Criatura extends Raza {
 		this.nivel = nivel;
 	}
 
-	public ArrayList<Escudos> getEscudos() {
+	public ArrayList<Escudo> getEscudos() {
 		return escudos;
 	}
 
-	public void setEscudos(ArrayList<Escudos> escudos) {
+	public void setEscudos(ArrayList<Escudo> escudos) {
 		this.escudos = escudos;
 	}
 
-	public ArrayList<Armas> getArmas() {
+	public ArrayList<Arma> getArmas() {
 		return armas;
 	}
 
-	public void setArmas(ArrayList<Armas> armas) {
+	public void setArmas(ArrayList<Arma> armas) {
 		this.armas = armas;
 	}
 
