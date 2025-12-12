@@ -18,6 +18,7 @@ import java.util.Random;
 import org.jline.reader.LineReader;
 
 import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.enums.ParsingKeys;
 import es.eternalshadow.main.Panel;
 import es.eternalshadow.motor.Escena;
 import es.eternalshadow.motor.Opcion;
@@ -135,50 +136,68 @@ public class Codex {
 	 * y devuelve el capítulo procesado
 	 * 
 	 */
-	public Capitulo cargarCapitulo(String ruta, Jugador jugador,
-			Criatura criatura) throws IOException {
-		List<String> lineas = toLeerArchivo(ruta);
-		List<Opcion> opciones = panel.getOpciones();
-		Map<String, Escena> escenas = new HashMap<>();
-		LineReader reader = panel.getReader();
+	public Capitulo cargarCapitulo(String ruta, Jugador jugador, Criatura criatura) throws IOException {
+	    List<String> lineas = toLeerArchivo(ruta);
+	    Map<String, Escena> escenas = new HashMap<>();
 
-		String nombre = "";
-		Escena escena = null;
-		int numero = 0;
+	    Escena escenaActual = null;
+	    List<Opcion> opcionesActuales = null;
 
-		for (String linea : lineas) {
-			if (linea.startsWith("#FIN")) {
-				break;
-			}
-			if (linea.startsWith("#NOMBRE")) {
-				linea = linea.replace("#NOMBRE ", "").trim();
-				nombre = linea;
-				continue;
-			}
-			if (linea.startsWith("#CAPITULO")) {
-				linea = linea.replace("#CAPITULO ", "").trim();
-				numero = Integer.parseInt(linea);
-				continue;
-			}
-			if (linea.startsWith("#ESCENA ")) {
-				linea = linea.replace("#ESCENA ", "").trim();
-				escena = new Escena(linea, new ArrayList<>());
-				escenas.put(linea, escena);
-				opciones = escena.getOpciones();
-				continue;
-			}
+	    LineReader reader = panel.getReader();
+	    String nombre = "";
+	    int numero = 0;
 
-			if (linea.startsWith("#OPCION ")) {
-				linea = linea.replace("#OPCION ", "-- ").trim();
-				opciones = new ArrayList<>();
-				// TODO Opciones
-			}
-			System.out.print(linea);
-			reader.readLine();
-		}
-		Capitulo capitulo = new Capitulo(numero, panel, nombre, escena);
-		return capitulo;
+	    for (int i = 0; i < lineas.size(); i++) {
+	        String linea = lineas.get(i).trim();
+
+	        if (linea.startsWith("#FIN")) break;
+
+	        ParsingKeys key = getParsingKey(linea);
+	        switch (key) {
+	            case NOMBRE:
+	                nombre = linea.replace("#NOMBRE", "").trim();
+	                break;
+
+	            case CAPITULO:
+	                numero = Integer.parseInt(linea.replace("#CAPITULO", "").trim());
+	                break;
+
+	            case ESCENA:
+	                String id = linea.replace("#ESCENA", "").trim();
+	                escenaActual = new Escena(id, new ArrayList<>());
+	                escenas.put(id, escenaActual);
+	                opcionesActuales = escenaActual.getOpciones();
+	                break;
+
+	            case OPCION:
+	                String nombreOpcion = linea.replace("#OPCION", "").trim();
+	                Opcion opcion = new Opcion(nombreOpcion);
+
+	                while (++i < lineas.size()) {
+	                    String sub = lineas.get(i).trim();
+	                    if (sub.startsWith("#") || sub.isEmpty()) {
+	                        i--;
+	                        break;
+	                    }
+	                    if (sub.startsWith("DESCRIPCION:"))
+	                        opcion.setDescripcion(sub.substring(12).trim());
+	                    else if (sub.startsWith("ACCION:"))
+	                        opcion.setAccion(sub.substring(7).trim());
+	                    else if (sub.startsWith("DESTINO:"))
+	                        opcion.setEscenaDestino(sub.substring(8).trim());
+	                }
+	                opcionesActuales.add(opcion);
+	                break;
+	            default:
+	                System.out.println(linea);
+	                reader.readLine();
+	                break;
+	        }
+	    }
+
+	    return new Capitulo(numero, panel, nombre, escenaActual);
 	}
+
 	
 	/**
 	 * Ejecuta las acciones que se parsean por #OPCION
@@ -469,6 +488,14 @@ public class Codex {
 			printException(e);
 		}
 		return 0;
+	}
+	
+	private ParsingKeys getParsingKey(String linea) {
+	    if (linea.startsWith("#NOMBRE")) return ParsingKeys.NOMBRE;
+	    if (linea.startsWith("#CAPITULO")) return ParsingKeys.CAPITULO;
+	    if (linea.startsWith("#ESCENA")) return ParsingKeys.ESCENA;
+	    if (linea.startsWith("#OPCION")) return ParsingKeys.OPCION;
+	    return null;
 	}
 
 	public static void comprarObjetoMercader(Jugador jugador, String objeto, int precio) {

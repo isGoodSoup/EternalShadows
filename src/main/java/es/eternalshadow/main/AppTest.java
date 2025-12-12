@@ -1,4 +1,4 @@
-package es.eternalshadow;
+package es.eternalshadow.main;
 
 import es.eternalshadow.util.HibernateUtil;
 
