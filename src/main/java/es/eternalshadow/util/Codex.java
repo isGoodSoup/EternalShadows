@@ -155,6 +155,11 @@ public class Codex {
 	        if (linea.startsWith("#FIN")) { break; }
 	        
 	        ParsingKeys key = getParsingKey(linea);
+	        if (key == null) {
+	            System.out.print(linea);
+	            reader.readLine();
+	        }
+
 	        switch (key) {
 	            case NOMBRE:
 	                nombre = linea.replace("#NOMBRE", "").trim();
@@ -244,7 +249,7 @@ public class Codex {
 		String tipo = toScan(reader, "Elige tu raza");
 		String nombre = toScan(reader, "Introduce tu nombre");
 		Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 
-				panel.getJugador().getPuntosVida(), 50, 10, 10, panel);
+				100, 50, 10, 10, panel);
 		return jugador;
 	}
 	
@@ -258,7 +263,7 @@ public class Codex {
 		String tipo = "Elfo";
 		String nombre = "Galandriel";
 		Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 
-				panel.getJugador().getPuntosVida(), 50, panel.getDados().tirarDados(), panel.getDados().tirarDados(), panel);
+				100, 50, panel.getDados().tirarDados(), panel.getDados().tirarDados(), panel);
 		return jugador;
 	}
 
