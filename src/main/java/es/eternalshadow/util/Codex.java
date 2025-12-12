@@ -149,9 +149,7 @@ public class Codex {
 
 	    for (int i = 0; i < lineas.size(); i++) {
 	        String linea = lineas.get(i).trim();
-
 	        if (linea.startsWith("#FIN")) break;
-
 	        ParsingKeys key = getParsingKey(linea);
 	        switch (key) {
 	            case NOMBRE:
@@ -170,8 +168,8 @@ public class Codex {
 	                break;
 
 	            case OPCION:
-	                String nombreOpcion = linea.replace("#OPCION", "").trim();
-	                Opcion opcion = new Opcion(nombreOpcion);
+	                String texto = linea.replace("#OPCION", "").trim();
+	                Opcion opcion = new Opcion(texto);
 
 	                while (++i < lineas.size()) {
 	                    String sub = lineas.get(i).trim();
@@ -179,22 +177,22 @@ public class Codex {
 	                        i--;
 	                        break;
 	                    }
-	                    if (sub.startsWith("DESCRIPCION:"))
-	                        opcion.setDescripcion(sub.substring(12).trim());
-	                    else if (sub.startsWith("ACCION:"))
-	                        opcion.setAccion(sub.substring(7).trim());
+	                    if (sub.startsWith("ACCION:"))
+	                        opcion.setAccion(() -> sub.substring(7).trim());
 	                    else if (sub.startsWith("DESTINO:"))
 	                        opcion.setEscenaDestino(sub.substring(8).trim());
 	                }
 	                opcionesActuales.add(opcion);
 	                break;
+	            case COMBATE:
+	            	
+	            	break;
 	            default:
 	                System.out.println(linea);
 	                reader.readLine();
 	                break;
 	        }
 	    }
-
 	    return new Capitulo(numero, panel, nombre, escenaActual);
 	}
 

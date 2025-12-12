@@ -12,6 +12,10 @@ public class Opcion {
 		this.accion = accion;
 	}
 
+	public Opcion(String texto) {
+		this.texto = texto;
+	}
+
 	public String getTexto() {
 		return texto;
 	}
