@@ -108,17 +108,33 @@ public class Jugador extends Criatura {
 	public Map<String, Item> getInventario() {
 		return inventario;
 	}
-
+	
 	public void setInventario(Map<String, Item> inventario) {
 		this.inventario = inventario;
+	}
+
+	@Override
+	public int atacar(Criatura criatura) {
+		return super.atacar(criatura);
+	}
+
+	@Override
+	public int defender() {
+		return super.defender();
 	}
 
 	public void luchar(Jugador user, Criatura lobo) {
 		// TODO Luchar
 	}
 
-	public void huir(Jugador user) {
-		System.out.println(user.getNombre() + " está huyendo!");
+	public void huir(Jugador jugador) {
+		System.out.println(jugador.getNombre() + " está huyendo!");
+		modMoral(-5);
+	}
+	
+	@Override
+	public void ejecutar(Jugador jugador, Criatura criatura) {
+		super.ejecutar(jugador, criatura);
 	}
 
 	@Override

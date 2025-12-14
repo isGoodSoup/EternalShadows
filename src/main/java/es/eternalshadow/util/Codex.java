@@ -21,11 +21,11 @@ import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.enums.Armamento;
 import es.eternalshadow.enums.Escuderia;
 import es.eternalshadow.enums.ParsingKeys;
+import es.eternalshadow.interfaces.Accion;
 import es.eternalshadow.main.Panel;
 import es.eternalshadow.motor.Escena;
 import es.eternalshadow.motor.Opcion;
 import es.eternalshadow.pojos.Jugador;
-import es.eternalshadow.pojos.Pocion;
 import es.eternalshadow.story.Capitulo;
 
 /**
@@ -161,10 +161,12 @@ public class Codex {
 	            continue;
 	        }
 	        switch (key) {
-	        	case JUGADOR:
-	        		linea = linea.replace("#JUGADOR", panel.getJugador().getNombre()).trim();
-	        		break;
-	        		
+		        case JUGADOR:
+		            String textoJugador = linea.replace("#JUGADOR", panel.getJugador().getNombre()).trim();
+		            System.out.print(textoJugador);
+		            reader.readLine();
+		            break;
+
 	            case NOMBRE:
 	                nombre = linea.replace("#NOMBRE", "").trim();
 	                break;
@@ -190,10 +192,12 @@ public class Codex {
 	                        i--;
 	                        break;
 	                    }
-	                    if (sub.startsWith("ACCION:"))
+	                    if (sub.startsWith("ACCION:")) {
 	                    	opcion.setAccion(() -> ejecutarAccion(sub.substring(7).trim(), jugador, criatura));
-	                    else if (sub.startsWith("DESTINO:"))
-	                        opcion.setSiguienteEscenaId(sub.substring(8).trim());
+	                    }
+	                    else if (sub.startsWith("DESTINO:")) {
+	                    	opcion.setSiguienteEscenaId(sub.substring(8).trim());
+	                    }
 	                }
 	                opcionesActuales.add(opcion);
 	                break;
@@ -207,6 +211,20 @@ public class Codex {
 	                reader.readLine();
 	                break;
 	        }
+	        
+	        for (Escena escena : escenas.values()) {
+	            for (Opcion opcion : escena.getOpciones()) {
+	                String destinoId = opcion.getSiguienteEscenaId();
+	                if (destinoId != null) {
+	                    Escena destino = escenas.get(destinoId);
+	                    if (destino == null) {
+	                        System.err.println("ERROR: Escena destino no encontrada: " + destinoId);
+	                    } else {
+	                        opcion.setEscenaDestino(destino);
+	                    }
+	                }
+	            }
+	        }
 	    }
 	    return new Capitulo(numero, panel, nombre, escenaActual);
 	}
@@ -218,20 +236,18 @@ public class Codex {
 	 * @param la criatura pasada
 	 */
 	public void ejecutarAccion(String nombreAccion, Jugador jugador, Criatura criatura) {
-		switch (nombreAccion) {
-			case "addPocion" -> { jugador.getInventario().put("Pocion de Sanación", new Pocion("Pocion de Curacion", 1)); }
-			case "aumentarMoral" -> { jugador.modMoral(1); }
-			case "addArtefacto" -> {}
-			case "luchar" -> { jugador.luchar(jugador, criatura); }
-			case "huir" -> { jugador.huir(jugador); }
-			default -> System.err.println("ERROR: " + "Acción desconocida: " + nombreAccion); 
-		}
+	    Accion accion = panel.getAcciones().get(nombreAccion);
+	    if (accion == null) {
+	        System.err.println("ERROR: Acción desconocida: " + nombreAccion);
+	        return;
+	    }
+	    accion.ejecutar(jugador, criatura);
 	}
+
 
 	/**
 	 * Permite al usuario crear un personaje personalizado eligiendo clase y
 	 * atributos.
-	 * 
 	 * @param reader Lector de líneas.
 	 * @return Objeto {@link Criatura} creado.
 	 */

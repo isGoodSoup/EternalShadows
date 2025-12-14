@@ -2,9 +2,11 @@ package es.eternalshadow.entities;
 
 import java.util.ArrayList;
 
+import es.eternalshadow.interfaces.Accion;
 import es.eternalshadow.main.Panel;
 import es.eternalshadow.pojos.Arma;
 import es.eternalshadow.pojos.Escudo;
+import es.eternalshadow.pojos.Jugador;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
@@ -14,7 +16,7 @@ import jakarta.persistence.Table;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "TB_CRIATURA")
-public class Criatura extends Raza {
+public class Criatura extends Raza implements Accion {
 	private Panel panel;
 	@Column(name = "nombre", nullable = false, length = 100)
 	private String nombre;
@@ -115,6 +117,11 @@ public class Criatura extends Raza {
 	@Override
 	public int defender() {
 		return panel.getDados().tirarDados() * nivel;
+	}
+	
+	@Override
+	public void ejecutar(Jugador jugador, Criatura criatura) {
+		
 	}
 
 	@Override

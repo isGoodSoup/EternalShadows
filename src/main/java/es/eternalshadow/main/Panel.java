@@ -1,7 +1,9 @@
 package es.eternalshadow.main;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -10,8 +12,10 @@ import org.jline.terminal.TerminalBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.eternalshadow.interfaces.Accion;
 import es.eternalshadow.motor.Opcion;
 import es.eternalshadow.pojos.Jugador;
+import es.eternalshadow.pojos.Pocion;
 import es.eternalshadow.story.Capitulo;
 import es.eternalshadow.story.Historia;
 import es.eternalshadow.story.HistoriaPrincipal;
@@ -33,6 +37,7 @@ public class Panel {
 	private Dados dados = new Dados(this);
 	private Codex util = new Codex(this);
 	private List<Opcion> opciones;
+	private final Map<String, Accion> acciones = new HashMap<>();
 	private int opcion;
 	private static final Logger log = LoggerFactory.getLogger(Panel.class);
 
@@ -40,6 +45,7 @@ public class Panel {
 		try {
 			terminal = TerminalBuilder.terminal();
 			reader = LineReaderBuilder.builder().terminal(terminal).build();
+			inicializarAcciones();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -85,7 +91,7 @@ public class Panel {
 	public void setDados(Dados dados) {
 		this.dados = dados;
 	}
-	
+
 	public String getTitulo() {
 		return titulo;
 	}
@@ -101,7 +107,11 @@ public class Panel {
 	public void setOpciones(List<Opcion> opciones) {
 		this.opciones = opciones;
 	}
-	
+
+	public Map<String, Accion> getAcciones() {
+		return acciones;
+	}
+
 	public Codex getUtil() {
 		return util;
 	}
@@ -111,8 +121,8 @@ public class Panel {
 	}
 
 	/**
-	 * Inicia la historia y muestra el menú principal. Permite comenzar la
-	 * aventura o salir de la aplicación.
+	 * Inicia la historia y muestra el menú principal. Permite comenzar la aventura
+	 * o salir de la aplicación.
 	 */
 	public void comenzar() {
 		log.debug("Inicio");
@@ -145,8 +155,18 @@ public class Panel {
 					log.debug("Salida");
 					System.exit(0);
 				}
-				case 700 -> { historia.iniciar(util.crearPersonaje(), reader, util); }
+				case 700 -> {
+					historia.iniciar(util.crearPersonaje(), reader, util);
+				}
 			}
 		} while (opcion > 2);
+	}
+
+	private void inicializarAcciones() {
+		acciones.put("addPocion", (jugador, criatura) -> jugador.getInventario().put("Pocion de Sanación",
+				new Pocion("Pocion de Curacion", 1)));
+		acciones.put("aumentarMoral", (jugador, criatura) -> jugador.modMoral(1));
+		acciones.put("luchar", (jugador, criatura) -> jugador.luchar(jugador, criatura));
+		acciones.put("huir", (jugador, criatura) -> jugador.huir(jugador));
 	}
 }

@@ -48,7 +48,7 @@ public class Opcion {
 		this.escenaDestino = escenaDestino;
 	}
 	
-	public void ejecutarAccion() {
+	public void ejecutar() {
 	    if (accion != null)
 	        accion.run();
 	}
