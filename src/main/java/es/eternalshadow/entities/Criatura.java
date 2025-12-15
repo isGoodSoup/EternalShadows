@@ -16,17 +16,21 @@ import jakarta.persistence.Table;
 @Table(name = "TB_CRIATURA")
 public class Criatura extends Raza {
 	private Panel panel;
-	@Column(name = "nombre", nullable = false, length = 100)
+	@Column(name = "NOMBRE", nullable = false, length = 100)
 	private String nombre;
-	@Column(name = "nivel", nullable = false)
+	@Column(name = "NIVEL", nullable = false)
 	private int nivel;
-	@Column(name = "escudos")
+	@Column(name = "ATAQUE")
+	private int ataque;
+	@Column(name = "DEFENSA")
+	private int defensa;
+	@Column(name = "ESCUDOS")
 	private ArrayList<Escudo> escudos;
-	@Column(name = "armas")
+	@Column(name = "ARMAS")
 	private ArrayList<Arma> armas;
-	@Column(name = "pocion")
+	@Column(name = "POCION")
 	private String pocion;
-	@Column(name = "puntos_vida", nullable = false)
+	@Column(name = "PUNTOS_VIDA", nullable = false)
 	private int puntosVida;
 
 	public Criatura() {
@@ -65,6 +69,22 @@ public class Criatura extends Raza {
 
 	public void setNivel(int nivel) {
 		this.nivel = nivel;
+	}
+	
+	public int getAtaque() {
+		return ataque;
+	}
+
+	public void setAtaque(int ataque) {
+		this.ataque = ataque;
+	}
+
+	public int getDefensa() {
+		return defensa;
+	}
+
+	public void setDefensa(int defensa) {
+		this.defensa = defensa;
 	}
 
 	public ArrayList<Escudo> getEscudos() {
@@ -109,12 +129,12 @@ public class Criatura extends Raza {
 
 	@Override
 	public int atacar(Criatura criatura) {
-		return panel.getDados().tirarDados() * nivel;
+		return panel.getDados().tirarDados() * nivel + this.ataque;
 	}
 
 	@Override
 	public int defender() {
-		return panel.getDados().tirarDados() * nivel;
+		return panel.getDados().tirarDados() * nivel + this.defensa;
 	}
 	
 	@Override
@@ -129,7 +149,7 @@ public class Criatura extends Raza {
 			this.puntosVida = 0;
 		}
 		System.out.println(this.nombre + " recibe " + danio
-				+ " de daño. Vida restante: " + this.puntosVida);
+				+ " de daño");
 		return this.puntosVida;
 	}
 }

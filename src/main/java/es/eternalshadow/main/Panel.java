@@ -121,11 +121,23 @@ public class Panel {
 	}
 
 	/**
-	 * Inicia la historia y muestra el menú principal. Permite comenzar la aventura
-	 * o salir de la aplicación.
+	 * Inicia la historia y muestra el menú principal. Permite comenzar la
+	 * aventura o salir de la aplicación.
+	 * @throws InterruptedException 
 	 */
-	public void comenzar() {
-		log.debug("Inicio");
+	public void comenzar() throws InterruptedException {
+		try {
+			for (String linea : util.toLeerArchivo("./docs/logo.txt")) {
+				System.out.println(linea);
+				Thread.sleep(100);
+			}
+		} catch (IOException e) {
+			Codex.printException(e);
+		}
+		Thread.sleep(500);
+		System.out.println();
+		log.debug("[ OK ] Iniciando...");
+		Thread.sleep(100);
 		try {
 			int n = 1;
 			int total = util.getCapitulosTotales();
@@ -163,10 +175,14 @@ public class Panel {
 	}
 
 	private void inicializarAcciones() {
-		acciones.put("addPocion", (jugador, criatura) -> jugador.getInventario().put("Pocion de Sanación",
-				new Pocion("Pocion de Curacion", 1)));
-		acciones.put("aumentarMoral", (jugador, criatura) -> jugador.modMoral(1));
-		acciones.put("luchar", (jugador, criatura) -> jugador.luchar(jugador, criatura));
+		acciones.put("addPocion",
+				(jugador, criatura) -> jugador.getInventario().put(
+						"Pocion de Sanación",
+						new Pocion("Pocion de Curacion", 1)));
+		acciones.put("aumentarMoral",
+				(jugador, criatura) -> jugador.modMoral(1));
+		acciones.put("luchar",
+				(jugador, criatura) -> jugador.luchar(jugador, criatura));
 		acciones.put("huir", (jugador, criatura) -> jugador.huir(jugador));
 	}
 }

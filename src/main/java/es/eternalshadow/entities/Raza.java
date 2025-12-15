@@ -17,15 +17,15 @@ public abstract class Raza implements Accionable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "tipo", nullable = false, length = 50)
+	@Column(name = "TIPO", nullable = false, length = 50)
 	private String tipo;
-	@Column(name = "fuerza", nullable = false)
+	@Column(name = "FUERZA", nullable = false)
 	private int fuerza;
-	@Column(name = "resistencia", nullable = false)
+	@Column(name = "RESISTENCIA", nullable = false)
 	private int resistencia;
-	@Column(name = "velocidad", nullable = false)
+	@Column(name = "VELOCIDAD", nullable = false)
 	private int velocidad;
-	@Column(name = "magia", nullable = false)
+	@Column(name = "MAGIA", nullable = false)
 	private int magia;
 
 	public Raza() {

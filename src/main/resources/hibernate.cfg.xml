@@ -37,8 +37,5 @@
 		<mapping class="es.eternalshadow.entities.Usuario" />
 		<mapping class="es.eternalshadow.entities.Raza" />
 		<mapping class="es.eternalshadow.entities.Criatura" />
-		
-		
-
 	</session-factory>
 </hibernate-configuration>

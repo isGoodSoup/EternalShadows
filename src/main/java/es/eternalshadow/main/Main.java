@@ -1,6 +1,7 @@
 package es.eternalshadow.main;
 
 import es.eternalshadow.interfaces.Iniciable;
+import es.eternalshadow.util.Codex;
 
 public class Main implements Iniciable {
 	private Panel panel = new Panel();
@@ -12,6 +13,8 @@ public class Main implements Iniciable {
 	
 	@Override
 	public void init() {
-		panel.comenzar();
+		try { panel.comenzar(); } catch (InterruptedException e) {
+			Codex.printException(e);
+		}
 	}
 }
