@@ -9,6 +9,7 @@ import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.InfoCmp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,18 +127,8 @@ public class Panel {
 	 * @throws InterruptedException 
 	 */
 	public void comenzar() throws InterruptedException {
-		try {
-			for (String linea : util.toLeerArchivo("./docs/logo.txt")) {
-				System.out.println(linea);
-				Thread.sleep(100);
-			}
-		} catch (IOException e) {
-			Codex.printException(e);
-		}
 		Thread.sleep(500);
 		System.out.println();
-		log.debug("[ OK ] Iniciando...");
-		Thread.sleep(100);
 		try {
 			int n = 1;
 			int total = util.getCapitulosTotales();
@@ -155,8 +146,18 @@ public class Panel {
 			System.exit(1);
 		}
 		String[] menu = { "Comenzar Aventura", "Salir" };
-		Codex.toGetString(titulo.toUpperCase() + " ⚔️");
 		do {
+			try {
+				for (String linea : util.toLeerArchivo("./docs/logo.txt")) {
+					System.out.println(linea);
+					Thread.sleep(100);
+				}
+			} catch (IOException e) {
+				Codex.printException(e);
+			}
+			
+			System.out.println();
+			
 			opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 			switch (opcion) {
 				case 1 -> {
@@ -164,11 +165,14 @@ public class Panel {
 					historia.iniciar(jugador, reader, util);
 				}
 				case 2 -> {
-					log.debug("Salida");
+					log.debug("[ OK ] Salida");
 					System.exit(0);
 				}
 				case 700 -> {
 					historia.iniciar(util.crearPersonaje(), reader, util);
+				}
+				default -> {
+					limpiarPantalla();
 				}
 			}
 		} while (opcion > 2);
@@ -184,5 +188,10 @@ public class Panel {
 		acciones.put("luchar",
 				(jugador, criatura) -> jugador.luchar(jugador, criatura));
 		acciones.put("huir", (jugador, criatura) -> jugador.huir(jugador));
+	}
+	
+	public void limpiarPantalla() {
+		terminal.puts(InfoCmp.Capability.clear_screen);
+		terminal.flush();
 	}
 }

@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.jline.reader.LineReader;
+import org.jline.utils.InfoCmp;
 
 import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.enums.Armamento;
@@ -63,9 +64,11 @@ public class Codex {
 	 * @param menu   Opciones del menú como arreglo de strings.
 	 * @param s      Mensaje para solicitar la opción.
 	 * @return La opción seleccionada como entero.
+	 * @throws InterruptedException 
 	 */
-	public int crearMenu(LineReader reader, String[] menu, String s) {
+	public int crearMenu(LineReader reader, String[] menu, String s) throws InterruptedException {
 		for (int i = 0; i < menu.length; i++) {
+			Thread.sleep(100);
 			System.out.println(i + 1 + ") " + menu[i]);
 		}
 		int num = Codex.toScanInteger(reader, s);
@@ -536,7 +539,7 @@ public class Codex {
 	    if (linea.startsWith("#OPCION")) return ParsingKeys.OPCION;
 	    return null;
 	}
-
+	
 	public static void comprarObjetoMercader(Jugador jugador, String objeto, int precio) {
 		// TODO SistemaCompras
 	}

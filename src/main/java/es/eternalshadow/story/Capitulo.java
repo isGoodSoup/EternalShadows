@@ -77,8 +77,9 @@ public class Capitulo {
 	/**
      * Método que inicia el juego de este capítulo.
      * Muestra las escenas, las opciones, ejecuta acciones y avanza a la siguiente escena.
+	 * @throws InterruptedException 
      */
-    public void jugar() {
+    public void jugar() throws InterruptedException {
         Escena escenaActual = escena;
         while (escenaActual != null) {
             System.out.println(escenaActual.getDescripcion());
