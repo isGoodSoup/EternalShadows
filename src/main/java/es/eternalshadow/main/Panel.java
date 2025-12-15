@@ -9,7 +9,6 @@ import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
-import org.jline.utils.InfoCmp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -125,9 +124,9 @@ public class Panel {
 	 * Inicia la historia y muestra el menú principal. Permite comenzar la
 	 * aventura o salir de la aplicación.
 	 * @throws InterruptedException 
+	 * @throws IOException 
 	 */
-	public void comenzar() throws InterruptedException {
-		Thread.sleep(500);
+	public void comenzar() throws InterruptedException, IOException {
 		System.out.println();
 		try {
 			int n = 1;
@@ -147,17 +146,8 @@ public class Panel {
 		}
 		String[] menu = { "Comenzar Aventura", "Salir" };
 		do {
-			try {
-				for (String linea : util.toLeerArchivo("./docs/logo.txt")) {
-					System.out.println(linea);
-					Thread.sleep(100);
-				}
-			} catch (IOException e) {
-				Codex.printException(e);
-			}
-			
+			pintarLogo(".\\docs\\logo.txt");
 			System.out.println();
-			
 			opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 			switch (opcion) {
 				case 1 -> {
@@ -188,5 +178,23 @@ public class Panel {
 		acciones.put("luchar",
 				(jugador, criatura) -> jugador.luchar(jugador, criatura));
 		acciones.put("huir", (jugador, criatura) -> jugador.huir(jugador));
+	}
+	
+	/**
+	 * Método para pintar el logo elegido por parte de un 
+	 * archivo
+	 * @param ruta
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public void pintarLogo(String ruta) throws IOException, InterruptedException {
+		try {
+			for (String linea : util.toLeerArchivo(ruta)) {
+				System.out.println(linea);
+				Thread.sleep(100);
+			}
+		} catch (IOException e) {
+			Codex.printException(e);
+		}
 	}
 }

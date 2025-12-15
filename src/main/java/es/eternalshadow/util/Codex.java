@@ -49,24 +49,16 @@ public class Codex {
 		this.panel = panel;
 	}
 
-	public List<Opcion> getOpciones() {
-		return panel.getOpciones();
-	}
-
-	public void setOpciones(List<Opcion> opciones) {
-		panel.setOpciones(opciones);
-	}
-
 	/**
 	 * Muestra un menú y obtiene la opción seleccionada por el usuario.
-	 *
 	 * @param reader Lector de líneas para recibir la entrada del usuario.
 	 * @param menu   Opciones del menú como arreglo de strings.
 	 * @param s      Mensaje para solicitar la opción.
 	 * @return La opción seleccionada como entero.
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
-	public int crearMenu(LineReader reader, String[] menu, String s) throws InterruptedException {
+	public int crearMenu(LineReader reader, String[] menu, String s)
+			throws InterruptedException {
 		for (int i = 0; i < menu.length; i++) {
 			Thread.sleep(100);
 			System.out.println(i + 1 + ") " + menu[i]);
@@ -77,17 +69,17 @@ public class Codex {
 
 	/**
 	 * Imprime información detallada de una excepción.
-	 *
 	 * @param e Excepción a imprimir.
 	 */
 	public static void printException(Exception e) {
 		System.err.println(e.getClass().getSimpleName() + " at line "
-				+ e.getStackTrace()[e.getStackTrace().length - 3].getLineNumber() + ": " + e.getMessage());
+				+ e.getStackTrace()[e.getStackTrace().length - 3]
+						.getLineNumber()
+				+ ": " + e.getMessage());
 	}
 
 	/**
 	 * Solicita una entrada de texto al usuario hasta que sea no vacía.
-	 *
 	 * @param reader Lector de líneas.
 	 * @param s      Mensaje de solicitud.
 	 * @return Cadena ingresada por el usuario.
@@ -103,7 +95,6 @@ public class Codex {
 
 	/**
 	 * Solicita al usuario un número entero válido.
-	 *
 	 * @param reader Lector de líneas.
 	 * @param s      Mensaje de solicitud.
 	 * @return Número entero ingresado por el usuario.
@@ -126,7 +117,6 @@ public class Codex {
 
 	/**
 	 * Lee un archivo y devuelve su contenido como una lista de líneas.
-	 * 
 	 * @param archivo Ruta del archivo a leer.
 	 * @return Lista de líneas del archivo.
 	 * @throws IOException Si ocurre un error al leer el archivo.
@@ -137,116 +127,124 @@ public class Codex {
 	}
 
 	/*
-	 * Carga el capítulo, lo parsea dependiendo del formato de la línea
-	 * y devuelve el capítulo procesado
+	 * Carga el capítulo, lo parsea dependiendo del formato de la línea y
+	 * devuelve el capítulo procesado
 	 * 
 	 */
-	public Capitulo cargarCapitulo(String ruta, Jugador jugador, Criatura criatura) throws IOException {
-	    List<String> lineas = toLeerArchivo(ruta);
-	    Map<String, Escena> escenas = new HashMap<>();
+	public Capitulo cargarCapitulo(String ruta, Jugador jugador,
+			Criatura criatura) throws IOException {
+		List<String> lineas = toLeerArchivo(ruta);
+		Map<String, Escena> escenas = new HashMap<>();
 
-	    Escena escenaActual = null;
-	    List<Opcion> opcionesActuales = null;
+		Escena escenaActual = null;
+		List<Opcion> opcionesActuales = null;
 
-	    LineReader reader = panel.getReader();
-	    String nombre = "";
-	    int numero = 0;
+		LineReader reader = panel.getReader();
+		String nombre = "";
+		int numero = 0;
 
-	    for (int i = 0; i < lineas.size(); i++) {
-	        String linea = lineas.get(i).trim();
-	        
-	        if (linea.startsWith("#FIN")) { break; }
-	        
-	        ParsingKeys key = getParsingKey(linea);
-	        if (key == null) {
-	            System.out.print(linea);
-	            reader.readLine();
-	            continue;
-	        }
-	        switch (key) {
-		        case JUGADOR:
-		            String textoJugador = linea.replace("#JUGADOR", panel.getJugador().getNombre()).trim();
-		            System.out.print(textoJugador);
-		            reader.readLine();
-		            break;
+		for (int i = 0; i < lineas.size(); i++) {
+			String linea = lineas.get(i).trim();
 
-	            case NOMBRE:
-	                nombre = linea.replace("#NOMBRE", "").trim();
-	                break;
+			if (linea.startsWith("#FIN")) {
+				break;
+			}
 
-	            case CAPITULO:
-	                numero = Integer.parseInt(linea.replace("#CAPITULO", "").trim());
-	                break;
-
-	            case ESCENA:
-	                String id = linea.replace("#ESCENA", "").trim();
-	                escenaActual = new Escena(id, new ArrayList<>());
-	                escenas.put(id, escenaActual);
-	                opcionesActuales = escenaActual.getOpciones();
-	                break;
-
-	            case OPCION:
-	                String texto = linea.replace("#OPCION", "").trim();
-	                Opcion opcion = new Opcion(texto);
-
-	                while (++i < lineas.size()) {
-	                    String sub = lineas.get(i).trim();
-	                    if (sub.startsWith("#") || sub.isEmpty()) {
-	                        i--;
-	                        break;
-	                    }
-	                    if (sub.startsWith("ACCION:")) {
-	                    	opcion.setAccion(() -> ejecutarAccion(sub.substring(7).trim(), jugador, criatura));
-	                    }
-	                    else if (sub.startsWith("DESTINO:")) {
-	                    	opcion.setSiguienteEscenaId(sub.substring(8).trim());
-	                    }
-	                }
-	                opcionesActuales.add(opcion);
-	                break;
-	                
-	            case COMBATE:
-	            	
-	            	break;
-	            	
-	            default:
-	                System.out.println(linea);
-	                reader.readLine();
-	                break;
-	        }
-	        
-	        for (Escena escena : escenas.values()) {
-	            for (Opcion opcion : escena.getOpciones()) {
-	                String destinoId = opcion.getSiguienteEscenaId();
-	                if (destinoId != null) {
-	                    Escena destino = escenas.get(destinoId);
-	                    if (destino == null) {
-	                        System.err.println("ERROR: Escena destino no encontrada: " + destinoId);
-	                    } else {
-	                        opcion.setEscenaDestino(destino);
-	                    }
-	                }
-	            }
-	        }
-	    }
-	    return new Capitulo(numero, panel, nombre, escenaActual);
-	}
+			ParsingKeys key = getParsingKey(linea);
+			if (key == null) {
+				System.out.print(linea);
+				reader.readLine();
+				continue;
+			}
+			switch (key) {
+				case JUGADOR:
+					String textoJugador = linea
+							.replace("#JUGADOR", panel.getJugador().getNombre())
+							.trim();
+					System.out.print(textoJugador);
+					reader.readLine();
+					break;
 	
+				case NOMBRE:
+					nombre = linea.replace("#NOMBRE", "").trim();
+					break;
+	
+				case CAPITULO:
+					numero = Integer
+							.parseInt(linea.replace("#CAPITULO", "").trim());
+					break;
+	
+				case ESCENA:
+					String id = linea.replace("#ESCENA", "").trim();
+					escenaActual = new Escena(id, new ArrayList<>());
+					escenas.put(id, escenaActual);
+					opcionesActuales = escenaActual.getOpciones();
+					break;
+	
+				case OPCION:
+					String texto = linea.replace("#OPCION", "").trim();
+					Opcion opcion = new Opcion(texto);
+	
+					while (++i < lineas.size()) {
+						String sub = lineas.get(i).trim();
+						if (sub.startsWith("#") || sub.isEmpty()) {
+							i--;
+							break;
+						}
+						if (sub.startsWith("ACCION:")) {
+							opcion.setAccion(() -> ejecutarAccion(
+									sub.substring(7).trim(), jugador, criatura));
+						} else if (sub.startsWith("DESTINO:")) {
+							opcion.setSiguienteEscenaId(sub.substring(8).trim());
+						}
+					}
+					opcionesActuales.add(opcion);
+					break;
+	
+				case COMBATE:
+	
+					break;
+	
+				default:
+					System.out.println(linea);
+					reader.readLine();
+					break;
+			}
+
+			for (Escena escena : escenas.values()) {
+				for (Opcion opcion : escena.getOpciones()) {
+					String destinoId = opcion.getSiguienteEscenaId();
+					if (destinoId != null) {
+						Escena destino = escenas.get(destinoId);
+						if (destino == null) {
+							System.err.println(
+									"ERROR: Escena destino no encontrada: "
+											+ destinoId);
+						} else {
+							opcion.setEscenaDestino(destino);
+						}
+					}
+				}
+			}
+		}
+		return new Capitulo(numero, panel, nombre, escenaActual);
+	}
+
 	/**
 	 * Ejecuta las acciones que se parsean por #OPCION
 	 * @param el nombre de la accion String
 	 * @param el jugador parseado
 	 * @param la criatura pasada
 	 */
-	public void ejecutarAccion(String nombreAccion, Jugador jugador, Criatura criatura) {
-	    Accion accion = panel.getAcciones().get(nombreAccion);
-	    if (accion == null) {
-	        System.err.println("ERROR: Acción desconocida: " + nombreAccion);
-	        return;
-	    }
-	    accion.ejecutar(jugador, criatura);
+	public void ejecutarAccion(String nombreAccion, Jugador jugador,
+			Criatura criatura) {
+		Accion accion = panel.getAcciones().get(nombreAccion);
+		if (accion == null) {
+			System.err.println("ERROR: Acción desconocida: " + nombreAccion);
+			return;
+		}
+		accion.ejecutar(jugador, criatura);
 	}
-
 
 	/**
 	 * Permite al usuario crear un personaje personalizado eligiendo clase y
@@ -271,27 +269,31 @@ public class Codex {
 
 		String tipo = toScan(reader, "Elige tu raza");
 		String nombre = toScan(reader, "Introduce tu nombre");
-		Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 
-				100, 50, 10, 10, panel);
+		Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 100, 50, 10, 10,
+				panel);
 		return jugador;
 	}
-	
+
 	/**
-	 * Crea una criatura default con valores default con el objetivo de 
-	 * testeo más eficiente.
+	 * Crea una criatura default con valores default con el objetivo de testeo
+	 * más eficiente.
+	 * 
 	 * @return Objeto {@link Criatura} creado.
 	 */
 	public Jugador crearPersonaje() {
 		int f = 20, r = 20, v = 20, m = 20;
 		String tipo = "Elfo";
 		String nombre = "Galandriel";
-		Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 
-				100, 50, panel.getDados().tirarDados(), panel.getDados().tirarDados(), panel);
+		Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 100, 50,
+				panel.getDados().tirarDados(), panel.getDados().tirarDados(),
+				panel);
 		return jugador;
 	}
 
 	/**
-	 * Crea una criatura aleatoria con atributos que suman 100 y clase aleatoria.
+	 * Crea una criatura aleatoria con atributos que suman 100 y clase
+	 * aleatoria.
+	 * 
 	 * @return Criatura aleatoria creada.
 	 */
 	public Criatura crearCriaturaAleatoria() {
@@ -308,15 +310,19 @@ public class Codex {
 		int velocidad = atributos[2];
 		int magia = atributos[3];
 
-		String[] razas = { "Mago", "Guerrero", "Demonio", "Elfo Oscuro", "Enano", "Elfo" };
+		String[] razas = { "Mago", "Guerrero", "Demonio", "Elfo Oscuro",
+				"Enano", "Elfo" };
 		int numale = random.nextInt(razas.length);
 		String tipo = razas[numale];
 
 		// TODO Nombre
-		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad, magia, panel.getJugador().getPuntosVida());
+		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad,
+				magia, panel.getJugador().getPuntosVida());
 		if (c != null) {
-			System.out.println("Criatura enemiga creada: " + c.getNombre() + " con atributos: " + "Fuerza: " + fuerza
-					+ ", Resistencia: " + resistencia + ", Velocidad: " + velocidad + ", Magia: " + magia);
+			System.out.println("Criatura enemiga creada: " + c.getNombre()
+					+ " con atributos: " + "Fuerza: " + fuerza
+					+ ", Resistencia: " + resistencia + ", Velocidad: "
+					+ velocidad + ", Magia: " + magia);
 		}
 		insertarRegistros(c);
 		return c;
@@ -343,7 +349,8 @@ public class Codex {
 		String password = "password";
 		Connection connection = null;
 		try {
-			connection = DriverManager.getConnection(url_oracle2, username, password);
+			connection = DriverManager.getConnection(url_oracle2, username,
+					password);
 		} catch (SQLException e) {
 			System.err.println("Error crear la sesión" + e.getMessage());
 		}
@@ -369,8 +376,10 @@ public class Codex {
 				int fuerza = rs.getInt("FUERZA");
 				int velocidad = rs.getInt("VELOCIDAD");
 				int magia = rs.getInt("MAGIA");
-				System.out.println(sb.append("ID:" + id + separador + "TIPO:" + tipo + separador + "FUERZA:" + fuerza
-						+ separador + "VELOCIDAD:" + velocidad + separador + "MAGIA:" + magia));
+				System.out.println(sb.append(
+						"ID:" + id + separador + "TIPO:" + tipo + separador
+								+ "FUERZA:" + fuerza + separador + "VELOCIDAD:"
+								+ velocidad + separador + "MAGIA:" + magia));
 			}
 
 		} catch (SQLException e) {
@@ -393,7 +402,8 @@ public class Codex {
 		int magia = c.getMagia();
 
 		String sql = "INSERT INTO TB_RAZAS (ID,NOMBRE,TIPO, FUERZA, VELOCIDAD, MAGIA) VALUES (?, ?, ?, ?, ?)";
-		try (Connection conexion = crearConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
+		try (Connection conexion = crearConexion();
+				PreparedStatement ps = conexion.prepareStatement(sql)) {
 			ps.setInt(1, id);
 			ps.setString(2, nombre);
 			ps.setString(3, tipo);
@@ -406,10 +416,69 @@ public class Codex {
 			printException(e);
 		}
 	}
+	
+	/**
+	 * Escoge un arma aleatoria del enum Armamento y la devuelve
+	 * @return Armamento
+	 */
+	public Armamento toGenArma() {
+		Armamento[] armas = Armamento.values();
+		return armas[random.nextInt(armas.length)];
+	}
+	
+	/**
+	 * Escoge un escudo aleatorio del enum Escuderia y la devuelve
+	 * @return Escuderia
+	 */
+	public Escuderia toGenEscudo() {
+		Escuderia[] escudos = Escuderia.values();
+		return escudos[random.nextInt(0, 1)];
+	}
+
+	/**
+	 * Devuelve el número total de capítulos en la historia.
+	 * @return Número total de capítulos.
+	 */
+	public int getCapitulosTotales() {
+		try {
+			return Files.list(Paths.get("./docs/mq")).filter(
+					f -> f.getFileName().toString().startsWith("capitulo"))
+					.toArray().length;
+		} catch (IOException e) {
+			printException(e);
+		}
+		return 0;
+	}
+
+	/**
+	 * Genera un enum dependiendo del tipo de parsing de la línea
+	 * @param linea
+	 * @return
+	 */
+	private ParsingKeys getParsingKey(String linea) {
+		if (linea.startsWith("#NOMBRE"))
+			return ParsingKeys.NOMBRE;
+		if (linea.startsWith("#CAPITULO"))
+			return ParsingKeys.CAPITULO;
+		if (linea.startsWith("#ESCENA"))
+			return ParsingKeys.ESCENA;
+		if (linea.startsWith("#OPCION"))
+			return ParsingKeys.OPCION;
+		return null;
+	}
+
+	public void limpiarPantalla() {
+		panel.getTerminal().puts(InfoCmp.Capability.clear_screen);
+		panel.getTerminal().flush();
+	}
+
+	public static void comprarObjetoMercader(Jugador jugador, String objeto,
+			int precio) {
+		// TODO SistemaCompras
+	}
 
 	/**
 	 * Genera un número decimal aleatorio entre min y max dividido por 100.
-	 * 
 	 * @param min Valor mínimo.
 	 * @param max Valor máximo.
 	 * @return Número decimal aleatorio.
@@ -421,7 +490,6 @@ public class Codex {
 
 	/**
 	 * Genera un valor booleano aleatorio.
-	 * 
 	 * @return true o false de forma aleatoria.
 	 */
 	public static boolean toGetBoolean() {
@@ -430,7 +498,6 @@ public class Codex {
 
 	/**
 	 * Imprime un título decorativo en consola.
-	 * 
 	 * @param s Texto del título.
 	 */
 	public static void toGetString(String s) {
@@ -497,55 +564,5 @@ public class Codex {
 		long start = System.currentTimeMillis();
 		task.run();
 		return System.currentTimeMillis() - start;
-	}
-	
-	/**
-	 * Escoge un arma aleatoria del enum Armamento y la devuelve
-	 * @return Armamento
-	 */
-	public Armamento toGenArma() {
-		Armamento[] armas = Armamento.values();
-		return armas[random.nextInt(armas.length)];
-	}
-	
-	public Escuderia toGenEscudo() {
-		Escuderia[] escudos = Escuderia.values();
-		return escudos[random.nextInt(0, 1)];
-	}
-
-	/**
-	 * Devuelve el número total de capítulos en la historia.
-	 * @return Número total de capítulos.
-	 */
-	public int getCapitulosTotales() {
-		try {
-			return Files.list(Paths.get("./docs/mq")).filter(f -> f.getFileName().toString().startsWith("capitulo"))
-					.toArray().length;
-		} catch (IOException e) {
-			printException(e);
-		}
-		return 0;
-	}
-	
-	/**
-	 * Genera un enum dependiendo del tipo de parsing de la línea
-	 * @param linea
-	 * @return
-	 */
-	private ParsingKeys getParsingKey(String linea) {
-	    if (linea.startsWith("#NOMBRE")) return ParsingKeys.NOMBRE;
-	    if (linea.startsWith("#CAPITULO")) return ParsingKeys.CAPITULO;
-	    if (linea.startsWith("#ESCENA")) return ParsingKeys.ESCENA;
-	    if (linea.startsWith("#OPCION")) return ParsingKeys.OPCION;
-	    return null;
-	}
-	
-	public void limpiarPantalla() {
-		panel.getTerminal().puts(InfoCmp.Capability.clear_screen);
-		panel.getTerminal().flush();
-	}
-	
-	public static void comprarObjetoMercader(Jugador jugador, String objeto, int precio) {
-		// TODO SistemaCompras
 	}
 }

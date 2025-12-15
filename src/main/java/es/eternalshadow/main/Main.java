@@ -1,5 +1,7 @@
 package es.eternalshadow.main;
 
+import java.io.IOException;
+
 import es.eternalshadow.interfaces.Iniciable;
 import es.eternalshadow.util.Codex;
 
@@ -13,7 +15,7 @@ public class Main implements Iniciable {
 	
 	@Override
 	public void init() {
-		try { panel.comenzar(); } catch (InterruptedException e) {
+		try { panel.comenzar(); } catch (IOException | InterruptedException e) {
 			Codex.printException(e);
 		}
 	}

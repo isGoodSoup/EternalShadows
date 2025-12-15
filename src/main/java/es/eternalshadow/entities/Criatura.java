@@ -19,7 +19,7 @@ public class Criatura extends Raza {
 	@Column(name = "NOMBRE", nullable = false, length = 100)
 	private String nombre;
 	@Column(name = "NIVEL", nullable = false)
-	private int nivel;
+	private int nivel = 1;
 	@Column(name = "ATAQUE")
 	private int ataque;
 	@Column(name = "DEFENSA")
