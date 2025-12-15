@@ -2,11 +2,9 @@ package es.eternalshadow.entities;
 
 import java.util.ArrayList;
 
-import es.eternalshadow.interfaces.Accion;
 import es.eternalshadow.main.Panel;
 import es.eternalshadow.pojos.Arma;
 import es.eternalshadow.pojos.Escudo;
-import es.eternalshadow.pojos.Jugador;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
