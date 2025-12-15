@@ -10,9 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import org.jline.reader.LineReader;
@@ -22,12 +20,8 @@ import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.enums.Armamento;
 import es.eternalshadow.enums.Escuderia;
 import es.eternalshadow.enums.ParsingKeys;
-import es.eternalshadow.interfaces.Accion;
 import es.eternalshadow.main.Panel;
-import es.eternalshadow.motor.Escena;
-import es.eternalshadow.motor.Opcion;
 import es.eternalshadow.pojos.Jugador;
-import es.eternalshadow.story.Capitulo;
 
 /**
  * Clase de utilidades para el juego "Eternal Shadows". Proporciona métodos
@@ -124,126 +118,6 @@ public class Codex {
 	public List<String> toLeerArchivo(String archivo) throws IOException {
 		String contenido = Files.readString(Paths.get(archivo));
 		return contenido.lines().toList();
-	}
-
-	/*
-	 * Carga el capítulo, lo parsea dependiendo del formato de la línea y
-	 * devuelve el capítulo procesado
-	 * 
-	 */
-	public Capitulo cargarCapitulo(String ruta, List<Criatura> jugadores,
-			Criatura criatura) throws IOException {
-		List<String> lineas = toLeerArchivo(ruta);
-		Map<String, Escena> escenas = new HashMap<>();
-
-		Escena escenaActual = null;
-		List<Opcion> opcionesActuales = null;
-
-		LineReader reader = panel.getReader();
-		String nombre = "";
-		int numero = 0;
-
-		for (int i = 0; i < lineas.size(); i++) {
-			String linea = lineas.get(i).trim();
-
-			if (linea.startsWith("#FIN")) {
-				break;
-			}
-
-			ParsingKeys key = getParsingKey(linea);
-			if (key == null) {
-				System.out.print(linea);
-				reader.readLine();
-				continue;
-			}
-			switch (key) {
-				case JUGADOR:
-					String textoJugador = linea
-							.replace("#JUGADOR", panel.getJugador().getNombre())
-							.trim();
-					System.out.print(textoJugador);
-					reader.readLine();
-					break;
-	
-				case NOMBRE:
-					nombre = linea.replace("#NOMBRE", "").trim();
-					break;
-	
-				case CAPITULO:
-					numero = Integer
-							.parseInt(linea.replace("#CAPITULO", "").trim());
-					break;
-	
-				case ESCENA:
-					String id = linea.replace("#ESCENA", "").trim();
-					escenaActual = new Escena(id, new ArrayList<>());
-					escenas.put(id, escenaActual);
-					opcionesActuales = escenaActual.getOpciones();
-					break;
-	
-				case OPCION:
-					String texto = linea.replace("#OPCION", "").trim();
-					Opcion opcion = new Opcion(texto);
-	
-					while (++i < lineas.size()) {
-						String sub = lineas.get(i).trim();
-						if (sub.startsWith("#") || sub.isEmpty()) {
-							i--;
-							break;
-						}
-						if (sub.startsWith("ACCION:")) {
-							opcion.setAccion(() -> ejecutarAccion(
-									sub.substring(7).trim(), jugadores, criatura));
-						} else if (sub.startsWith("DESTINO:")) {
-							opcion.setSiguienteEscenaId(sub.substring(8).trim());
-						}
-					}
-					opcionesActuales.add(opcion);
-					break;
-	
-				case COMBATE:
-	
-					break;
-	
-				default:
-					System.out.println(linea);
-					reader.readLine();
-					break;
-			}
-
-			for (Escena escena : escenas.values()) {
-				for (Opcion opcion : escena.getOpciones()) {
-					String destinoId = opcion.getSiguienteEscenaId();
-					if (destinoId != null) {
-						Escena destino = escenas.get(destinoId);
-						if (destino == null) {
-							System.err.println(
-									"ERROR: Escena destino no encontrada: "
-											+ destinoId);
-						} else {
-							opcion.setEscenaDestino(destino);
-						}
-					}
-				}
-			}
-		}
-		return new Capitulo(numero, panel, nombre, escenaActual);
-	}
-
-	/**
-	 * Ejecuta las acciones que se parsean por #OPCION
-	 * @param el nombre de la accion String
-	 * @param el jugador parseado
-	 * @param la criatura pasada
-	 */
-	public void ejecutarAccion(String nombreAccion, List<Criatura> jugadores,
-			Criatura criatura) {
-		Accion accion = panel.getAcciones().get(nombreAccion);
-		if (accion == null) {
-			System.err.println("ERROR: Acción desconocida: " + nombreAccion);
-			return;
-		}
-		accion.ejecutar(jugadores, criatura);
 	}
 
 	/**
@@ -462,7 +336,7 @@ public class Codex {
 	 * @param linea
 	 * @return
 	 */
-	private ParsingKeys getParsingKey(String linea) {
+	public ParsingKeys getParsingKey(String linea) {
 		if (linea.startsWith("#NOMBRE"))
 			return ParsingKeys.NOMBRE;
 		if (linea.startsWith("#CAPITULO"))
