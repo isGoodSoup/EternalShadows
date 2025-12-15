@@ -133,11 +133,6 @@ public class Jugador extends Criatura {
 	}
 	
 	@Override
-	public void ejecutar(Jugador jugador, Criatura criatura) {
-		super.ejecutar(jugador, criatura);
-	}
-
-	@Override
 	public int recibirDanio(int i) {
 		return super.recibirDanio(i);
 	}

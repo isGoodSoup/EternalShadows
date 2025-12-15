@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "TB_CRIATURA")
-public class Criatura extends Raza implements Accion {
+public class Criatura extends Raza {
 	private Panel panel;
 	@Column(name = "nombre", nullable = false, length = 100)
 	private String nombre;
@@ -119,11 +119,6 @@ public class Criatura extends Raza implements Accion {
 		return panel.getDados().tirarDados() * nivel;
 	}
 	
-	@Override
-	public void ejecutar(Jugador jugador, Criatura criatura) {
-		
-	}
-
 	@Override
 	public boolean isVivo(Criatura criatura) {
 		return this.puntosVida > 0;
