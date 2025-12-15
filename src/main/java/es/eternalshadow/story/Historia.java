@@ -72,7 +72,6 @@ public abstract class Historia {
 
 	public void mostrarEscena() {
 		System.out.println("\n" + escena.getDescripcion());
-
 		List<Opcion> opciones = escena.getOpciones();
 		for (int i = 0; i < opciones.size(); i++) {
 			System.out.println((i + 1) + ". " + opciones.get(i).getTexto());
@@ -90,5 +89,6 @@ public abstract class Historia {
 		mostrarEscena();
 	}
 
-	public abstract Criatura iniciar(Criatura personaje, LineReader reader, Codex util);
+	public abstract List<Criatura> iniciar(List<Criatura> criaturas,
+			LineReader reader, Codex util);
 }

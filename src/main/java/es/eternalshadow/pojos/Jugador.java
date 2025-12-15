@@ -112,6 +112,18 @@ public class Jugador extends Criatura {
 	public void setInventario(Map<String, Item> inventario) {
 		this.inventario = inventario;
 	}
+	
+	@Override
+	public String toString() {
+		return "Jugador [moral=" + moral + ", ataque=" + ataque + ", defensa="
+				+ defensa + ", arma=" + arma + ", escudo=" + escudo + ", oro="
+				+ oro + ", inventario=" + inventario + ", getNombre()="
+				+ getNombre() + ", getNivel()=" + getNivel()
+				+ ", getPuntosVida()=" + getPuntosVida() + ", getFuerza()="
+				+ getFuerza() + ", getResistencia()=" + getResistencia()
+				+ ", getVelocidad()=" + getVelocidad() + ", getMagia()="
+				+ getMagia() + "]";
+	}
 
 	@Override
 	public int atacar(Criatura criatura) {

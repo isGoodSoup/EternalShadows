@@ -1,6 +1,7 @@
 package es.eternalshadow.story;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.jline.reader.LineReader;
 
@@ -17,19 +18,19 @@ public class HistoriaPrincipal extends Historia {
 	}
 
 	@Override
-	public Criatura iniciar(Criatura criatura, LineReader reader, Codex util) {
+	public List<Criatura> iniciar(List<Criatura> criaturas, LineReader reader, Codex util) {
 		for (int i = 0; i < getCapitulos().size(); i++) {
 		    try {
 		        Capitulo capitulo = util.cargarCapitulo(
 		            "./docs/mq/capitulo" + getCapitulos().get(i).getNumero() + ".txt",
-		            panel.getJugador(),
-		            criatura
+		            criaturas,
+		            panel.getJugador()
 		        );
 		        getCapitulos().set(i, capitulo);
 		    } catch (IOException e) {
 		        Codex.printException(e);
 		    }
 		}
-		return criatura;
+		return criaturas;
 	}
 }

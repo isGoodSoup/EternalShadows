@@ -131,7 +131,7 @@ public class Codex {
 	 * devuelve el capítulo procesado
 	 * 
 	 */
-	public Capitulo cargarCapitulo(String ruta, Jugador jugador,
+	public Capitulo cargarCapitulo(String ruta, List<Criatura> jugadores,
 			Criatura criatura) throws IOException {
 		List<String> lineas = toLeerArchivo(ruta);
 		Map<String, Escena> escenas = new HashMap<>();
@@ -193,7 +193,7 @@ public class Codex {
 						}
 						if (sub.startsWith("ACCION:")) {
 							opcion.setAccion(() -> ejecutarAccion(
-									sub.substring(7).trim(), jugador, criatura));
+									sub.substring(7).trim(), jugadores, criatura));
 						} else if (sub.startsWith("DESTINO:")) {
 							opcion.setSiguienteEscenaId(sub.substring(8).trim());
 						}
@@ -236,14 +236,14 @@ public class Codex {
 	 * @param el jugador parseado
 	 * @param la criatura pasada
 	 */
-	public void ejecutarAccion(String nombreAccion, Jugador jugador,
+	public void ejecutarAccion(String nombreAccion, List<Criatura> jugadores,
 			Criatura criatura) {
 		Accion accion = panel.getAcciones().get(nombreAccion);
 		if (accion == null) {
 			System.err.println("ERROR: Acción desconocida: " + nombreAccion);
 			return;
 		}
-		accion.ejecutar(jugador, criatura);
+		accion.ejecutar(jugadores, criatura);
 	}
 
 	/**
@@ -280,14 +280,21 @@ public class Codex {
 	 * 
 	 * @return Objeto {@link Criatura} creado.
 	 */
-	public Jugador crearPersonaje() {
-		int f = 20, r = 20, v = 20, m = 20;
-		String tipo = "Elfo";
-		String nombre = "Galandriel";
-		Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 100, 50,
-				panel.getDados().tirarDados(), panel.getDados().tirarDados(),
-				panel);
-		return jugador;
+	public List<Criatura> crearPersonaje() {
+		List<Criatura> criaturas = new ArrayList<>();
+		for (int i = 0; i < 6; i++) {
+			int f = panel.getDados().tirarDados(), 
+					r = panel.getDados().tirarDados(), 
+					v = panel.getDados().tirarDados(), 
+					m = panel.getDados().tirarDados();
+			String tipo = "CriaturaGenérica";
+			String nombre = "Criatura";
+			Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 100, 50,
+					panel.getDados().tirarDados(), panel.getDados().tirarDados(),
+					panel);
+			criaturas.add(jugador);
+		}
+		return criaturas;
 	}
 
 	/**

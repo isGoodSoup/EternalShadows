@@ -12,6 +12,7 @@ import org.jline.terminal.TerminalBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.interfaces.Accion;
 import es.eternalshadow.motor.Opcion;
 import es.eternalshadow.pojos.Jugador;
@@ -34,6 +35,7 @@ public class Panel {
 	private LineReader reader;
 	private Historia historia = new HistoriaPrincipal(titulo, this);
 	private Jugador jugador;
+	private List<Criatura> criaturas;
 	private Dados dados = new Dados(this);
 	private Codex util = new Codex(this);
 	private List<Opcion> opciones;
@@ -119,7 +121,7 @@ public class Panel {
 	public void setUtil(Codex util) {
 		this.util = util;
 	}
-
+	
 	/**
 	 * Inicia la historia y muestra el menú principal. Permite comenzar la
 	 * aventura o salir de la aplicación.
@@ -151,8 +153,11 @@ public class Panel {
 			opcion = util.crearMenu(reader, menu, "Introduce tu opción");
 			switch (opcion) {
 				case 1 -> {
-					this.jugador = util.crearPersonaje(reader);
-					historia.iniciar(jugador, reader, util);
+					for (int i = 0; i < 6; i++) {
+						this.jugador = util.crearPersonaje(reader);
+						criaturas.add(this.jugador);
+					}
+					historia.iniciar(criaturas, reader, util);
 				}
 				case 2 -> {
 					log.debug("[ OK ] Salida");
@@ -170,14 +175,14 @@ public class Panel {
 
 	private void inicializarAcciones() {
 		acciones.put("addPocion",
-				(jugador, criatura) -> jugador.getInventario().put(
+				(jugadores, criatura) -> jugador.getInventario().put(
 						"Pocion de Sanación",
 						new Pocion("Pocion de Curacion", 1)));
 		acciones.put("aumentarMoral",
-				(jugador, criatura) -> jugador.modMoral(1));
+				(jugadores, criatura) -> jugador.modMoral(1));
 		acciones.put("luchar",
-				(jugador, criatura) -> jugador.luchar(jugador, criatura));
-		acciones.put("huir", (jugador, criatura) -> jugador.huir(jugador));
+				(jugadores, criatura) -> jugador.luchar(jugador, criatura));
+		acciones.put("huir", (jugadores, criatura) -> jugador.huir(jugador));
 	}
 	
 	/**

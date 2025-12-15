@@ -32,8 +32,7 @@ public class Dados {
 
 	public int tirarDados() {
 		for (int i = 0; i < 5; i++) {
-			int resultado = lanzar();
-			System.out.println("Lanzamiento " + (i + 1) + ": " + resultado);
+			lanzar();
 		}
 		return 0;
 	}
