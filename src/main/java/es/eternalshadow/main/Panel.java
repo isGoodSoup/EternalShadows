@@ -172,7 +172,7 @@ public class Panel {
 					historia.iniciar(util.crearPersonaje(), reader, util);
 				}
 				default -> {
-					limpiarPantalla();
+					util.limpiarPantalla();
 				}
 			}
 		} while (opcion > 2);
@@ -188,10 +188,5 @@ public class Panel {
 		acciones.put("luchar",
 				(jugador, criatura) -> jugador.luchar(jugador, criatura));
 		acciones.put("huir", (jugador, criatura) -> jugador.huir(jugador));
-	}
-	
-	public void limpiarPantalla() {
-		terminal.puts(InfoCmp.Capability.clear_screen);
-		terminal.flush();
 	}
 }

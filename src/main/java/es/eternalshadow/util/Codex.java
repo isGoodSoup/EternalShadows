@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.jline.reader.LineReader;
+import org.jline.utils.InfoCmp;
 
 import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.enums.Armamento;
@@ -537,6 +538,11 @@ public class Codex {
 	    if (linea.startsWith("#ESCENA")) return ParsingKeys.ESCENA;
 	    if (linea.startsWith("#OPCION")) return ParsingKeys.OPCION;
 	    return null;
+	}
+	
+	public void limpiarPantalla() {
+		panel.getTerminal().puts(InfoCmp.Capability.clear_screen);
+		panel.getTerminal().flush();
 	}
 	
 	public static void comprarObjetoMercader(Jugador jugador, String objeto, int precio) {
