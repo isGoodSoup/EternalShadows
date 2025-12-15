@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Random;
 
 import org.jline.reader.LineReader;
-import org.jline.utils.InfoCmp;
 
 import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.enums.Armamento;
