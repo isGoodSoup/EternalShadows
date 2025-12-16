@@ -36,7 +36,7 @@ public class CapitulosLoader {
 				context.getHistoria().getCapitulos()
 						.add(new Capitulo(i, "", null));
 				context.getUtil()
-						.toLeerArchivo("./docs/mq/capitulo" + i + ".txt");
+						.toLeerArchivo("docs/mq/capitulo" + i + ".txt");
 			}
 		} catch (IOException e) {
 			Codex.printException(e);

@@ -107,7 +107,7 @@ public class Panel {
 			return true;
 		}
 
-		context.getServices().getMenuService().pintarLogo("./docs/logo.txt");
+		context.getServices().getMenuService().pintarLogo("docs/logo.txt");
 		for (String linea : context.getServices().getEulaService()
 				.leerTexto()) {
 			System.out.println(linea);

@@ -94,7 +94,9 @@ public class Capitulo {
             }
             int seleccion = context.getUtil().crearMenu(
                     context.getReader(),
-                    opciones.stream().map(Opcion::getTexto).toArray(String[]::new),
+                    opciones.stream()
+                    .map(Opcion::getTexto)
+                    .toArray(String[]::new),
                     "Elige tu acción:"
             );
             Opcion opcionElegida = opciones.get(seleccion - 1);

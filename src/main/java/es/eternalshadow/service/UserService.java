@@ -55,7 +55,7 @@ public class UserService {
                 .toArray(String[]::new);
 
         while (!salir) {
-            context.getServices().getMenuService().pintarLogo("./docs/logo.txt");
+            context.getServices().getMenuService().pintarLogo("docs/logo.txt");
             int opcion = context.getUtil().crearMenu(context.getReader(), opciones, "Introduce tu opción");
             MenuSesiones menu = MenuSesiones.fromCodigo(opcion);
 

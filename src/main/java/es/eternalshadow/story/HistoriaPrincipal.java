@@ -23,7 +23,7 @@ public class HistoriaPrincipal extends Historia {
 		for (int i = 0; i < getCapitulos().size(); i++) {
 		    try {
 		        Capitulo capitulo = context.getServices().getCapitulosLoader().cargarCapitulo(
-		            "./docs/mq/capitulo" + getCapitulos().get(i).getNumero() + ".txt",
+		            "docs/mq/capitulo" + getCapitulos().get(i).getNumero() + ".txt",
 		            criaturas,
 		            context.getJugador()
 		        );

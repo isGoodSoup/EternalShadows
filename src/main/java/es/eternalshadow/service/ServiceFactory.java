@@ -14,7 +14,7 @@ public class ServiceFactory {
 		super();
 		this.userService = new UserService(null);
         this.menuService = new MenuService(null);
-        this.eulaService = new EULAService("./docs/eula.txt");
+        this.eulaService = new EULAService("docs/eula.txt");
         this.gameService = new GameService(null);
 		this.capitulosLoader = new CapitulosLoader(null);
 	}
