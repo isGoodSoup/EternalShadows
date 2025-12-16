@@ -2,6 +2,7 @@ package es.eternalshadow.main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.enums.Eula;
 import es.eternalshadow.enums.Menu;
+import es.eternalshadow.enums.MenuOpciones;
+import es.eternalshadow.enums.MenuSesiones;
 import es.eternalshadow.enums.ParsingKeys;
+import es.eternalshadow.exception.GameException;
+import es.eternalshadow.exception.LimiteCombateException;
 import es.eternalshadow.interfaces.Accion;
 import es.eternalshadow.motor.Escena;
 import es.eternalshadow.motor.Opcion;
@@ -38,14 +44,16 @@ public class Panel {
 	private Terminal terminal;
 	private LineReader reader;
 	private Historia historia = new HistoriaPrincipal(titulo, this);
-	private Jugador jugador;
+	private List<String> credenciales = new ArrayList<>();
 	private List<Criatura> criaturas = new ArrayList<>();
+	private Jugador jugador;
 	private Dados dados = new Dados(this);
 	private Codex util = new Codex(this);
 	private List<Opcion> opciones;
 	private final Map<String, Accion> acciones = new HashMap<>();
-	private int opcion;
 	private Menu menu;
+	private Eula eula;
+	private int opcion;
 	private static final Logger log = LoggerFactory.getLogger(Panel.class);
 
 	public Panel() {
@@ -118,6 +126,38 @@ public class Panel {
 	public Map<String, Accion> getAcciones() {
 		return acciones;
 	}
+	
+	public List<String> getCredenciales() {
+		return credenciales;
+	}
+
+	public void setCredenciales(List<String> credenciales) {
+		this.credenciales = credenciales;
+	}
+
+	public List<Criatura> getCriaturas() {
+		return criaturas;
+	}
+
+	public void setCriaturas(List<Criatura> criaturas) {
+		this.criaturas = criaturas;
+	}
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public void setMenu(Menu menu) {
+		this.menu = menu;
+	}
+
+	public Eula getEula() {
+		return eula;
+	}
+
+	public void setEula(Eula eula) {
+		this.eula = eula;
+	}
 
 	public Codex getUtil() {
 		return util;
@@ -128,29 +168,79 @@ public class Panel {
 	}
 	
 	/**
+	 * Método para el handling entero del EULA
+	 * @return boolean
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws GameException 
+	 */
+	private boolean aceptarEULA() throws IOException, 
+		InterruptedException, GameException {
+		List<String> eulaArchivo = util.toLeerArchivo("./docs/eula.txt");
+		
+		for (String linea : eulaArchivo) {
+			System.out.println(linea);
+			Thread.sleep(50);
+		}
+		
+		boolean isValido = false;
+		
+		String[] menu = {"SI", "NO"};
+		while (!isValido) {
+			int eulaConf = util.crearMenu(reader, menu, "Aceptas estas condiciones?");
+			switch(eulaConf) {
+				case 1 -> { isValido = true; eula = Eula.CONFIRMACION; return true; }
+				case 2 -> { isValido = true;  eula = Eula.NEGACION; return false; }
+				default -> { throw new GameException("No se admite otra opción"); }
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Pantalla de inicio de sesión de usuarios ya registrados 
+	 * y registro de usuarios nuevos
+	 * @return List<String>
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws GameException
+	 */
+	private List<String> pantallaUsuarios() throws IOException, 
+		InterruptedException, GameException {
+		boolean salir = false;
+
+		String[] opciones = Arrays.stream(MenuSesiones.values())
+                .map(MenuSesiones::getTexto)
+                .toArray(String[]::new);
+
+	    while (!salir) {
+	        pintarLogo("./docs/logo.txt");
+	        opcion = util.crearMenu(reader, opciones, "Introduce tu opción");
+	        MenuSesiones menu = MenuSesiones.fromCodigo(opcion);
+	        
+	        salir = sesionesMenu(menu);
+	        if(salir) { System.exit(0); } 
+	    }
+		return credenciales;
+	}
+	
+	/**
 	 * Inicia la historia y muestra el menú principal. Permite comenzar la
 	 * aventura o salir de la aplicación.
 	 * @throws InterruptedException 
 	 * @throws IOException 
+	 * @throws GameException 
 	 */
-	public void comenzar() throws InterruptedException, IOException {
+	public void comenzar() throws InterruptedException,
+		IOException, GameException {
+		pintarLogo("./docs/logo.txt");
+		boolean isEula = aceptarEULA();
+		if(!isEula) { log.error("Negación del EULA, saliendo..."); System.exit(0); }
+		
+		List<String> credenciales = pantallaUsuarios();
+		
 		cargarCapitulos();
-		menuPrincipal();
-	}
-	
-	/**
-	 * Inicializa las acciones de la historia
-	 */
-	private void startAcciones() {
-		acciones.put("addPocion",
-				(jugadores, criatura) -> jugador.getInventario().put(
-						"Pocion de Sanación",
-						new Pocion("Pocion de Curacion", 1)));
-		acciones.put("aumentarMoral",
-				(jugadores, criatura) -> jugador.modMoral(1));
-		acciones.put("luchar",
-				(jugadores, criatura) -> jugador.luchar(jugador, criatura));
-		acciones.put("huir", (jugadores, criatura) -> jugador.huir(jugador));
+		menuPrincipal(credenciales);
 	}
 	
 	/**
@@ -165,7 +255,7 @@ public class Panel {
 		try {
 			for (String linea : util.toLeerArchivo(ruta)) {
 				System.out.println(linea);
-				Thread.sleep(100);
+				Thread.sleep(50);
 			}
 		} catch (IOException e) {
 			Codex.printException(e);
@@ -177,15 +267,21 @@ public class Panel {
 	 * Procesa el menu principal y lo desglosa en 4 partes
 	 * @throws InterruptedException 
 	 * @throws IOException 
+	 * @throws GameException 
 	 */
-	private void menuPrincipal() throws IOException, InterruptedException {
+	private void menuPrincipal(List<String> credenciales) throws IOException, 
+		InterruptedException, GameException {
 		boolean salir = false;
-	    String[] opciones = { "Comenzar Aventura", "Salir" };
+	    
+		String[] opciones = Arrays.stream(Menu.values())
+                .map(Menu::getTexto)
+                .toArray(String[]::new);
 
 	    while (!salir) {
 	        pintarLogo("./docs/logo.txt");
 	        opcion = util.crearMenu(reader, opciones, "Introduce tu opción");
 	        menu = Menu.fromCodigo(opcion);
+	        
 	        salir = opcionesMenu(menu);
 	    }
 	}
@@ -194,17 +290,57 @@ public class Panel {
 	 * Se le introduce un parámetro de tipo Enum y se pasa entre las 
 	 * opciones del switch
 	 * @param menu
-	 * @return
+	 * @return boolean
+	 * @throws GameException 
+	 * @throws InterruptedException 
 	 */
-	private boolean opcionesMenu(Menu menu) {
+	private boolean opcionesMenu(Menu menu) throws GameException, InterruptedException {
 	    if (menu == null) { util.limpiarPantalla(); return false; }
 	    
 	    switch (menu) {
 	        case COMENZAR -> iniciarPartida();
-	        case SALIR 	  -> { log.debug("[ OK ] Salida"); return true; }
+	        case OPCIONES -> menuOpciones();
+	        case SALIR 	  -> { log.debug("Salida"); return true; }
 	        case DEBUG 	  -> modoDebug();
 	    }
 	    return false;
+	}
+	
+	/**
+	 * Se le introduce un parámetro de tipo Enum y se pasa entre las 
+	 * opciones del switch
+	 * @param menu
+	 * @return boolean
+	 * @throws GameException 
+	 * @throws InterruptedException 
+	 */
+	private boolean sesionesMenu(MenuSesiones menu) throws GameException, InterruptedException {
+	    if (menu == null) { util.limpiarPantalla(); return false; }
+	    
+	    switch (menu) {
+	        case INICIAR_SESION -> iniciarSesion();
+	        case REGISTRAR -> registrarUsuario();
+	        case SALIR 	  -> { log.debug("Salida"); return true; }
+	    }
+	    return false;
+	}
+	
+	/**
+	 * Inicio de sesión de usuarios
+	 * @return List<String>
+	 */
+	private List<String> iniciarSesion() {
+		// TODO Iniciar sesion
+		return null;
+	}
+	
+	/**
+	 * Registro de usuarios
+	 * @return List<String>
+	 */
+	private List<String> registrarUsuario() {
+		// TODO Registrar
+		return null;
 	}
 	
 	/**
@@ -213,14 +349,67 @@ public class Panel {
 	 */
 	private void iniciarPartida() {
 	    criaturas.clear();
-	    for (int i = 1; i <= 5; i++) {
-	        log.debug("Criatura " + i);
-	        jugador = util.crearPersonaje(reader);
+	    int tope = 0;
+	    boolean isTope = false;
+	    
+	    do {
+	    	tope = Codex.toScanInteger(reader, "Inserta el número de jugadores (máx 5)");
+	    	isTope = tope < 2 || tope > 5;
+		    if(isTope) {
+		    	try {
+					throw new GameException("El número de jugadores es inválido: " + tope);
+				} catch (GameException e) {
+					Codex.printException(e);
+				}
+		    }
+	    } while (isTope);
+	    
+	    log.debug("Numero de jugadores elegido: " + tope);
+	    
+	    for (int i = 1; i <= tope; i++) {
+	        log.debug("Jugador " + i);
+	        try {
+				jugador = util.crearPersonaje(reader);
+			} catch (LimiteCombateException e) {
+				Codex.printException(e);
+			}
 	        log.debug("Nueva criatura creada");
 	        criaturas.add(jugador);
 	    }
 	    historia.iniciar(criaturas, reader, util);
 	}
+	
+	private void menuOpciones() throws GameException, InterruptedException {
+	    boolean volver = false;
+
+	    String[] opciones = Arrays.stream(MenuOpciones.values())
+	                              .map(MenuOpciones::getTexto)
+	                              .toArray(String[]::new);
+
+	    while (!volver) {
+	        opcion = util.crearMenu(reader, opciones, "Opciones");
+	        MenuOpciones seleccion = MenuOpciones.fromCodigo(opcion);
+	        
+	        volver = menuOpciones(seleccion);
+	    }
+	}
+	
+	private boolean menuOpciones(MenuOpciones menu)
+	        throws GameException {
+
+	    if (menu == null) {
+	        util.limpiarPantalla();
+	        return false;
+	    }
+
+	    switch (menu) {
+	        case DIFICULTAD -> dificultad();
+	        case STATS -> stats();
+	        case VOLVER -> { return true; }
+	    }
+	    return false;
+	}
+
 	
 	/**
 	 * Método para iniciar la partida si se ha elegido 
@@ -229,6 +418,14 @@ public class Panel {
 	private void modoDebug() {
 		log.debug("Dev mode");
 	    historia.iniciar(util.crearPersonaje(), reader, util);
+	}
+	
+	private void dificultad() {
+		// TODO Dificultad
+	}
+	
+	private void stats() {
+		// TODO Dificultad
 	}
 	
 	/**
@@ -248,10 +445,14 @@ public class Panel {
 	    }
 	}
 	
-	/*
-	 * Carga el capítulo, lo parsea dependiendo del formato de la línea y
-	 * devuelve el capítulo procesado
-	 * 
+	/**
+	 * Se parsea el archivo y los jugadores junto con una criatura y 
+	 * se devuelve el capitulo finalmente
+	 * @param ruta
+	 * @param jugadores
+	 * @param criatura
+	 * @return
+	 * @throws IOException
 	 */
 	public Capitulo cargarCapitulo(String ruta, List<Criatura> jugadores,
 			Criatura criatura) throws IOException {
@@ -366,5 +567,20 @@ public class Panel {
 			return;
 		}
 		accion.ejecutar(jugadores, criatura);
+	}
+	
+	/**
+	 * Inicializa las acciones de la historia
+	 */
+	private void startAcciones() {
+		acciones.put("addPocion",
+				(jugadores, criatura) -> jugador.getInventario().put(
+						"Pocion de Sanación",
+						new Pocion("Pocion de Curacion", 1)));
+		acciones.put("aumentarMoral",
+				(jugadores, criatura) -> jugador.modMoral(1));
+		acciones.put("luchar",
+				(jugadores, criatura) -> jugador.luchar(jugador, criatura));
+		acciones.put("huir", (jugadores, criatura) -> jugador.huir(jugador));
 	}
 }

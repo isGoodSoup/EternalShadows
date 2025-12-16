@@ -20,6 +20,7 @@ import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.enums.Armamento;
 import es.eternalshadow.enums.Escuderia;
 import es.eternalshadow.enums.ParsingKeys;
+import es.eternalshadow.exception.LimiteCombateException;
 import es.eternalshadow.main.Panel;
 import es.eternalshadow.pojos.Jugador;
 
@@ -125,26 +126,39 @@ public class Codex {
 	 * atributos.
 	 * @param reader Lector de líneas.
 	 * @return Objeto {@link Criatura} creado.
+	 * @throws LimiteCombateException 
 	 */
-	public Jugador crearPersonaje(LineReader reader) {
-		int puntos;
+	public Jugador crearPersonaje(LineReader reader) throws LimiteCombateException {
+		int puntos = 0;
+		int ataque = 0, defensa = 0;
+		int moral = 50;
 		int f, r, v, m;
 		do {
-			puntos = 0;
-			f = Codex.toScanInteger(reader, q("la fuerza"));
+			f = toScanInteger(reader, q("la fuerza"));
 			puntos += f;
-			r = Codex.toScanInteger(reader, q("la resistencia"));
+			r = toScanInteger(reader, q("la resistencia"));
 			puntos += r;
-			v = Codex.toScanInteger(reader, q("la velocidad"));
+			v = toScanInteger(reader, q("la velocidad"));
 			puntos += v;
-			m = Codex.toScanInteger(reader, q("la magia"));
+			m = toScanInteger(reader, q("la magia"));
 			puntos += m;
 		} while (puntos != 80);
-
+		
+		boolean isAtLimite = false;
+		do {
+			ataque = toScanInteger(reader, q("el ataque"));
+			defensa = toScanInteger(reader, q("la defensa"));
+			
+			isAtLimite = ataque + defensa != 10;
+					
+			if (isAtLimite) { 
+				printException(new LimiteCombateException("El ataque y la defensa deben sumar 10"));
+			}
+		} while (isAtLimite);
+		
 		String tipo = toScan(reader, "Elige tu raza");
 		String nombre = toScan(reader, "Introduce tu nombre");
-		Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 100, 50, 10, 10,
-				panel);
+		Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 100, moral, ataque, defensa, panel);
 		return jugador;
 	}
 
@@ -162,7 +176,7 @@ public class Codex {
 					v = panel.getDados().tirarDados(), 
 					m = panel.getDados().tirarDados();
 			String tipo = "CriaturaGenérica";
-			String nombre = "Criatura";
+			String nombre = "Jugador" + i;
 			Jugador jugador = new Jugador(tipo, nombre, f, r, v, m, 100, 50,
 					panel.getDados().tirarDados(), panel.getDados().tirarDados(),
 					panel);
