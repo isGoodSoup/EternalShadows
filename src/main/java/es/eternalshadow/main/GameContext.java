@@ -1,6 +1,7 @@
 package es.eternalshadow.main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ import es.eternalshadow.util.Codex;
 
 public class GameContext {
 	private final ServiceFactory services;
-	private final Historia historia;
+	private Historia historia;
 	private Jugador jugador;
 	private final LineReader reader;
 	private final Codex util;
@@ -30,7 +31,7 @@ public class GameContext {
 		this.jugador = jugador;
 		this.reader = reader;
 		this.util = util;
-		this.acciones = acciones;
+		this.acciones = new HashMap<>(acciones);
 		this.criaturas = new ArrayList<>();
 	}
 
@@ -40,6 +41,10 @@ public class GameContext {
 
 	public Historia getHistoria() {
 		return historia;
+	}
+	
+	public void setHistoria(Historia historia) {
+		this.historia = historia;
 	}
 
 	public Jugador getJugador() {

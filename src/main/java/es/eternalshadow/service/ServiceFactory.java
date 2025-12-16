@@ -3,19 +3,36 @@ package es.eternalshadow.service;
 import es.eternalshadow.main.GameContext;
 
 public class ServiceFactory {
+	private GameContext context;
 	private final UserService userService;
     private final MenuService menuService;
     private final EULAService eulaService;
     private final GameService gameService;
-    private final CapitulosLoader cloader;
+    private CapitulosLoader capitulosLoader;
 	
-    public ServiceFactory(GameContext context) {
+    public ServiceFactory() {
 		super();
-		this.userService = new UserService(context);
-        this.menuService = new MenuService(context);
+		this.userService = new UserService(null);
+        this.menuService = new MenuService(null);
         this.eulaService = new EULAService("./docs/eula.txt");
-        this.gameService = new GameService(context);
-		this.cloader = new CapitulosLoader(context);
+        this.gameService = new GameService(null);
+		this.capitulosLoader = new CapitulosLoader(null);
+	}
+    
+    public void init(GameContext context) {
+        this.context = context;	
+        this.userService.setContext(context);
+        this.menuService.setContext(context);
+        this.gameService.setContext(context);
+        this.capitulosLoader = new CapitulosLoader(context);
+    }
+    
+    public GameContext getContext() {
+		return context;
+	}
+
+	public void setContext(GameContext context) {
+		this.context = context;
 	}
     
     public UserService getUserService() {
@@ -35,6 +52,10 @@ public class ServiceFactory {
     }
 
 	public CapitulosLoader getCapitulosLoader() {
-		return cloader;
+		return capitulosLoader;
+	}
+
+	public void setCapitulosLoader(CapitulosLoader capitulosLoader) {
+		this.capitulosLoader = capitulosLoader;
 	}
 }

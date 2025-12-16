@@ -15,7 +15,7 @@ import es.eternalshadow.main.GameContext;
 import es.eternalshadow.util.Codex;
 
 public class UserService {
-    private final GameContext context;
+    private GameContext context;
     private List<String> credenciales;
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -30,8 +30,16 @@ public class UserService {
 	public void setCredenciales(List<String> credenciales) {
 		this.credenciales = credenciales;
 	}
+	
+    public GameContext getContext() {
+		return context;
+	}
 
-    /**
+	public void setContext(GameContext context) {
+		this.context = context;
+	}
+
+	/**
      * Panel de inicio de sesión entre otras, registrar y salir del 
      * programa
      * @return
@@ -47,7 +55,7 @@ public class UserService {
                 .toArray(String[]::new);
 
         while (!salir) {
-            pintarLogo("./docs/logo.txt");
+            context.getServices().getMenuService().pintarLogo("./docs/logo.txt");
             int opcion = context.getUtil().crearMenu(context.getReader(), opciones, "Introduce tu opción");
             MenuSesiones menu = MenuSesiones.fromCodigo(opcion);
 
@@ -90,13 +98,5 @@ public class UserService {
     private List<String> registrarUsuario() {
         // TODO Registrar
         return null;
-    }
-
-    private void pintarLogo(String ruta) throws IOException, InterruptedException {
-        for (String linea : context.getUtil().toLeerArchivo(ruta)) {
-            System.out.println(linea);
-            Thread.sleep(50);
-        }
-        System.out.println();
     }
 }

@@ -14,15 +14,23 @@ import es.eternalshadow.exception.GameException;
 import es.eternalshadow.main.GameContext;
 
 public class MenuService {
-    private final GameContext context;
+    private GameContext context;
     private static final Logger log = LoggerFactory.getLogger(MenuService.class);
 
     public MenuService(GameContext context) {
         super();
         this.context = context;
     }
+    
+    public GameContext getContext() {
+		return context;
+	}
 
-    /**
+	public void setContext(GameContext context) {
+		this.context = context;
+	}
+
+	/**
      * Procesa el menu principal y lo desglosa en 4 partes
      */
     public void menuPrincipal(List<String> credenciales)
@@ -98,12 +106,20 @@ public class MenuService {
         // TODO Stats
     }
 
-    private void pintarLogo(String ruta) throws IOException, InterruptedException {
-    	System.out.println();
-        for (String linea : context.getUtil().toLeerArchivo(ruta)) {
-            System.out.println(linea);
-            Thread.sleep(50);
-        }
-        System.out.println();
-    }
+    /**
+	 * Imprime un logo desde archivo, línea por línea.
+	 */
+	public void pintarLogo(String ruta)
+			throws IOException, InterruptedException {
+		System.out.println();
+		try {
+			for (String linea : context.getUtil().toLeerArchivo(ruta)) {
+				System.out.println(linea);
+				Thread.sleep(50);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println();
+	}
 }

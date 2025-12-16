@@ -6,9 +6,17 @@ import es.eternalshadow.main.GameContext;
 import es.eternalshadow.util.Codex;
 
 public class GameService {
-	private final GameContext context;
+	private GameContext context;
 
 	public GameService(GameContext context) {
+		this.context = context;
+	}
+	
+	public GameContext getContext() {
+		return context;
+	}
+
+	public void setContext(GameContext context) {
 		this.context = context;
 	}
 
