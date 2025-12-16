@@ -5,12 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import es.eternalshadow.main.Panel;
+import es.eternalshadow.main.GameContext;
 import es.eternalshadow.motor.Escena;
 import es.eternalshadow.motor.Opcion;
 
 public class Capitulo {
-	private Panel panel;
 	private String nombre;
 	private int numero;
 	private List<String> lineas = new ArrayList<>();
@@ -19,19 +18,21 @@ public class Capitulo {
 	
 	public Capitulo() {}
 
-	public Capitulo(int numero, Panel panel, String nombre, Escena escena) {
-		this.panel = panel;
-		this.numero = numero;
+	public Capitulo(String nombre, int numero, List<String> lineas,
+			Map<String, Escena> escenas, Escena escena) {
+		super();
 		this.nombre = nombre;
+		this.numero = numero;
+		this.lineas = lineas;
+		this.escenas = escenas;
 		this.escena = escena;
 	}
 
-	public Panel getPanel() {
-		return panel;
-	}
-
-	public void setPanel(Panel panel) {
-		this.panel = panel;
+	public Capitulo(int numero, String nombre, Escena escena) {
+		super();
+		this.nombre = nombre;
+		this.numero = numero;
+		this.escena = escena;
 	}
 
 	public String getNombre() {
@@ -79,7 +80,7 @@ public class Capitulo {
      * Muestra las escenas, las opciones, ejecuta acciones y avanza a la siguiente escena.
 	 * @throws InterruptedException 
      */
-    public void jugar() throws InterruptedException {
+    public void jugar(GameContext context) throws InterruptedException {
         Escena escenaActual = escena;
         while (escenaActual != null) {
             System.out.println(escenaActual.getDescripcion());
@@ -91,8 +92,8 @@ public class Capitulo {
             for (int i = 0; i < opciones.size(); i++) {
                 System.out.println((i + 1) + ". " + opciones.get(i).getTexto());
             }
-            int seleccion = panel.getUtil().crearMenu(
-                    panel.getReader(),
+            int seleccion = context.getUtil().crearMenu(
+                    context.getReader(),
                     opciones.stream().map(Opcion::getTexto).toArray(String[]::new),
                     "Elige tu acción:"
             );

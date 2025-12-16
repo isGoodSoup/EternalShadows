@@ -11,7 +11,7 @@ import org.jline.reader.LineReader;
 import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.enums.ParsingKeys;
 import es.eternalshadow.interfaces.Accion;
-import es.eternalshadow.main.Panel;
+import es.eternalshadow.main.GameContext;
 import es.eternalshadow.motor.Escena;
 import es.eternalshadow.motor.Opcion;
 import es.eternalshadow.pojos.Pocion;
@@ -19,11 +19,10 @@ import es.eternalshadow.story.Capitulo;
 import es.eternalshadow.util.Codex;
 
 public class CapitulosLoader {
-	private Panel panel;
-	
-	public CapitulosLoader(Panel panel) {
-		super();
-		this.panel = panel;
+	private final GameContext context;
+
+	public CapitulosLoader(GameContext context) {
+		this.context = context;
 	}
 
 	/**
@@ -32,10 +31,12 @@ public class CapitulosLoader {
 	 */
 	public void cargarCapitulos() {
 		try {
-			int total = panel.getUtil().getCapitulosTotales();
+			int total = context.getUtil().getCapitulosTotales();
 			for (int i = 1; i <= total; i++) {
-				panel.getHistoria().getCapitulos().add(new Capitulo(i, panel, "", null));
-				panel.getUtil().toLeerArchivo("./docs/mq/capitulo" + i + ".txt");
+				context.getHistoria().getCapitulos()
+						.add(new Capitulo(i, "", null));
+				context.getUtil()
+						.toLeerArchivo("./docs/mq/capitulo" + i + ".txt");
 			}
 		} catch (IOException e) {
 			Codex.printException(e);
@@ -45,22 +46,16 @@ public class CapitulosLoader {
 	/**
 	 * Se parsea el archivo y los jugadores junto con una criatura y se devuelve
 	 * el capitulo finalmente
-	 * 
-	 * @param ruta
-	 * @param jugadores
-	 * @param criatura
-	 * @return
-	 * @throws IOException
 	 */
 	public Capitulo cargarCapitulo(String ruta, List<Criatura> jugadores,
 			Criatura criatura) throws IOException {
-		List<String> lineas = panel.getUtil().toLeerArchivo(ruta);
+		List<String> lineas = context.getUtil().toLeerArchivo(ruta);
 		Map<String, Escena> escenas = new HashMap<>();
 
 		Escena escenaActual = null;
 		List<Opcion> opcionesActuales = null;
 
-		LineReader reader = panel.getReader();
+		LineReader reader = context.getReader();
 		String nombre = "";
 		int numero = 0;
 
@@ -71,7 +66,7 @@ public class CapitulosLoader {
 				break;
 			}
 
-			ParsingKeys key = panel.getUtil().getParsingKey(linea);
+			ParsingKeys key = context.getUtil().getParsingKey(linea);
 			if (key == null) {
 				System.out.print(linea);
 				reader.readLine();
@@ -80,7 +75,8 @@ public class CapitulosLoader {
 			switch (key) {
 			case JUGADOR:
 				String textoJugador = linea
-						.replace("#JUGADOR", panel.getJugador().getNombre()).trim();
+						.replace("#JUGADOR", context.getJugador().getNombre())
+						.trim();
 				System.out.print(textoJugador);
 				reader.readLine();
 				break;
@@ -122,7 +118,7 @@ public class CapitulosLoader {
 				break;
 
 			case COMBATE:
-
+				
 				break;
 
 			default:
@@ -147,19 +143,15 @@ public class CapitulosLoader {
 				}
 			}
 		}
-		return new Capitulo(numero, panel, nombre, escenaActual);
+		return new Capitulo(numero, nombre, escenaActual);
 	}
 
 	/**
 	 * Ejecuta las acciones que se parsean por #OPCION
-	 * 
-	 * @param el nombre de la accion String
-	 * @param el jugador parseado
-	 * @param la criatura pasada
 	 */
 	public void ejecutarAccion(String nombreAccion, List<Criatura> jugadores,
 			Criatura criatura) {
-		Accion accion = panel.getAcciones().get(nombreAccion);
+		Accion accion = context.getAcciones().get(nombreAccion);
 		if (accion == null) {
 			System.err.println("ERROR: Acción desconocida: " + nombreAccion);
 			return;
@@ -171,16 +163,17 @@ public class CapitulosLoader {
 	 * Inicializa las acciones de la historia
 	 */
 	public void startAcciones() {
-		Map<String, Accion> acciones = panel.getAcciones();
-		
+		Map<String, Accion> acciones = context.getAcciones();
+
 		acciones.put("addPocion",
-				(jugadores, criatura) -> panel.getJugador().getInventario().put(
-						"Pocion de Sanación",
-						new Pocion("Pocion de Curacion", 1)));
+				(jugadores, criatura) -> context.getJugador().getInventario()
+						.put("Pocion de Sanación",
+								new Pocion("Pocion de Curacion", 1)));
 		acciones.put("aumentarMoral",
-				(jugadores, criatura) -> panel.getJugador().modMoral(1));
-		acciones.put("luchar",
-				(jugadores, criatura) -> panel.getJugador().luchar(panel.getJugador(), criatura));
-		acciones.put("huir", (jugadores, criatura) -> panel.getJugador().huir(panel.getJugador()));
+				(jugadores, criatura) -> context.getJugador().modMoral(1));
+		acciones.put("luchar", (jugadores, criatura) -> context.getJugador()
+				.luchar(context.getJugador(), criatura));
+		acciones.put("huir", (jugadores, criatura) -> context.getJugador()
+				.huir(context.getJugador()));
 	}
 }

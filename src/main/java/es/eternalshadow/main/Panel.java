@@ -1,8 +1,6 @@
 package es.eternalshadow.main;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,60 +11,40 @@ import org.jline.terminal.TerminalBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import es.eternalshadow.entities.Criatura;
-import es.eternalshadow.enums.Dificultad;
 import es.eternalshadow.enums.Eula;
-import es.eternalshadow.enums.Menu;
 import es.eternalshadow.exception.GameException;
-import es.eternalshadow.interfaces.Accion;
-import es.eternalshadow.motor.Opcion;
 import es.eternalshadow.pojos.Jugador;
-import es.eternalshadow.service.CapitulosLoader;
-import es.eternalshadow.service.EULAService;
-import es.eternalshadow.service.GameService;
-import es.eternalshadow.service.MenuService;
-import es.eternalshadow.service.UserService;
-import es.eternalshadow.story.Historia;
 import es.eternalshadow.story.HistoriaPrincipal;
 import es.eternalshadow.util.Codex;
 import es.eternalshadow.util.Dados;
 
 /**
- * Clase principal que representa el panel de control de la aplicación. Se
- * encarga de inicializar el terminal, manejar la entrada del usuario y comenzar
- * la historia.
+ * Clase principal que representa la interfaz de usuario del juego. Se encarga
+ * de inicializar el terminal, manejar la entrada del usuario y delegar la
+ * lógica de la historia y menús a los servicios.
  */
-
 public class Panel {
-	private String titulo = "Eternal Shadows";
+	private GameContext context;
 	private Terminal terminal;
 	private LineReader reader;
-	private Historia historia = new HistoriaPrincipal(titulo, this);
-	private EULAService eulaService = new EULAService("./docs/eula.txt");
-	private UserService userService = new UserService(this);
-	private MenuService menuService = new MenuService(this);
-	private GameService gameService = new GameService(this);
-	private CapitulosLoader cloader = new CapitulosLoader(this);
-	private List<String> credenciales;
-	private List<Criatura> criaturas = new ArrayList<>();
-	private Jugador jugador;
-	private Dados dados = new Dados(this);
-	private Codex util = new Codex(this);
-	private List<Opcion> opciones;
-	private final Map<String, Accion> acciones = new HashMap<>();
-	private Dificultad dificultad;
-	private Menu menu;
+	private String titulo = "Eternal Shadows";
+	private final Codex util = new Codex(this);
+	private final Dados dados = new Dados(this);
 	private Eula eula;
 	private int opcion;
 	private static final Logger log = LoggerFactory.getLogger(Panel.class);
 
 	public Panel() {
 		try {
-			terminal = TerminalBuilder.terminal();
-			reader = LineReaderBuilder.builder().terminal(terminal).build();
-			cloader.startAcciones();
+			this.terminal = TerminalBuilder.terminal();
+			this.reader = LineReaderBuilder.builder().terminal(terminal)
+					.build();
+			this.context = new GameContext(
+					new HistoriaPrincipal(titulo, this, context), new Jugador(),
+					reader, util, Map.of(), null);
+			context.getServices().getCapitulosLoader().startAcciones();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Codex.printException(e);
 			System.exit(1);
 		}
 	}
@@ -77,134 +55,6 @@ public class Panel {
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
-	}
-
-	public Terminal getTerminal() {
-		return terminal;
-	}
-
-	public void setTerminal(Terminal terminal) {
-		this.terminal = terminal;
-	}
-
-	public LineReader getReader() {
-		return reader;
-	}
-
-	public void setReader(LineReader reader) {
-		this.reader = reader;
-	}
-
-	public Historia getHistoria() {
-		return historia;
-	}
-
-	public void setHistoria(Historia historia) {
-		this.historia = historia;
-	}
-
-	public EULAService getEulaService() {
-		return eulaService;
-	}
-
-	public void setEulaService(EULAService eulaService) {
-		this.eulaService = eulaService;
-	}
-	
-	public UserService getUserService() {
-		return userService;
-	}
-
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-	
-	public MenuService getMenuService() {
-		return menuService;
-	}
-
-	public void setMenuService(MenuService menuService) {
-		this.menuService = menuService;
-	}
-	
-	public GameService getGameService() {
-		return gameService;
-	}
-
-	public void setGameService(GameService gameService) {
-		this.gameService = gameService;
-	}
-
-	public CapitulosLoader getCLoader() {
-		return cloader;
-	}
-
-	public void setCLoader(CapitulosLoader cloader) {
-		this.cloader = cloader;
-	}
-
-	public List<String> getCredenciales() {
-		return credenciales;
-	}
-
-	public void setCredenciales(List<String> credenciales) {
-		this.credenciales = credenciales;
-	}
-
-	public List<Criatura> getCriaturas() {
-		return criaturas;
-	}
-
-	public void setCriaturas(List<Criatura> criaturas) {
-		this.criaturas = criaturas;
-	}
-
-	public Jugador getJugador() {
-		return jugador;
-	}
-
-	public void setJugador(Jugador jugador) {
-		this.jugador = jugador;
-	}
-
-	public Dados getDados() {
-		return dados;
-	}
-
-	public void setDados(Dados dados) {
-		this.dados = dados;
-	}
-
-	public Codex getUtil() {
-		return util;
-	}
-
-	public void setUtil(Codex util) {
-		this.util = util;
-	}
-
-	public List<Opcion> getOpciones() {
-		return opciones;
-	}
-
-	public void setOpciones(List<Opcion> opciones) {
-		this.opciones = opciones;
-	}
-
-	public Dificultad getDificultad() {
-		return dificultad;
-	}
-
-	public void setDificultad(Dificultad dificultad) {
-		this.dificultad = dificultad;
-	}
-
-	public Menu getMenu() {
-		return menu;
-	}
-
-	public void setMenu(Menu menu) {
-		this.menu = menu;
 	}
 
 	public Eula getEula() {
@@ -223,32 +73,42 @@ public class Panel {
 		this.opcion = opcion;
 	}
 
-	public Map<String, Accion> getAcciones() {
-		return acciones;
+	public GameContext getContext() {
+		return context;
+	}
+
+	public Terminal getTerminal() {
+		return terminal;
+	}
+
+	public LineReader getReader() {
+		return reader;
+	}
+
+	public Codex getUtil() {
+		return util;
+	}
+
+	public Dados getDados() {
+		return dados;
 	}
 
 	/**
-	 * Método para el handling entero del EULA
-	 * 
-	 * @return boolean
-	 * @throws IOException
-	 * @throws InterruptedException
-	 * @throws GameException
+	 * Maneja la aceptación del EULA.
 	 */
 	private boolean aceptarEULA()
 			throws IOException, InterruptedException, GameException {
-
-		if (!eulaService.isExiste()) {
+		if (!context.getServices().getEulaService().isExiste()) {
 			log.error("No se encuentra el archivo del EULA");
 			System.exit(0);
 		}
-		if (eulaService.isAceptado()) {
-			log.debug("EULA ya aceptado");
+		if (context.getServices().getEulaService().isAceptado()) {
 			return true;
 		}
 
 		pintarLogo("./docs/logo.txt");
-		for (String linea : eulaService.leerTexto()) {
+		for (String linea : context.getServices().getEulaService()
+				.leerTexto()) {
 			System.out.println(linea);
 			Thread.sleep(50);
 		}
@@ -259,52 +119,40 @@ public class Panel {
 		switch (eulaConf) {
 			case 1 -> {
 				eula = Eula.CONFIRMACION;
-				eulaService.guardar(true);
+				context.getServices().getEulaService().guardar(true);
 				return true;
 			}
 			
 			case 2 -> {
 				eula = Eula.NEGACION;
-				eulaService.guardar(false);
+				context.getServices().getEulaService().guardar(false);
 				return false;
 			}
 			
 			default -> throw new GameException("Opción de EULA inválida");
-			}
+		}
 	}
 
 	/**
-	 * Inicia la historia y muestra el menú principal. Permite comenzar la
-	 * aventura o salir de la aplicación.
-	 * 
-	 * @throws InterruptedException
-	 * @throws IOException
-	 * @throws GameException
+	 * Inicia la aplicación y delega en los servicios.
 	 */
 	public void comenzar()
 			throws InterruptedException, IOException, GameException {
 		boolean isEula = aceptarEULA();
-		if (isEula) {
-			log.debug("EULA confirmado, saltando...");
-		}
-		
 		if (!isEula) {
 			log.error("Negación del EULA, saliendo...");
 			System.exit(0);
 		}
+		log.debug("EULA confirmado, continuando...");
 
-		List<String> credenciales = userService.panelDeInicio();
-
-		cloader.cargarCapitulos();
-		menuService.menuPrincipal(credenciales);
+		List<String> credenciales = context.getServices().getUserService()
+				.panelDeInicio();
+		context.getServices().getCapitulosLoader().cargarCapitulos();
+		context.getServices().getMenuService().menuPrincipal(credenciales);
 	}
 
 	/**
-	 * Método para pintar el logo elegido por parte de un archivo
-	 * 
-	 * @param ruta
-	 * @throws IOException
-	 * @throws InterruptedException
+	 * Imprime un logo desde archivo, línea por línea.
 	 */
 	public void pintarLogo(String ruta)
 			throws IOException, InterruptedException {
@@ -315,7 +163,7 @@ public class Panel {
 				Thread.sleep(50);
 			}
 		} catch (IOException e) {
-			Codex.printException(e);
+			e.printStackTrace();
 		}
 		System.out.println();
 	}

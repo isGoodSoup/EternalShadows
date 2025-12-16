@@ -212,7 +212,7 @@ public class Codex {
 
 		// TODO Nombre
 		Criatura c = new Criatura(tipo, null, fuerza, resistencia, velocidad,
-				magia, panel.getJugador().getPuntosVida());
+				magia, panel.getContext().getJugador().getPuntosVida());
 		if (c != null) {
 			System.out.println("Criatura enemiga creada: " + c.getNombre()
 					+ " con atributos: " + "Fuerza: " + fuerza
