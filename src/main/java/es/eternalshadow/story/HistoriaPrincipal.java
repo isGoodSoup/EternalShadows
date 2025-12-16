@@ -21,7 +21,7 @@ public class HistoriaPrincipal extends Historia {
 	public List<Criatura> iniciar(List<Criatura> criaturas, LineReader reader, Codex util) {
 		for (int i = 0; i < getCapitulos().size(); i++) {
 		    try {
-		        Capitulo capitulo = panel.cargarCapitulo(
+		        Capitulo capitulo = panel.getCLoader().cargarCapitulo(
 		            "./docs/mq/capitulo" + getCapitulos().get(i).getNumero() + ".txt",
 		            criaturas,
 		            panel.getJugador()

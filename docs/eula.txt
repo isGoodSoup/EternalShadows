@@ -1,3 +1,4 @@
+true
 Al usar, ejecutar o modificar este software aceptas los siguientes términos:
 	I. Licencia
 El software se distribuye de forma gratuita. 
