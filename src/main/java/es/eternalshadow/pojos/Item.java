@@ -1,5 +1,8 @@
 package es.eternalshadow.pojos;
 
+import jakarta.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public abstract class Item {
 	private String nombre;
 	private int cantidad;
@@ -8,6 +11,10 @@ public abstract class Item {
 		super();
 		this.nombre = nombre;
 		this.cantidad = cantidad;
+	}
+	
+	public Item() {
+
 	}
 
 	public String getNombre() {

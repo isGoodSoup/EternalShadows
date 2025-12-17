@@ -2,8 +2,10 @@ package es.eternalshadow.dto;
 
 import java.util.ArrayList;
 
-import es.eternalshadow.pojos.Arma;
-import es.eternalshadow.pojos.Escudo;
+import es.eternalshadow.entities.Arma;
+import es.eternalshadow.entities.Escudo;
+
+;
 
 public class CriaturaDTO {
 	

@@ -3,7 +3,9 @@ package es.eternalshadow.pojos;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.eternalshadow.entities.Arma;
 import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.entities.Escudo;
 import es.eternalshadow.enums.Armamento;
 import es.eternalshadow.enums.Escuderia;
 import es.eternalshadow.main.Panel;
