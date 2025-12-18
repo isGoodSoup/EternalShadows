@@ -10,17 +10,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import es.eternalshadow.enums.MenuSesiones;
+import es.eternalshadow.enums.RolUsuario;
 import es.eternalshadow.exception.GameException;
 import es.eternalshadow.main.GameContext;
 import es.eternalshadow.util.Codex;
 
 public class UserService {
     private GameContext context;
+    private RolUsuario rol;
     private List<String> credenciales;
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     public UserService(GameContext context) {
         this.context = context;
+        this.rol = RolUsuario.JUGADOR;
     }
     
 	public List<String> getCredenciales() {
@@ -37,6 +40,14 @@ public class UserService {
 
 	public void setContext(GameContext context) {
 		this.context = context;
+	}
+	
+	public RolUsuario getRol() {
+		return rol;
+	}
+
+	public void setRol(RolUsuario rol) {
+		this.rol = rol;
 	}
 
 	/**
@@ -91,12 +102,19 @@ public class UserService {
         LineReader reader = context.getReader();
         String usuario = Codex.toScan(reader, "Usuario");
         String password = Codex.toScan(reader, "Contraseña");
+        if(usuario.equals("admin")) {
+        	rol = RolUsuario.ADMIN;
+        }
         credenciales = new ArrayList<>(List.of(usuario, password));
         return credenciales;
     }
 
     private List<String> registrarUsuario() {
-        // TODO Registrar
-        return null;
+    	LineReader reader = context.getReader();
+    	String email = Codex.toScan(reader, "Email");
+    	String usuario = Codex.toScan(reader, "Usuario");
+        String password = Codex.toScan(reader, "Contraseña");
+        credenciales = new ArrayList<>(List.of(email, usuario, password));
+        return credenciales;
     }
 }
