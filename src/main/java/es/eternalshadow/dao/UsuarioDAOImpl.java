@@ -5,15 +5,16 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import es.eternalshadow.dao.interfaces.CriaturaDAO;
-import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.dao.interfaces.UsuarioDAO;
+import es.eternalshadow.entities.Usuario;
 import es.eternalshadow.util.HibernateUtil;
 
-public class CriaturaDAOImpl implements CriaturaDAO {
+public class UsuarioDAOImpl implements UsuarioDAO {
 	private Session session;
 	private Transaction transaction;
-
-	public CriaturaDAOImpl() {
+	
+	public UsuarioDAOImpl() {
+		super();
 		session = HibernateUtil.getSessionFactory();
 		transaction = session.beginTransaction();
 	}
@@ -25,12 +26,11 @@ public class CriaturaDAOImpl implements CriaturaDAO {
 
 	@Override
 	public void eliminar(Long id) {
-		Criatura criatura = obtenerPorId(id);
-		if (criatura != null) {
-			session.remove(criatura);
+		Usuario usuario = obtenerPorId(id);
+		if (usuario != null) {
+			session.remove(usuario);
 			transaction.commit();
 		}
-
 	}
 
 	@Override
@@ -40,13 +40,12 @@ public class CriaturaDAOImpl implements CriaturaDAO {
 	}
 
 	@Override
-	public Criatura obtenerPorId(Long id) {
-		return session.get(Criatura.class, id);
+	public Usuario obtenerPorId(Long id) {
+		return session.get(Usuario.class, id);
 	}
 
 	@Override
-	public List<Criatura> obtenerTodasLasCriaturas() {
-		return session.createQuery("from TB_CRIATURA", Criatura.class).list();
+	public List<Usuario> obtenerTodasLosUsuario() {
+		return session.createQuery("from TB_USUARIO", Usuario.class).list();
 	}
-
 }
