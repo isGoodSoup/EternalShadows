@@ -11,21 +11,23 @@ import org.slf4j.LoggerFactory;
 
 import es.eternalshadow.enums.MenuSesiones;
 import es.eternalshadow.enums.RolUsuario;
+import es.eternalshadow.enums.Validacion;
 import es.eternalshadow.exception.GameException;
 import es.eternalshadow.main.GameContext;
 import es.eternalshadow.util.InputHandler;
 
 public class UserService {
-    private GameContext context;
-    private RolUsuario rol;
-    private List<String> credenciales;
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+	private GameContext context;
+	private RolUsuario rol;
+	private List<String> credenciales;
+	private static final Logger log = LoggerFactory
+			.getLogger(UserService.class);
 
-    public UserService(GameContext context) {
-        this.context = context;
-        this.rol = RolUsuario.JUGADOR;
-    }
-    
+	public UserService(GameContext context) {
+		this.context = context;
+		this.rol = RolUsuario.JUGADOR;
+	}
+
 	public List<String> getCredenciales() {
 		return credenciales;
 	}
@@ -33,15 +35,15 @@ public class UserService {
 	public void setCredenciales(List<String> credenciales) {
 		this.credenciales = credenciales;
 	}
-	
-    public GameContext getContext() {
+
+	public GameContext getContext() {
 		return context;
 	}
 
 	public void setContext(GameContext context) {
 		this.context = context;
 	}
-	
+
 	public RolUsuario getRol() {
 		return rol;
 	}
@@ -51,70 +53,95 @@ public class UserService {
 	}
 
 	/**
-     * Panel de inicio de sesión entre otras, registrar y salir del 
-     * programa
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
-     * @throws GameException
-     */
-    public List<String> panelDeInicio() throws IOException, InterruptedException, GameException {
-        boolean salir = false;
+	 * Panel de inicio de sesión entre otras, registrar y salir del programa
+	 * 
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws GameException
+	 */
+	public List<String> panelDeInicio()
+			throws IOException, InterruptedException, GameException {
+		boolean salir = false;
 
-        String[] opciones = Arrays.stream(MenuSesiones.values())
-                .map(MenuSesiones::getTexto)
-                .toArray(String[]::new);
+		String[] opciones = Arrays.stream(MenuSesiones.values())
+				.map(MenuSesiones::getTexto).toArray(String[]::new);
 
-        while (!salir) {
-            context.getServices().getMenuService().pintarLogo("docs/logo.txt");
-            int opcion = context.getUtil().getInputHandler().crearMenu(context.getReader(), opciones, "Introduce tu opción");
-            MenuSesiones menu = MenuSesiones.fromCodigo(opcion);
+		while (!salir) {
+			context.getServices().getMenuService().pintarLogo("docs/logo.txt");
+			int opcion = context.getUtil().getInputHandler().crearMenu(
+					context.getReader(), opciones, "Introduce tu opción");
+			MenuSesiones menu = MenuSesiones.fromCodigo(opcion);
 
-            salir = sesionesMenu(menu);
-        }
-        return credenciales;
-    }
+			salir = sesionesMenu(menu);
+		}
+		return credenciales;
+	}
 
-    private boolean sesionesMenu(MenuSesiones menu) throws GameException, InterruptedException {
-        if (menu == null) {
-            context.getUtil().getConsolePrinter().limpiarPantalla();
-            return false;
-        }
+	private boolean sesionesMenu(MenuSesiones menu)
+			throws GameException, InterruptedException {
+		if (menu == null) {
+			context.getUtil().getConsolePrinter().limpiarPantalla();
+			return false;
+		}
 
-        switch (menu) {
-            case INICIAR_SESION -> {
-                iniciarSesion();
-                return true;
-            }
-            case REGISTRAR -> {
-                registrarUsuario();
-                return true;
-            }
-            case SALIR -> {
-                log.debug("Salida");
-                return true;
-            }
-        }
-        return false;
-    }
+		switch (menu) {
+			case INICIAR_SESION -> {
+				iniciarSesion();
+				return true;
+			}
+			case REGISTRAR -> {
+				registrarUsuario();
+				return true;
+			}
+			case SALIR -> {
+				log.debug("Salida");
+				return true;
+			}
+		}
+		return false;
+	}
 
-    private List<String> iniciarSesion() {
-        LineReader reader = context.getReader();
-        String usuario = InputHandler.toScan(reader, "Usuario");
-        String password = InputHandler.toScan(reader, "Contraseña");
-        if(usuario.equals("admin")) {
-        	rol = RolUsuario.ADMIN;
-        }
-        credenciales = new ArrayList<>(List.of(usuario, password));
-        return credenciales;
-    }
+	private List<String> iniciarSesion() {
+		LineReader reader = context.getReader();
+		String usuario = InputHandler.toScan(reader, "Usuario");
+		String password = InputHandler.toScan(reader, "Contraseña");
+		if (usuario.equals("admin")) {
+			rol = RolUsuario.ADMIN;
+		}
+		credenciales = new ArrayList<>(List.of(usuario, password));
+		return credenciales;
+	}
 
-    private List<String> registrarUsuario() {
-    	LineReader reader = context.getReader();
-    	String email = InputHandler.toScan(reader, "Email");
-    	String usuario = InputHandler.toScan(reader, "Usuario");
-        String password = InputHandler.toScan(reader, "Contraseña");
-        credenciales = new ArrayList<>(List.of(email, usuario, password));
-        return credenciales;
-    }
+	private List<String> registrarUsuario() {
+		LineReader reader = context.getReader();
+		String email = "", usuario = "", password = "";
+		
+		do {
+			email = InputHandler.toScan(reader, "Email");
+		} while (!validarString(email, Validacion.EMAIL));
+
+		do {
+			usuario = InputHandler.toScan(reader, "Usuario");
+		} while (!validarString(usuario, Validacion.USER));
+		
+		do {
+			password = InputHandler.toScan(reader, "Contraseña");
+		} while (!validarString(password, Validacion.PASSWORD));
+		
+		credenciales = new ArrayList<>(List.of(email, usuario, password));
+		return credenciales;
+	}
+	
+	private boolean validarString(String valor, Validacion tipo) {
+	    if (valor == null || valor.isBlank()) {
+	        return false;
+	    }
+	    switch (tipo) {
+	        case EMAIL -> { return valor.matches("^[\\w-.]+@[\\w-]+\\.[a-zA-Z]{2,}$"); }
+	        case USER -> { return valor.length() >= 3 && !valor.contains(" "); }
+	        case PASSWORD -> { return valor.length() >= 6; }
+	        default -> { return false; }
+	    }
+	}
 }
