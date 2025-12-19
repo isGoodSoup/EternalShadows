@@ -2,6 +2,7 @@ package es.eternalshadow.entities;
 
 import java.sql.Date;
 
+import es.eternalshadow.enums.RolUsuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class Usuario {
 	@Column(name = "PASSWORD", nullable = false, length = 100)
 	private String password;
 	@Column(name = "ROL", nullable = false, length = 20)
-	private String rol;
+	private RolUsuario rol;
 	@Column(name = "FECHA_ALTA", nullable = false)
 	private Date fechaAlta;
 	@Column(name = "ACTIVO", nullable = false)
@@ -35,7 +36,7 @@ public class Usuario {
 	
 	// Constructor con id 
 	public Usuario(int id, String username, String email, String password,
-			String rol, Date fechaAlta, boolean activo) {
+			RolUsuario rol, Date fechaAlta, boolean activo) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -48,7 +49,7 @@ public class Usuario {
 	
 	// Constructor sin id
 	public Usuario(String username, String email, String password,
-			String rol, Date fechaAlta, boolean activo) {
+			RolUsuario rol, Date fechaAlta, boolean activo) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -90,11 +91,11 @@ public class Usuario {
 		this.password = password;
 	}
 
-	public String getRol() {
+	public RolUsuario getRol() {
 		return rol;
 	}
 
-	public void setRol(String rol) {
+	public void setRol(RolUsuario rol) {
 		this.rol = rol;
 	}
 

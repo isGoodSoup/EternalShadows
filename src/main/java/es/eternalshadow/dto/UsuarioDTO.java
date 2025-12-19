@@ -2,18 +2,20 @@ package es.eternalshadow.dto;
 
 import java.sql.Date;
 
+import es.eternalshadow.enums.RolUsuario;
+
 public class UsuarioDTO {
 	private int id;
 	private String username;
 	private String email;
 	private String password;
-	private String rol;
+	private RolUsuario rol;
 	private Date fechaAlta;
 	private boolean activo;
 
 	public UsuarioDTO() {}
 
-	public UsuarioDTO(int id, String username, String email, String password, String rol, Date fechaAlta,
+	public UsuarioDTO(int id, String username, String email, String password, RolUsuario rol, Date fechaAlta,
 			boolean activo) {
 		super();
 		this.id = id;
@@ -25,7 +27,7 @@ public class UsuarioDTO {
 		this.activo = activo;
 	}
 
-	public UsuarioDTO(String username, String email, String password, String rol, Date fechaAlta, boolean activo) {
+	public UsuarioDTO(String username, String email, String password, RolUsuario rol, Date fechaAlta, boolean activo) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -73,11 +75,11 @@ public class UsuarioDTO {
 		this.password = password;
 	}
 
-	public String getRol() {
+	public RolUsuario getRol() {
 		return rol;
 	}
 
-	public void setRol(String rol) {
+	public void setRol(RolUsuario rol) {
 		this.rol = rol;
 	}
 

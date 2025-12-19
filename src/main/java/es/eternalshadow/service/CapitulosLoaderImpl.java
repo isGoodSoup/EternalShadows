@@ -14,14 +14,16 @@ import es.eternalshadow.interfaces.Accion;
 import es.eternalshadow.main.GameContext;
 import es.eternalshadow.motor.Escena;
 import es.eternalshadow.motor.Opcion;
+import es.eternalshadow.pojos.Enemigo;
 import es.eternalshadow.pojos.Pocion;
+import es.eternalshadow.service.interfaces.CapitulosLoader;
 import es.eternalshadow.story.Capitulo;
 import es.eternalshadow.util.ExceptionsHandler;
 
-public class CapitulosLoader {
+public class CapitulosLoaderImpl implements CapitulosLoader {
 	private final GameContext context;
 
-	public CapitulosLoader(GameContext context) {
+	public CapitulosLoaderImpl(GameContext context) {
 		this.context = context;
 	}
 
@@ -29,6 +31,7 @@ public class CapitulosLoader {
 	 * Se encarga de cargar los Capitulos 1:1 y añadirlos a un ArrayList de
 	 * Capitulos.
 	 */
+	@Override
 	public void cargarCapitulos() {
 		try {
 			int total = context.getUtil().getStoryLoader().getCapitulosTotales();
@@ -47,6 +50,7 @@ public class CapitulosLoader {
 	 * Se parsea el archivo y los jugadores junto con una criatura y se devuelve
 	 * el capitulo finalmente
 	 */
+	@Override
 	public Capitulo cargarCapitulo(String ruta, List<Criatura> jugadores,
 			Criatura criatura) throws IOException {
 		List<String> lineas = context.getUtil().getFileManager().toLeerArchivo(ruta);
@@ -149,6 +153,7 @@ public class CapitulosLoader {
 	/**
 	 * Ejecuta las acciones que se parsean por #OPCION
 	 */
+	@Override
 	public void ejecutarAccion(String nombreAccion, List<Criatura> jugadores,
 			Criatura criatura) {
 		Accion accion = context.getAcciones().get(nombreAccion);
@@ -162,6 +167,7 @@ public class CapitulosLoader {
 	/**
 	 * Inicializa las acciones de la historia
 	 */
+	@Override
 	public void startAcciones() {
 		Map<String, Accion> acciones = context.getAcciones();
 
@@ -172,7 +178,7 @@ public class CapitulosLoader {
 		acciones.put("aumentarMoral",
 				(jugadores, criatura) -> context.getJugador().modMoral(1));
 		acciones.put("luchar", (jugadores, criatura) -> 
-	    context.getServices().getCombateService().luchar(context.getJugador(), criatura)
+	    context.getServices().getCombateService().luchar(context.getJugador(), (Enemigo) criatura)
 		);
 		acciones.put("huir", (jugadores, criatura) -> 
 		    context.getServices().getCombateService().huir(context.getJugador())

@@ -3,13 +3,14 @@ package es.eternalshadow.service;
 import es.eternalshadow.exception.GameException;
 import es.eternalshadow.exception.LimiteCombateException;
 import es.eternalshadow.main.GameContext;
+import es.eternalshadow.service.interfaces.GameService;
 import es.eternalshadow.util.ExceptionsHandler;
 import es.eternalshadow.util.InputHandler;
 
-public class GameService {
+public class GameServiceImpl implements GameService {
 	private GameContext context;
 
-	public GameService(GameContext context) {
+	public GameServiceImpl(GameContext context) {
 		this.context = context;
 	}
 	
@@ -20,7 +21,8 @@ public class GameService {
 	public void setContext(GameContext context) {
 		this.context = context;
 	}
-
+	
+	@Override
 	public void iniciarPartida() {
 		context.getCriaturas().clear();
 		int tope;

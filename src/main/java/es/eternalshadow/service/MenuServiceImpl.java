@@ -12,12 +12,13 @@ import es.eternalshadow.enums.Menu;
 import es.eternalshadow.enums.MenuOpciones;
 import es.eternalshadow.exception.GameException;
 import es.eternalshadow.main.GameContext;
+import es.eternalshadow.service.interfaces.MenuService;
 
-public class MenuService {
+public class MenuServiceImpl implements MenuService {
     private GameContext context;
-    private static final Logger log = LoggerFactory.getLogger(MenuService.class);
+    private static final Logger log = LoggerFactory.getLogger(MenuServiceImpl.class);
 
-    public MenuService(GameContext context) {
+    public MenuServiceImpl(GameContext context) {
         super();
         this.context = context;
     }
@@ -33,6 +34,7 @@ public class MenuService {
 	/**
      * Procesa el menu principal y lo desglosa en 4 partes
      */
+	@Override
     public void menuPrincipal(List<String> credenciales)
             throws IOException, InterruptedException, GameException {
         boolean salir = false;
@@ -49,8 +51,9 @@ public class MenuService {
             salir = opcionesMenu(menuSeleccionado);
         }
     }
-
-    private boolean opcionesMenu(Menu menu) throws GameException, InterruptedException {
+	
+	@Override
+	public boolean opcionesMenu(Menu menu) throws GameException, InterruptedException {
         if (menu == null) return false;
 
         switch (menu) {
@@ -64,8 +67,9 @@ public class MenuService {
         }
         return false;
     }
-
-    private void menuOpciones() throws GameException, InterruptedException {
+	
+	@Override
+	public void menuOpciones() throws GameException, InterruptedException {
         boolean volver = false;
 
         String[] opciones = Arrays.stream(MenuOpciones.values())
@@ -79,8 +83,9 @@ public class MenuService {
             volver = menuOpciones(seleccion);
         }
     }
-
-    private boolean menuOpciones(MenuOpciones menu) throws GameException {
+	
+	@Override
+	public boolean menuOpciones(MenuOpciones menu) throws GameException {
         if (menu == null) return false;
 
         switch (menu) {
@@ -89,26 +94,29 @@ public class MenuService {
                 log.debug("Dificultad seleccionada: " + nueva);
                 return true;
             }
-            case STATS -> stats();
+            case STATS -> verStats();
             case VOLVER -> {
                 return true;
             }
         }
         return false;
     }
-
-    private void modoDebug() {
+	
+	@Override
+	public void modoDebug() {
         log.debug("Dev mode");
         context.getHistoria().iniciar(context.getUtil().getCharacterFactory().crearPersonaje(), context.getReader(), context.getUtil());
     }
-
-    private void stats() {
+	
+	@Override
+	public void verStats() {
         // TODO Stats
     }
 
     /**
 	 * Imprime un logo desde archivo, línea por línea.
 	 */
+	@Override
 	public void pintarLogo(String ruta)
 			throws IOException, InterruptedException {
 		System.out.println();

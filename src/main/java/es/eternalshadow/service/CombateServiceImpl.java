@@ -4,14 +4,17 @@ import java.util.List;
 import java.util.Random;
 
 import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.entities.Jugador;
 import es.eternalshadow.exception.LimiteCombateException;
 import es.eternalshadow.main.GameContext;
+import es.eternalshadow.pojos.Enemigo;
+import es.eternalshadow.service.interfaces.CombateService;
 
-public class CombateService {
+public class CombateServiceImpl implements CombateService {
 	private GameContext context;
 	private final Random random = new Random();
 
-	public CombateService(GameContext context) {
+	public CombateServiceImpl(GameContext context) {
 		this.context = context;
 	}
 
@@ -22,7 +25,8 @@ public class CombateService {
 	public void setContext(GameContext context) {
 		this.context = context;
 	}
-
+	
+	@Override
 	public void iniciarCombate(List<Criatura> jugadores, 
 			List<Criatura> enemigos) throws LimiteCombateException {
 
@@ -69,17 +73,20 @@ public class CombateService {
 			System.out.println("¡Victoria!");
 		}
 	}
-
-	public void luchar(Criatura jugador, Criatura enemigo) {
+	
+	@Override
+	public void luchar(Jugador jugador, Enemigo enemigo) {
 		int dano = jugador.atacar(enemigo);
 		enemigo.recibirDanio(dano);
 	}
-
-	public boolean huir(Criatura jugador) {
+	
+	@Override
+	public boolean huir(Jugador jugador) {
 		boolean exito = Math.random() < 0.5;
 		return exito;
 	}
-
+	
+	@Override
 	public int calcularCritico(int base) {
 		return random.nextDouble() < 0.1 ? base * 2 : base;
 	}

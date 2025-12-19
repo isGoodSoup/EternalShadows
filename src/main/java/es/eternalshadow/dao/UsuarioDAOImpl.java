@@ -67,9 +67,32 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 
 	@Override
-	public List<Usuario> obtenerTodasLosUsuario() {
+	public List<Usuario> obtenerTodosLosUsuarios() {
 		try (Session session = HibernateUtil.getSessionFactory()) {
 			return session.createQuery("from Usuario", Usuario.class).list();
 		}
+	}
+
+	@Override
+	public Usuario obtenerPorString(String valor) {
+		try (Session session = HibernateUtil.getSessionFactory()) {
+	        return session.createQuery(
+	            "FROM Usuario u WHERE u.username = :v OR u.email = :v",
+	            Usuario.class)
+	            .setParameter("v", valor)
+	            .uniqueResult();
+	    }
+	}
+
+	@Override
+	public boolean isExisteEmail(String email) {
+		try (Session session = HibernateUtil.getSessionFactory()) {
+	        Long count = session.createQuery(
+	            "SELECT COUNT(u) FROM Usuario u WHERE u.email = :email",
+	            Long.class)
+	            .setParameter("email", email)
+	            .uniqueResult();
+	        return count != null && count > 0;
+	    }
 	}
 }

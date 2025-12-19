@@ -4,30 +4,33 @@ import es.eternalshadow.main.GameContext;
 
 public class ServiceFactory {
 	private GameContext context;
-	private final UserService userService;
-    private final MenuService menuService;
-    private final EULAService eulaService;
-    private final GameService gameService;
-    private final CombateService combatService;
-    private CapitulosLoader capitulosLoader;
+	private final UsuarioServiceImpl userService;
+	private final JugadorServiceImpl jugadorService;
+    private final MenuServiceImpl menuService;
+    private final EULAServiceImpl eulaService;
+    private final GameServiceImpl gameService;
+    private final CombateServiceImpl combateService;
+    private CapitulosLoaderImpl capitulosLoader;
 	
     public ServiceFactory() {
 		super();
-		this.userService = new UserService(null);
-        this.menuService = new MenuService(null);
-        this.eulaService = new EULAService("docs/eula.txt");
-        this.gameService = new GameService(null);
-        this.combatService = new CombateService(null);
-		this.capitulosLoader = new CapitulosLoader(null);
+		this.userService = new UsuarioServiceImpl(null);
+        this.menuService = new MenuServiceImpl(null);
+        this.eulaService = new EULAServiceImpl("docs/eula.txt");
+        this.gameService = new GameServiceImpl(null);
+        this.combateService = new CombateServiceImpl(null);
+		this.capitulosLoader = new CapitulosLoaderImpl(null);
+		this.jugadorService = new JugadorServiceImpl(null);
 	}
     
     public void init(GameContext context) {
         this.context = context;	
         this.userService.setContext(context);
+        this.jugadorService.setContext(context);
         this.menuService.setContext(context);
         this.gameService.setContext(context);
-        this.combatService.setContext(context);
-        this.capitulosLoader = new CapitulosLoader(context);
+        this.combateService.setContext(context);
+        this.capitulosLoader = new CapitulosLoaderImpl(context);
     }
     
     public GameContext getContext() {
@@ -38,31 +41,35 @@ public class ServiceFactory {
 		this.context = context;
 	}
     
-    public UserService getUserService() {
+    public UsuarioServiceImpl getUserService() {
         return userService;
     }
+    
+    public JugadorServiceImpl getJugadorService() {
+		return jugadorService;
+	}
 
-    public MenuService getMenuService() {
+	public MenuServiceImpl getMenuService() {
         return menuService;
     }
 
-    public EULAService getEulaService() {
+    public EULAServiceImpl getEulaService() {
         return eulaService;
     }
 
-    public GameService getGameService() {
+    public GameServiceImpl getGameService() {
         return gameService;
     }
     
-	public CombateService getCombateService() {
-		return combatService;
+	public CombateServiceImpl getCombateService() {
+		return combateService;
 	}
-
-	public CapitulosLoader getCapitulosLoader() {
+	
+	public CapitulosLoaderImpl getCapitulosLoader() {
 		return capitulosLoader;
 	}
 
-	public void setCapitulosLoader(CapitulosLoader capitulosLoader) {
+	public void setCapitulosLoader(CapitulosLoaderImpl capitulosLoader) {
 		this.capitulosLoader = capitulosLoader;
 	}
 }

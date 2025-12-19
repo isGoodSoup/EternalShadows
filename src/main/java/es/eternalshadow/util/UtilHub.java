@@ -8,6 +8,7 @@ public class UtilHub {
 	private final ConsolePrinter consolePrinter;
 	private final StoryLoader storyLoader;
 	private final ExceptionsHandler exceptionsHandler;
+	private final PasswordUtil passwordUtil;
 
 	public UtilHub() {
 		this.inputHandler = new InputHandler();
@@ -17,6 +18,7 @@ public class UtilHub {
 		this.consolePrinter = new ConsolePrinter();
 		this.storyLoader = new StoryLoader();
 		this.exceptionsHandler = new ExceptionsHandler();
+		this.passwordUtil = new PasswordUtil();
 	}
 
 	public InputHandler getInputHandler() {
@@ -45,5 +47,9 @@ public class UtilHub {
 
 	public ExceptionsHandler getExceptionsHandler() {
 		return exceptionsHandler;
+	}
+
+	public PasswordUtil getPasswordUtil() {
+		return passwordUtil;
 	}
 }
