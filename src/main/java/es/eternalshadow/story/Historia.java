@@ -9,12 +9,12 @@ import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.main.Panel;
 import es.eternalshadow.motor.Escena;
 import es.eternalshadow.motor.Opcion;
-import es.eternalshadow.util.Codex;
+import es.eternalshadow.util.UtilHub;
 
 public abstract class Historia {
 	private String titulo;
 	private Panel panel;
-	private Codex util;
+	private UtilHub util;
 	private List<Capitulo> capitulos;
 	private Escena escena;
 
@@ -22,7 +22,7 @@ public abstract class Historia {
 		this.titulo = titulo;
 		this.panel = panel;
 		this.capitulos = new ArrayList<>();
-		this.util = new Codex(panel);
+		this.util = new UtilHub();
 	}
 
 	public String getTitulo() {
@@ -41,11 +41,11 @@ public abstract class Historia {
 		this.panel = panel;
 	}
 
-	public Codex getUtil() {
+	public UtilHub getUtil() {
 		return util;
 	}
 
-	public void setUtil(Codex util) {
+	public void setUtil(UtilHub util) {
 		this.util = util;
 	}
 
@@ -90,5 +90,5 @@ public abstract class Historia {
 	}
 
 	public abstract List<Criatura> iniciar(List<Criatura> criaturas,
-			LineReader reader, Codex util);
+			LineReader reader, UtilHub util);
 }

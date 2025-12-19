@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import es.eternalshadow.exception.GameException;
 import es.eternalshadow.interfaces.Iniciable;
-import es.eternalshadow.util.Codex;
+import es.eternalshadow.util.ExceptionsHandler;
 
 public class Main implements Iniciable {
 	private Panel panel = new Panel();
@@ -17,7 +17,7 @@ public class Main implements Iniciable {
 	@Override
 	public void init() {
 		try { panel.comenzar(); } catch (IOException | InterruptedException | GameException e) {
-			Codex.printException(e);
+			ExceptionsHandler.printException(e);
 		}
 	}
 }

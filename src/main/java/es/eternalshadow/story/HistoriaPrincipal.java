@@ -8,7 +8,8 @@ import org.jline.reader.LineReader;
 import es.eternalshadow.entities.Criatura;
 import es.eternalshadow.main.GameContext;
 import es.eternalshadow.main.Panel;
-import es.eternalshadow.util.Codex;
+import es.eternalshadow.util.ExceptionsHandler;
+import es.eternalshadow.util.UtilHub;
 
 public class HistoriaPrincipal extends Historia {
 	private final GameContext context;
@@ -19,7 +20,7 @@ public class HistoriaPrincipal extends Historia {
 	}
 
 	@Override
-	public List<Criatura> iniciar(List<Criatura> criaturas, LineReader reader, Codex util) {
+	public List<Criatura> iniciar(List<Criatura> criaturas, LineReader reader, UtilHub util) {
 		for (int i = 0; i < getCapitulos().size(); i++) {
 		    try {
 		        Capitulo capitulo = context.getServices().getCapitulosLoader().cargarCapitulo(
@@ -29,7 +30,7 @@ public class HistoriaPrincipal extends Historia {
 		        );
 		        getCapitulos().set(i, capitulo);
 		    } catch (IOException e) {
-		        Codex.printException(e);
+		        ExceptionsHandler.printException(e);
 		    }
 		}
 		return criaturas;

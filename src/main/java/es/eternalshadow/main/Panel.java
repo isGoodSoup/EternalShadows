@@ -11,22 +11,20 @@ import org.jline.terminal.TerminalBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.eternalshadow.entities.Jugador;
 import es.eternalshadow.enums.Eula;
 import es.eternalshadow.exception.GameException;
-import es.eternalshadow.pojos.Jugador;
 import es.eternalshadow.service.ServiceFactory;
 import es.eternalshadow.story.Historia;
 import es.eternalshadow.story.HistoriaPrincipal;
-import es.eternalshadow.util.Codex;
-import es.eternalshadow.util.Dados;
+import es.eternalshadow.util.UtilHub;
 
 public class Panel {
 	private GameContext context;
 	private Terminal terminal;
 	private LineReader reader;
 	private String titulo = "Eternal Shadows";
-	private final Codex util = new Codex(this);
-	private final Dados dados = new Dados(this);
+	private final UtilHub util = new UtilHub();
 	private Eula eula;
 	private int opcion;
 	private static final Logger log = LoggerFactory.getLogger(Panel.class);
@@ -86,12 +84,8 @@ public class Panel {
 		return reader;
 	}
 
-	public Codex getUtil() {
+	public UtilHub getUtil() {
 		return util;
-	}
-
-	public Dados getDados() {
-		return dados;
 	}
 
 	/**
@@ -115,7 +109,7 @@ public class Panel {
 		}
 
 		String[] menu = { "SI", "NO" };
-		int eulaConf = util.crearMenu(reader, menu,
+		int eulaConf = util.getInputHandler().crearMenu(reader, menu,
 				"¿Aceptas estas condiciones?");
 		switch (eulaConf) {
 		case 1 -> {

@@ -13,7 +13,7 @@ import es.eternalshadow.enums.MenuSesiones;
 import es.eternalshadow.enums.RolUsuario;
 import es.eternalshadow.exception.GameException;
 import es.eternalshadow.main.GameContext;
-import es.eternalshadow.util.Codex;
+import es.eternalshadow.util.InputHandler;
 
 public class UserService {
     private GameContext context;
@@ -67,7 +67,7 @@ public class UserService {
 
         while (!salir) {
             context.getServices().getMenuService().pintarLogo("docs/logo.txt");
-            int opcion = context.getUtil().crearMenu(context.getReader(), opciones, "Introduce tu opción");
+            int opcion = context.getUtil().getInputHandler().crearMenu(context.getReader(), opciones, "Introduce tu opción");
             MenuSesiones menu = MenuSesiones.fromCodigo(opcion);
 
             salir = sesionesMenu(menu);
@@ -77,7 +77,7 @@ public class UserService {
 
     private boolean sesionesMenu(MenuSesiones menu) throws GameException, InterruptedException {
         if (menu == null) {
-            context.getUtil().limpiarPantalla();
+            context.getUtil().getConsolePrinter().limpiarPantalla();
             return false;
         }
 
@@ -100,8 +100,8 @@ public class UserService {
 
     private List<String> iniciarSesion() {
         LineReader reader = context.getReader();
-        String usuario = Codex.toScan(reader, "Usuario");
-        String password = Codex.toScan(reader, "Contraseña");
+        String usuario = InputHandler.toScan(reader, "Usuario");
+        String password = InputHandler.toScan(reader, "Contraseña");
         if(usuario.equals("admin")) {
         	rol = RolUsuario.ADMIN;
         }
@@ -111,9 +111,9 @@ public class UserService {
 
     private List<String> registrarUsuario() {
     	LineReader reader = context.getReader();
-    	String email = Codex.toScan(reader, "Email");
-    	String usuario = Codex.toScan(reader, "Usuario");
-        String password = Codex.toScan(reader, "Contraseña");
+    	String email = InputHandler.toScan(reader, "Email");
+    	String usuario = InputHandler.toScan(reader, "Usuario");
+        String password = InputHandler.toScan(reader, "Contraseña");
         credenciales = new ArrayList<>(List.of(email, usuario, password));
         return credenciales;
     }

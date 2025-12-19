@@ -3,7 +3,8 @@ package es.eternalshadow.service;
 import es.eternalshadow.exception.GameException;
 import es.eternalshadow.exception.LimiteCombateException;
 import es.eternalshadow.main.GameContext;
-import es.eternalshadow.util.Codex;
+import es.eternalshadow.util.ExceptionsHandler;
+import es.eternalshadow.util.InputHandler;
 
 public class GameService {
 	private GameContext context;
@@ -26,7 +27,7 @@ public class GameService {
 		boolean isTope;
 
 		do {
-			tope = Codex.toScanInteger(context.getReader(),
+			tope = InputHandler.toScanInteger(context.getReader(),
 					"Inserta el número de jugadores (máx 5)");
 			isTope = tope < 2 || tope > 5;
 			if (isTope) {
@@ -34,7 +35,7 @@ public class GameService {
 					throw new GameException(
 							"Número de jugadores inválido: " + tope);
 				} catch (GameException e) {
-					Codex.printException(e);
+					ExceptionsHandler.printException(e);
 				}
 			}
 		} while (isTope);
@@ -42,9 +43,9 @@ public class GameService {
 		for (int i = 1; i <= tope; i++) {
 			try {
 				context.setJugador(
-						context.getUtil().crearPersonaje(context.getReader()));
+						context.getUtil().getCharacterFactory().crearPersonaje(context.getReader()));
 			} catch (LimiteCombateException e) {
-				Codex.printException(e);
+				ExceptionsHandler.printException(e);
 			}
 			context.getCriaturas().add(context.getJugador());
 		}

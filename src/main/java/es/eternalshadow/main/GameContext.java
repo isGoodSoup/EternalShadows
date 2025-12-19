@@ -8,23 +8,23 @@ import java.util.Map;
 import org.jline.reader.LineReader;
 
 import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.entities.Jugador;
 import es.eternalshadow.interfaces.Accion;
-import es.eternalshadow.pojos.Jugador;
 import es.eternalshadow.service.ServiceFactory;
 import es.eternalshadow.story.Historia;
-import es.eternalshadow.util.Codex;
+import es.eternalshadow.util.UtilHub;
 
 public class GameContext {
 	private final ServiceFactory services;
 	private Historia historia;
 	private Jugador jugador;
 	private final LineReader reader;
-	private final Codex util;
+	private final UtilHub util;
 	private List<Criatura> criaturas;
 	private final Map<String, Accion> acciones;
 
 	public GameContext(Historia historia, Jugador jugador, LineReader reader,
-			Codex util, Map<String, Accion> acciones, ServiceFactory services) {
+			UtilHub util, Map<String, Accion> acciones, ServiceFactory services) {
 		super();
 		this.services = services;
 		this.historia = historia;
@@ -59,7 +59,7 @@ public class GameContext {
 		return reader;
 	}
 
-	public Codex getUtil() {
+	public UtilHub getUtil() {
 		return util;
 	}
 

@@ -1,54 +1,55 @@
-package es.eternalshadow.pojos;
+package es.eternalshadow.entities;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import es.eternalshadow.entities.Arma;
-import es.eternalshadow.entities.Criatura;
-import es.eternalshadow.entities.Escudo;
-import es.eternalshadow.enums.Armamento;
-import es.eternalshadow.enums.Escuderia;
-import es.eternalshadow.main.Panel;
+import es.eternalshadow.pojos.Item;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
+@Entity
+@Table(name = "TB_JUGADOR")
 public class Jugador extends Criatura {
-	private Panel panel;
+	@Column(name = "MORAL")
 	private int moral;
+	@Column(name = "ATAQUE")
 	private int ataque;
+	@Column(name = "DEFENSA")
 	private int defensa;
-	private Arma arma;
-	private Escudo escudo;
-	private int oro;
-	private Map<String, Item> inventario;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "JUGADOR_ID")
+	private List<Arma> armas = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "JUGADOR_ID")
+	private List<Escudo> escudos = new ArrayList<>();
+	@Transient
+	private Map<String, Item> inventario = new HashMap<>();
 
 	public Jugador() {}
-	
-	public Jugador(String tipo, String nombre, int fuerza, int resistencia,
-			int velocidad, int magia, int puntosVida, int moral, int ataque,
-			int defensa, Panel panel) {
+
+	public Jugador(String tipo, String nombre, int fuerza, int resistencia, int velocidad, int magia, int puntosVida,
+			int moral, int ataque, int defensa, Map<String, Item> inventario) {
 		super(tipo, nombre, fuerza, resistencia, velocidad, magia, puntosVida);
-		this.panel = panel;
 		this.moral = moral;
 		this.ataque = ataque;
 		this.defensa = defensa;
-		this.oro = 0;
-		this.inventario = new HashMap<>();
-		
-		Armamento arma = panel.getUtil().toGenArma();
-		Escuderia escudo = panel.getUtil().toGenEscudo();
-		
-		this.arma = new Arma(arma.toString(), 1, arma);
-		this.escudo = new Escudo(escudo.toString(), 1, escudo);
-		
-		this.inventario.put(arma.toString(), this.arma);
-		this.inventario.put(escudo.toString(), this.escudo);
+		this.inventario = inventario;
 	}
 
-	public Panel getPanel() {
-		return panel;
-	}
-
-	public void setPanel(Panel panel) {
-		this.panel = panel;
+	public Jugador(String nombre, String tipo, int nivel, int puntosVida, int moral, List<Arma> armas,
+			List<Escudo> escudos, Map<String, Item> inventario) {
+		this.moral = moral;
+		this.armas = armas;
+		this.escudos = escudos;
+		this.inventario = inventario;
 	}
 
 	public int getMoral() {
@@ -58,102 +59,38 @@ public class Jugador extends Criatura {
 	public void setMoral(int moral) {
 		this.moral = moral;
 	}
-
+	
 	public void modMoral(int moral) {
 		this.moral += moral;
 	}
 
-	public int getAtaque() {
-		return ataque;
+	public List<Arma> getArmas() {
+		return armas;
 	}
 
-	public void setAtaque(int ataque) {
-		this.ataque = ataque;
-	}
-	
-	public int getDefensa() {
-		return defensa;
+	public void setArmas(List<Arma> armas) {
+		this.armas = armas;
 	}
 
-	public void setDefensa(int defensa) {
-		this.defensa = defensa;
-	}
-	
-	public Arma getArma() {
-		return arma;
+	public List<Escudo> getEscudos() {
+		return escudos;
 	}
 
-	public void setArma(Arma arma) {
-		this.arma = arma;
-	}
-
-	public Escudo getEscudo() {
-		return escudo;
-	}
-
-	public void setEscudo(Escudo escudo) {
-		this.escudo = escudo;
-	}
-
-	public int getOro() {
-		return oro;
-	}
-
-	public void setOro(int oro) {
-		this.oro = oro;
-	}
-
-	public void modOro(int precio) {
-		this.oro += precio;
+	public void setEscudos(List<Escudo> escudos) {
+		this.escudos = escudos;
 	}
 
 	public Map<String, Item> getInventario() {
 		return inventario;
 	}
-	
+
 	public void setInventario(Map<String, Item> inventario) {
-		this.inventario = inventario;
+		this.inventario = inventario != null ? inventario : new HashMap<>();
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Jugador [moral=" + moral + ", ataque=" + ataque + ", defensa="
-				+ defensa + ", arma=" + arma + ", escudo=" + escudo + ", oro="
-				+ oro + ", inventario=" + inventario + ", getNombre()="
-				+ getNombre() + ", getNivel()=" + getNivel()
-				+ ", getPuntosVida()=" + getPuntosVida() + ", getFuerza()="
-				+ getFuerza() + ", getResistencia()=" + getResistencia()
-				+ ", getVelocidad()=" + getVelocidad() + ", getMagia()="
-				+ getMagia() + "]";
+		return "Jugador [nombre=" + getNombre() + ", nivel=" + getNivel() + ", puntosVida=" + getPuntosVida()
+				+ ", moral=" + moral + ", armas=" + armas + ", escudos=" + escudos + "]";
 	}
-
-	@Override
-	public int atacar(Criatura criatura) {
-		return super.atacar(criatura);
-	}
-
-	@Override
-	public int defender() {
-		return super.defender();
-	}
-
-	public void luchar(Jugador user, Criatura lobo) {
-		// TODO Luchar
-	}
-
-	public void huir(Jugador jugador) {
-		System.out.println(jugador.getNombre() + " está huyendo!");
-		modMoral(-5);
-	}
-	
-	@Override
-	public int recibirDanio(int i) {
-		return super.recibirDanio(i);
-	}
-
-	@Override
-	public boolean isVivo(Criatura criatura) {
-		return super.isVivo(criatura);
-	}
-
 }

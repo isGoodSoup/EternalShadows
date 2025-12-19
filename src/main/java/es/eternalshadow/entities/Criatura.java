@@ -1,19 +1,23 @@
 package es.eternalshadow.entities;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import es.eternalshadow.main.Panel;
+import es.eternalshadow.util.Dados;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "TB_CRIATURA")
 public class Criatura extends Raza {
-	private Panel panel;
 	@Column(name = "NOMBRE", nullable = false, length = 100)
 	private String nombre;
 	@Column(name = "NIVEL", nullable = false)
@@ -22,18 +26,18 @@ public class Criatura extends Raza {
 	private int ataque;
 	@Column(name = "DEFENSA")
 	private int defensa;
-	@Column(name = "ESCUDOS")
-	private ArrayList<Escudo> escudos;
-	@Column(name = "ARMAS")
-	private ArrayList<Arma> armas;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "CRIATURA_ID")
+    private List<Arma> armas = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "CRIATURA_ID")
+    private List<Escudo> escudos = new ArrayList<>();
 	@Column(name = "POCION")
 	private String pocion;
 	@Column(name = "PUNTOS_VIDA", nullable = false)
 	private int puntosVida;
 
-	public Criatura() {
-
-	}
+	public Criatura() {}
 
 	public Criatura(String nombre, int nivel, ArrayList<Escudo> escudos,
 			ArrayList<Arma> armas, String pocion, int puntosVida) {
@@ -85,19 +89,19 @@ public class Criatura extends Raza {
 		this.defensa = defensa;
 	}
 
-	public ArrayList<Escudo> getEscudos() {
+	public List<Escudo> getEscudos() {
 		return escudos;
 	}
 
-	public void setEscudos(ArrayList<Escudo> escudos) {
+	public void setEscudos(List<Escudo> escudos) {
 		this.escudos = escudos;
 	}
 
-	public ArrayList<Arma> getArmas() {
+	public List<Arma> getArmas() {
 		return armas;
 	}
 
-	public void setArmas(ArrayList<Arma> armas) {
+	public void setArmas(List<Arma> armas) {
 		this.armas = armas;
 	}
 
@@ -127,12 +131,12 @@ public class Criatura extends Raza {
 
 	@Override
 	public int atacar(Criatura criatura) {
-		return panel.getDados().tirarDados() * nivel + this.ataque;
+		return Dados.tirarDados() * nivel + this.ataque;
 	}
 
 	@Override
 	public int defender() {
-		return panel.getDados().tirarDados() * nivel + this.defensa;
+		return Dados.tirarDados() * nivel + this.defensa;
 	}
 	
 	@Override

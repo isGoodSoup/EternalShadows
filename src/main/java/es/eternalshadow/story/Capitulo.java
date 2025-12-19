@@ -92,7 +92,7 @@ public class Capitulo {
             for (int i = 0; i < opciones.size(); i++) {
                 System.out.println((i + 1) + ". " + opciones.get(i).getTexto());
             }
-            int seleccion = context.getUtil().crearMenu(
+            int seleccion = context.getUtil().getInputHandler().crearMenu(
                     context.getReader(),
                     opciones.stream()
                     .map(Opcion::getTexto)

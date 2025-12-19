@@ -43,7 +43,7 @@ public class MenuService {
 
         while (!salir) {
             pintarLogo("./docs/logo.txt");
-            int opcion = context.getUtil().crearMenu(context.getReader(), opciones, "Introduce tu opción");
+            int opcion = context.getUtil().getInputHandler().crearMenu(context.getReader(), opciones, "Introduce tu opción");
             Menu menuSeleccionado = Menu.fromCodigo(opcion);
 
             salir = opcionesMenu(menuSeleccionado);
@@ -73,7 +73,7 @@ public class MenuService {
                 .toArray(String[]::new);
 
         while (!volver) {
-            int opcion = context.getUtil().crearMenu(context.getReader(), opciones, "Opciones");
+            int opcion = context.getUtil().getInputHandler().crearMenu(context.getReader(), opciones, "Opciones");
             MenuOpciones seleccion = MenuOpciones.fromCodigo(opcion);
 
             volver = menuOpciones(seleccion);
@@ -99,7 +99,7 @@ public class MenuService {
 
     private void modoDebug() {
         log.debug("Dev mode");
-        context.getHistoria().iniciar(context.getUtil().crearPersonaje(), context.getReader(), context.getUtil());
+        context.getHistoria().iniciar(context.getUtil().getCharacterFactory().crearPersonaje(), context.getReader(), context.getUtil());
     }
 
     private void stats() {
@@ -113,7 +113,7 @@ public class MenuService {
 			throws IOException, InterruptedException {
 		System.out.println();
 		try {
-			for (String linea : context.getUtil().toLeerArchivo(ruta)) {
+			for (String linea : context.getUtil().getFileManager().toLeerArchivo(ruta)) {
 				System.out.println(linea);
 				Thread.sleep(50);
 			}

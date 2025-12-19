@@ -10,23 +10,23 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_usuario")
+@Table(name = "TB_USUARIO")
 
 public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "username", nullable = false, unique = true, length = 50)
+	@Column(name = "USERNAME", nullable = false, unique = true, length = 50)
 	private String username;
-	@Column(name = "email", nullable = false, unique = true, length = 100)
+	@Column(name = "EMAIL", nullable = false, unique = true, length = 100)
 	private String email;
-	@Column(name = "password", nullable = false, length = 100)
+	@Column(name = "PASSWORD", nullable = false, length = 100)
 	private String password;
-	@Column(name = "rol", nullable = false, length = 20)
+	@Column(name = "ROL", nullable = false, length = 20)
 	private String rol;
-	@Column(name = "fecha_alta", nullable = false)
+	@Column(name = "FECHA_ALTA", nullable = false)
 	private Date fechaAlta;
-	@Column(name = "activo", nullable = false)
+	@Column(name = "ACTIVO", nullable = false)
 	private boolean activo;
 
 	public Usuario() {

@@ -16,7 +16,7 @@ import es.eternalshadow.motor.Escena;
 import es.eternalshadow.motor.Opcion;
 import es.eternalshadow.pojos.Pocion;
 import es.eternalshadow.story.Capitulo;
-import es.eternalshadow.util.Codex;
+import es.eternalshadow.util.ExceptionsHandler;
 
 public class CapitulosLoader {
 	private final GameContext context;
@@ -31,15 +31,15 @@ public class CapitulosLoader {
 	 */
 	public void cargarCapitulos() {
 		try {
-			int total = context.getUtil().getCapitulosTotales();
+			int total = context.getUtil().getStoryLoader().getCapitulosTotales();
 			for (int i = 1; i <= total; i++) {
 				context.getHistoria().getCapitulos()
 						.add(new Capitulo(i, "", null));
-				context.getUtil()
+				context.getUtil().getFileManager()
 						.toLeerArchivo("docs/mq/capitulo" + i + ".txt");
 			}
 		} catch (IOException e) {
-			Codex.printException(e);
+			ExceptionsHandler.printException(e);
 		}
 	}
 
@@ -49,7 +49,7 @@ public class CapitulosLoader {
 	 */
 	public Capitulo cargarCapitulo(String ruta, List<Criatura> jugadores,
 			Criatura criatura) throws IOException {
-		List<String> lineas = context.getUtil().toLeerArchivo(ruta);
+		List<String> lineas = context.getUtil().getFileManager().toLeerArchivo(ruta);
 		Map<String, Escena> escenas = new HashMap<>();
 
 		Escena escenaActual = null;
@@ -66,7 +66,7 @@ public class CapitulosLoader {
 				break;
 			}
 
-			ParsingKeys key = context.getUtil().getParsingKey(linea);
+			ParsingKeys key = context.getUtil().getStoryLoader().getParsingKey(linea);
 			if (key == null) {
 				System.out.print(linea);
 				reader.readLine();
@@ -171,9 +171,12 @@ public class CapitulosLoader {
 								new Pocion("Pocion de Curacion", 1)));
 		acciones.put("aumentarMoral",
 				(jugadores, criatura) -> context.getJugador().modMoral(1));
-		acciones.put("luchar", (jugadores, criatura) -> context.getJugador()
-				.luchar(context.getJugador(), criatura));
-		acciones.put("huir", (jugadores, criatura) -> context.getJugador()
-				.huir(context.getJugador()));
+		acciones.put("luchar", (jugadores, criatura) -> 
+	    context.getServices().getCombateService().luchar(context.getJugador(), criatura)
+		);
+		acciones.put("huir", (jugadores, criatura) -> 
+		    context.getServices().getCombateService().huir(context.getJugador())
+		);
+
 	}
 }

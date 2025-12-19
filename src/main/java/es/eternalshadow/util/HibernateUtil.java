@@ -8,67 +8,51 @@ import org.hibernate.cfg.Configuration;
 import es.eternalshadow.entities.Usuario;
 
 public class HibernateUtil {
-
 	private static Session session;
-	
-	
+
 	private static Session getSession() {
-		SessionFactory sessionFactory = new Configuration()
-                .configure() // Carga hibernate.cfg.xml
-                .buildSessionFactory();
-        Session session = sessionFactory.openSession();
-        
+		SessionFactory sessionFactory = new Configuration().configure()
+				.buildSessionFactory();
+		Session session = sessionFactory.openSession();
 		return session;
 	}
-	
+
 	public static Session getSessionFactory() {
 		if (session == null || !session.isOpen()) {
 			session = getSession();
 		}
 		return session;
 	}
-	
-	
+
 	public static void ComprobarRolAdmin() {
-		//TODO implementar método para comprobar si existe un usuario con rol admin
-		
 		session = getSessionFactory();
-		Transaction transaction= null;
-		
-						
-        try {
-        	
-            transaction= session.beginTransaction();
+		Transaction transaction = null;
 
-            // Verificar si existe algún usuario ADMIN
-            String hql = "FROM Usuario u WHERE u.rol = :rol";
-            Usuario admin = session.createQuery(hql, Usuario.class)
-            						.setParameter("rol", "ADMIN")
-                                   .setMaxResults(1)
-                                   .uniqueResult();
+		try {
+			transaction = session.beginTransaction();
+			String hql = "FROM Usuario u WHERE u.rol = :rol";
+			Usuario admin = session.createQuery(hql, Usuario.class).setParameter("rol", "ADMIN").setMaxResults(1)
+					.uniqueResult();
 
-            if (admin == null) {
-                // No hay admin, crear uno
-                Usuario nuevoAdmin = new Usuario();
-                nuevoAdmin.setUsername("admin");
-                nuevoAdmin.setPassword("password"); 
-                nuevoAdmin.setRol("ADMIN");
+			if (admin == null) {
+				Usuario nuevoAdmin = new Usuario();
+				nuevoAdmin.setUsername("admin");
+				nuevoAdmin.setPassword("password");
+				nuevoAdmin.setRol("ADMIN");
+				session.persist(nuevoAdmin);
+				System.out.println("Usuario ADMIN creado con éxito.");
+			} else {
+				System.out.println("Ya existe un usuario ADMIN.");
+			}
+			transaction.commit();
+			
+		} catch (Exception e) {
+			if (transaction != null)
+				transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+	}
 
-                session.persist(nuevoAdmin);
-                System.out.println("Usuario ADMIN creado con éxito.");
-            } else {
-                System.out.println("Ya existe un usuario ADMIN.");
-            }
-
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-    }
-	
-	
-	
 }

@@ -8,6 +8,7 @@ public class ServiceFactory {
     private final MenuService menuService;
     private final EULAService eulaService;
     private final GameService gameService;
+    private final CombateService combatService;
     private CapitulosLoader capitulosLoader;
 	
     public ServiceFactory() {
@@ -16,6 +17,7 @@ public class ServiceFactory {
         this.menuService = new MenuService(null);
         this.eulaService = new EULAService("docs/eula.txt");
         this.gameService = new GameService(null);
+        this.combatService = new CombateService(null);
 		this.capitulosLoader = new CapitulosLoader(null);
 	}
     
@@ -24,6 +26,7 @@ public class ServiceFactory {
         this.userService.setContext(context);
         this.menuService.setContext(context);
         this.gameService.setContext(context);
+        this.combatService.setContext(context);
         this.capitulosLoader = new CapitulosLoader(context);
     }
     
@@ -50,6 +53,10 @@ public class ServiceFactory {
     public GameService getGameService() {
         return gameService;
     }
+    
+	public CombateService getCombateService() {
+		return combatService;
+	}
 
 	public CapitulosLoader getCapitulosLoader() {
 		return capitulosLoader;

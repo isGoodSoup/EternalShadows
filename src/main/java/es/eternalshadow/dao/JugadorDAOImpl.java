@@ -5,18 +5,18 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import es.eternalshadow.dao.interfaces.CriaturaDAO;
-import es.eternalshadow.entities.Criatura;
+import es.eternalshadow.dao.interfaces.JugadorDAO;
+import es.eternalshadow.entities.Jugador;
 import es.eternalshadow.util.HibernateUtil;
 
-public class CriaturaDAOImpl implements CriaturaDAO {
+public class JugadorDAOImpl implements JugadorDAO {
 
 	@Override
-	public void guardar(Object criatura) {
+	public void guardar(Object jugador) {
 		Transaction tx = null;
 		try (Session session = HibernateUtil.getSessionFactory()) {
 			tx = session.beginTransaction();
-			session.persist(criatura);
+			session.persist(jugador);
 			tx.commit();
 		} catch (Exception e) {
 			if (tx != null) {
@@ -25,15 +25,15 @@ public class CriaturaDAOImpl implements CriaturaDAO {
 			throw e;
 		}
 	}
-	
+
 	@Override
 	public void eliminar(Long id) {
 		Transaction tx = null;
 		try (Session session = HibernateUtil.getSessionFactory()) {
 			tx = session.beginTransaction();
-			Criatura criatura = session.get(Criatura.class, id);
-			if (criatura != null) {
-				session.remove(criatura);
+			Jugador jugador = session.get(Jugador.class, id);
+			if (jugador != null) {
+				session.remove(jugador);
 			}
 			tx.commit();
 		} catch (Exception e) {
@@ -45,11 +45,11 @@ public class CriaturaDAOImpl implements CriaturaDAO {
 	}
 
 	@Override
-	public void actualizar(Object criatura) {
+	public void actualizar(Object jugador) {
 		Transaction tx = null;
 		try (Session session = HibernateUtil.getSessionFactory()) {
 			tx = session.beginTransaction();
-			session.merge(criatura);
+			session.merge(jugador);
 			tx.commit();
 		} catch (Exception e) {
 			if (tx != null) {
@@ -60,16 +60,16 @@ public class CriaturaDAOImpl implements CriaturaDAO {
 	}
 
 	@Override
-	public Criatura obtenerPorId(Long id) {
+	public Jugador obtenerPorId(Long id) {
 		try (Session session = HibernateUtil.getSessionFactory()) {
-			return session.get(Criatura.class, id);
+			return session.get(Jugador.class, id);
 		}
 	}
 
 	@Override
-	public List<Criatura> obtenerTodasLasCriaturas() {
+	public List<Jugador> obtenerTodosLosJugadores() {
 		try (Session session = HibernateUtil.getSessionFactory()) {
-			return session.createQuery("from Criatura", Criatura.class).list();
+			return session.createQuery("from Jugador", Jugador.class).list();
 		}
 	}
 }

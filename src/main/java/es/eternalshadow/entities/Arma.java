@@ -15,8 +15,6 @@ public class Arma extends Item {
 	@Column(name = "ARMAMENTO", nullable = false, length = 50)
 	private Armamento arma;
 
-	
-	
 	public Arma(String nombre, int cantidad, Armamento arma) {
 		super(nombre, cantidad);
 		this.arma = arma;
